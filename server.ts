@@ -4,7 +4,7 @@ const fastify = Fastify({
   logger: true,
 })
 
-fastify.get('/ping', async (request, response) => {
+fastify.get('/ping', async () => {
   return { ping: 'pong' }
 })
 
