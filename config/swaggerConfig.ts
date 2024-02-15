@@ -1,14 +1,14 @@
 import swaggerJsdoc from 'swagger-jsdoc'
 
 const options = {
-    swaggerDefinition: {
-        info: {
-            title: 'Untitled-converter\'s API',
-            version: '1.0.0',
-            description: 'Documentation of the API routes for the "Untitled-converter" application.'
-        }
+  swaggerDefinition: {
+    info: {
+      title: 'Power Consumption API',
+      description: 'Documentation of the API routes for the Power Consumption application.',
+      // TODO better title, description, maybe version
     },
-    apis: ['src/routes/**/*.ts']
+  },
+  apis: ['server.ts'],
 }
 
 const swaggerSpec = swaggerJsdoc(options)
