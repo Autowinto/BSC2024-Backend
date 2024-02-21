@@ -5,6 +5,7 @@ const options = {
     info: {
       title: 'Power Consumption API',
       description: 'Documentation of the API routes for the Power Consumption application.',
+      version: '0.1',
       // TODO better title, description, maybe version
     },
   },

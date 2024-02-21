@@ -11,7 +11,7 @@
 """
 Usage:
 
-    python swagger-yaml-to-html.py < /path/to/api.yaml > doc.html
+    python3 swagger-yaml-to-html.py < documentation/swaggerDoc.yaml > public/doc.html
 
 """
 import yaml, json, sys

@@ -1,17 +1,28 @@
 import Fastify from 'fastify'
+import fastifyStatic from '@fastify/static'
 import { generateSwaggerDoc } from './generateSwagger'
 
 const fastify = Fastify({
   logger: true,
 })
 
+fastify.register(fastifyStatic, {
+  root: '.',
+  prefix: '/public/', // optional: default '/'
+})
+
 fastify.get('/ping', async () => {
   return { ping: 'pong' }
 })
 
+fastify.get('/api', async (req, reply) => {
+  fastify.log.debug(req)
+  return reply.sendFile('doc.html')
+})
+
 async function start() {
   try {
-    const outputFilePath = './documentation/swaggerDoc.yaml'
+    const outputFilePath = 'documentation/swaggerDoc.yaml'
     generateSwaggerDoc(outputFilePath)
     return ('Swagger documentation generation initiated.')
   }
@@ -20,9 +31,10 @@ async function start() {
   }
   try {
     await fastify.listen({ port: 3000 })
+    return ('Server started on port 3000')
   }
   catch (err) {
-    fastify.log.error(err)
+    return fastify.log.error(err)
   }
 }
 start()
