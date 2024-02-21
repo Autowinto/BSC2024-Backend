@@ -8,9 +8,9 @@ COPY . .
 RUN apt-get update
 RUN apt-get install python3 -y && apt-get install python3-pip -y
 RUN pip3 install PyYAML --break-system-packages
-RUN python3 swagger-to-html.py < documentation/swaggerDoc.yaml > doc.html
 RUN npm install -g pnpm
-
+RUN pnpm build
+RUN python3 swagger-to-html.py < documentation/swaggerDoc.yaml > ./build/public/doc.html
 
 EXPOSE 3000
 

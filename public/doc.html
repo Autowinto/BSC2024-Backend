@@ -35,7 +35,7 @@
 <script>
 window.onload = function() {
 
-  var spec = {"info": {"title": "Power Consumption API", "description": "Documentation of the API routes for the Power Consumption application."}, "swagger": "2.0", "paths": {"/rates/favorites/{email}}": {"get": {"tags": ["Rates"], "summary": "Get favorite currencies", "description": "Get favorite currencies from favorites.json, given the user's email.", "parameters": [{"name": "email", "in": "path", "required": true, "type": "string", "description": "The email of the user."}], "responses": {"200": {"description": "Data generated and returned."}, "500": {"description": "Internal server error."}}}}}, "definitions": {}, "responses": {}, "parameters": {}, "securityDefinitions": {}, "tags": []};
+  var spec = {"info": {"title": "Power Consumption API", "description": "Documentation of the API routes for the Power Consumption application.", "version": "0.1"}, "swagger": "2.0", "paths": {"/rates/favorites/{email}}": {"get": {"tags": ["Rates"], "summary": "Get favorite currencies", "description": "Get favorite currencies from favorites.json, given the user's email.", "parameters": [{"name": "email", "in": "path", "required": true, "type": "string", "description": "The email of the user."}], "responses": {"200": {"description": "Data generated and returned."}, "500": {"description": "Internal server error."}}}}}, "definitions": {}, "responses": {}, "parameters": {}, "securityDefinitions": {}, "tags": []};
 
   // Build a system
   const ui = SwaggerUIBundle({

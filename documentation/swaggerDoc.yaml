@@ -1,6 +1,7 @@
 info:
   title: Power Consumption API
   description: Documentation of the API routes for the Power Consumption application.
+  version: "0.1"
 swagger: "2.0"
 paths:
   /rates/favorites/{email}}:

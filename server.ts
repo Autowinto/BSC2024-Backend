@@ -1,14 +1,18 @@
+import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import Fastify from 'fastify'
 import fastifyStatic from '@fastify/static'
 import { generateSwaggerDoc } from './generateSwagger'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const fastify = Fastify({
   logger: true,
 })
 
 fastify.register(fastifyStatic, {
-  root: '.',
-  prefix: '/public/', // optional: default '/'
+  root: __dirname,
 })
 
 fastify.get('/ping', async () => {
@@ -17,21 +21,19 @@ fastify.get('/ping', async () => {
 
 fastify.get('/api', async (req, reply) => {
   fastify.log.debug(req)
-  return reply.sendFile('doc.html')
+  return reply.sendFile('/public/doc.html')
 })
 
 async function start() {
   try {
     const outputFilePath = 'documentation/swaggerDoc.yaml'
     generateSwaggerDoc(outputFilePath)
-    return ('Swagger documentation generation initiated.')
   }
   catch (err) {
     fastify.log.error(err)
   }
   try {
     await fastify.listen({ port: 3000 })
-    return ('Server started on port 3000')
   }
   catch (err) {
     return fastify.log.error(err)
