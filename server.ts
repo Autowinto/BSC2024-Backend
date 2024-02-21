@@ -21,7 +21,7 @@ fastify.get('/ping', async () => {
 
 fastify.get('/api', async (req, reply) => {
   fastify.log.debug(req)
-  return reply.sendFile('/public/doc.html')
+  return reply.sendFile('./public/doc.html')
 })
 
 async function start() {
@@ -44,7 +44,7 @@ start()
 // sample route swagger documentation
 /**
  * @swagger
- * /rates/favorites/{email}}:
+ * /rates/favoritsesefsefsefsefsefsefes/{email}}:
  *   get:
  *     tags:
  *       - Rates

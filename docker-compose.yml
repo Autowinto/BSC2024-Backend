@@ -1,0 +1,8 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfile_backend
+    ports:
+      - "3000:3000"
+    command: sh run_and_deploy.sh

@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsc",
-    "start": "node --experimental-specifier-resolution=node build/server.js"
+    "start": "node --experimental-specifier-resolution=node -d build/server.js"
   },
   "dependencies": {
     "@fastify/static": "^7.0.1",
