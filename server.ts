@@ -1,10 +1,14 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { Type, type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
+
+// Routes
+import metersRoutes from './routes/meters.routes'
 
 const fastify = Fastify({
   logger: true,
-})
+}).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
 
 await fastify.register(fastifySwagger)
 
@@ -12,7 +16,7 @@ await fastify.register(fastifySwaggerUI, {
   routePrefix: '/api',
   uiConfig: {
     docExpansion: 'full',
-    deepLinking: false,
+    deepLinking: true,
   },
   uiHooks: {
     // onRequest(request, reply, next) { next() },
@@ -22,6 +26,8 @@ await fastify.register(fastifySwaggerUI, {
   transformStaticCSP: header => header,
   transformSpecificationClone: true,
 })
+
+fastify.register(metersRoutes, { prefix: 'meters' })
 
 async function start() {
   try {
