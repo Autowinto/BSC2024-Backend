@@ -1,37 +1,37 @@
-import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import Fastify from 'fastify'
-import fastifyStatic from '@fastify/static'
-import { generateSwaggerDoc } from './generateSwagger'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUI from '@fastify/swagger-ui'
 
 const fastify = Fastify({
   logger: true,
 })
 
-fastify.register(fastifyStatic, {
-  root: __dirname,
+await fastify.register(fastifySwagger)
+
+await fastify.register(fastifySwaggerUI, {
+  routePrefix: '/api',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false,
+  },
+  uiHooks: {
+    // onRequest(request, reply, next) { next() },
+    // preHandler(request, reply, next) { next() },
+  },
+  staticCSP: true,
+  transformStaticCSP: header => header,
+  transformSpecificationClone: true,
 })
 
 fastify.get('/ping', async () => {
   return { ping: 'pong' }
 })
 
-fastify.get('/api', async (req, reply) => {
-  fastify.log.debug(req)
-  return reply.sendFile('./public/doc.html')
+fastify.get('/pongusdadsa', async () => {
+  return { ping: 'pong' }
 })
 
 async function start() {
-  try {
-    const outputFilePath = 'documentation/swaggerDoc.yaml'
-    generateSwaggerDoc(outputFilePath)
-  }
-  catch (err) {
-    fastify.log.error(err)
-  }
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' })
   }
@@ -39,26 +39,52 @@ async function start() {
     return fastify.log.error(err)
   }
 }
-start()
 
-// sample route swagger documentation
-/**
- * @swagger
- * /rates/favoritsesefsefsefsefsefsefes/{email}}:
- *   get:
- *     tags:
- *       - Rates
- *     summary: Get favorite currencies
- *     description: Get favorite currencies from favorites.json, given the user's email.
- *     parameters:
- *       - name: email
- *         in: path
- *         required: true
- *         type: string
- *         description: The email of the user.
- *     responses:
- *       '200':
- *         description: Data generated and returned.
- *       '500':
- *         description: Internal server error.
- */
+fastify.put('/some-route/:id', {
+  schema: {
+    description: 'post some data',
+    tags: ['user', 'code'],
+    summary: 'qwerty',
+    params: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'user id',
+        },
+      },
+    },
+    body: {
+      type: 'object',
+      properties: {
+        hello: { type: 'string' },
+        obj: {
+          type: 'object',
+          properties: {
+            some: { type: 'string' },
+          },
+        },
+      },
+    },
+    response: {
+      201: {
+        description: 'Successful response',
+        type: 'object',
+        properties: {
+          hello: { type: 'string' },
+        },
+      },
+      default: {
+        description: 'Default response',
+        type: 'object',
+        properties: {
+          foo: { type: 'string' },
+        },
+      },
+    },
+  },
+}, (req, reply) => { })
+
+await fastify.ready()
+
+start()

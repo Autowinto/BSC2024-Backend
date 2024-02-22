@@ -11,6 +11,9 @@ dependencies:
   '@fastify/swagger':
     specifier: ^8.14.0
     version: 8.14.0
+  '@fastify/swagger-ui':
+    specifier: ^3.0.0
+    version: 3.0.0
   '@prisma/client':
     specifier: ^5.9.1
     version: 5.9.1(prisma@5.9.1)
@@ -552,6 +555,16 @@ packages:
       fastify-plugin: 4.5.1
       fastq: 1.17.1
       glob: 10.3.10
+    dev: false
+
+  /@fastify/swagger-ui@3.0.0:
+    resolution: {integrity: sha512-8P5OwHVv6QR4XSE6cW4fsENeMbW4yWWWj6Dz/5tvQN2pwNyTiSWxYpsY3+VP+uiZucNaDrAE2xm11rqytqAocA==}
+    dependencies:
+      '@fastify/static': 7.0.1
+      fastify-plugin: 4.5.1
+      openapi-types: 12.1.3
+      rfdc: 1.3.1
+      yaml: 2.3.4
     dev: false
 
   /@fastify/swagger@8.14.0:

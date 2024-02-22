@@ -8,12 +8,8 @@ COPY . .
 RUN chmod +x /usr/src/app/run_and_deploy.sh
 RUN apt-get update
 RUN apt-get install bash -y
-RUN apt-get install python3 -y && apt-get install python3-pip -y
-RUN pip3 install PyYAML --break-system-packages
 RUN npm install -g pnpm
 RUN pnpm build
-RUN mkdir ./build/public
-RUN touch ./build/public/doc.html
 
 EXPOSE 3000
 
