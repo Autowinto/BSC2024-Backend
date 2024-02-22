@@ -1,6 +1,10 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { Type, type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
+
+// Routes
+import metersRoutes from './routes/meters.routes'
 
 import * as pg from 'pg'
 
@@ -8,7 +12,7 @@ const { Client } = pg
 
 const fastify = Fastify({
   logger: true,
-})
+}).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
 
 await fastify.register(fastifySwagger)
 
@@ -16,7 +20,7 @@ await fastify.register(fastifySwaggerUI, {
   routePrefix: '/api',
   uiConfig: {
     docExpansion: 'full',
-    deepLinking: false,
+    deepLinking: true,
   },
   uiHooks: {
     // onRequest(request, reply, next) { next() },
@@ -38,51 +42,6 @@ async function start() {
     return fastify.log.error(err)
   }
 }
-
-fastify.put('/some-route/:id', {
-  schema: {
-    description: 'post some data',
-    tags: ['user', 'code'],
-    summary: 'qwerty',
-    params: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          description: 'user id',
-        },
-      },
-    },
-    body: {
-      type: 'object',
-      properties: {
-        hello: { type: 'string' },
-        obj: {
-          type: 'object',
-          properties: {
-            some: { type: 'string' },
-          },
-        },
-      },
-    },
-    response: {
-      201: {
-        description: 'Successful response',
-        type: 'object',
-        properties: {
-          hello: { type: 'string' },
-        },
-      },
-      default: {
-        description: 'Default response',
-        type: 'object',
-        properties: {
-          foo: { type: 'string' },
-        },
-      },
-    },
-  },
-}, (req, reply) => { })
 
 await fastify.ready()
 
