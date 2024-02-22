@@ -9,7 +9,6 @@ RUN chmod +x ./run_and_deploy.sh
 RUN apt-get update
 RUN apt-get install bash -y
 RUN npm install -g pnpm
-RUN pnpm build
 
 EXPOSE 3000
 
