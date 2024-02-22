@@ -8,8 +8,22 @@ services:
     networks:
       - network
     command: sh run_and_deploy.sh
+    depends_on:
+      - frontend
+      - postgres
 
-  db:
+  frontend:
+    build:
+      context: .
+      dockerfile: dockerfile_frontend
+    ports:
+      - "3001:3001"
+    networks:
+      network:
+        aliases:
+          - frontend
+
+  postgres:
     image: postgres
     environment:
       POSTGRES_DB: mydatabase
