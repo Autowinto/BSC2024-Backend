@@ -1,14 +1,20 @@
-import type { GetMeterByIdSchema, GetMetersSchema } from '../routes/schemas'
-import type { FastifyRequestTypebox } from '../routes/types'
+import { prisma } from 'prisma/client'
+import type { GetMeterByIdSchema } from '../routes/schemas'
+import type { FastifyReplyTypebox, FastifyRequestTypebox } from '../routes/types'
 
 export default {
-  getMeters: (request: FastifyRequestTypebox<typeof GetMetersSchema>) => {
-    console.log(request.params)
-    return { id: 1, name: 'Test Meter' }
+  getMeters: async () => {
+    return await prisma.meter.findMany()
   },
 
-  getMeterById: (request: FastifyRequestTypebox<typeof GetMeterByIdSchema>) => {
-    console.log(request.params)
-    return { id: 1, name: 'Awooga' }
+  getMeterById: async (request: FastifyRequestTypebox<typeof GetMeterByIdSchema>, reply: FastifyReplyTypebox<typeof GetMeterByIdSchema>) => {
+    const data = await prisma.meter.findFirst({ where: { id: request.params.id } })
+
+    if (!data) {
+      reply.code(404).send()
+      return
+    }
+
+    reply.send(data)
   },
 }
