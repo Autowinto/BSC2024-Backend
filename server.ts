@@ -10,12 +10,21 @@ const fastify = Fastify({
   logger: true,
 }).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
 
-await fastify.register(fastifySwagger)
+await fastify.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: 'Meterpreter API',
+      description: 'Documentation of the Meterpreter API',
+      version: '0.1',
+    },
+
+  },
+})
 
 await fastify.register(fastifySwaggerUI, {
   routePrefix: '/api',
   uiConfig: {
-    docExpansion: 'full',
+    docExpansion: 'list',
     deepLinking: true,
   },
   uiHooks: {
