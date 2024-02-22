@@ -2,6 +2,10 @@ import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
 
+import * as pg from 'pg'
+
+const { Client } = pg
+
 const fastify = Fastify({
   logger: true,
 })
@@ -26,11 +30,6 @@ await fastify.register(fastifySwaggerUI, {
 fastify.get('/ping', async () => {
   return { ping: 'pong' }
 })
-
-fastify.get('/pongusdadsa', async () => {
-  return { ping: 'pong' }
-})
-
 async function start() {
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' })
