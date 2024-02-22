@@ -1,0 +1,8 @@
+FROM node:18
+
+WORKDIR /usr/src/files
+COPY clone_frontend.sh ..
+RUN apt-get install git -y
+
+CMD ["sh", "../clone_frontend.sh"]
+EXPOSE 3001
