@@ -1,10 +1,9 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
-import { Type, type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
+import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
 
 // Routes
-import metersRoutes from './routes/meters.routes'
 
 const fastify = Fastify({
   logger: true,
@@ -36,8 +35,9 @@ await fastify.register(fastifySwaggerUI, {
   transformSpecificationClone: true,
 })
 
-fastify.register(metersRoutes, { prefix: 'meters' })
-
+fastify.get('/ping', async () => {
+  return { ping: 'pong' }
+})
 async function start() {
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' })

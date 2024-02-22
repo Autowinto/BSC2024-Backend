@@ -5,4 +5,24 @@ services:
       dockerfile: dockerfile_backend
     ports:
       - "3000:3000"
+    networks:
+      - network
     command: sh run_and_deploy.sh
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - /var/lib/docker/volumes/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      network:
+        aliases:
+          - postgres
+
+networks:
+  network:

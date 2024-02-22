@@ -1,3 +1,4 @@
-how to run:
-build with "docker build -t backend"
-run with "docker run --rm -d -p 3000:3000/tcp backend-dev:latest"
+run as dev with hot reload: pnpm dev
+run in container: docker-compose up --build
+
+documentation can be accessed from /api
