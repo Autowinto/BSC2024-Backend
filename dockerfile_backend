@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 # Copy everything from our directory into the work directory
 COPY . .
 
-RUN chmod +x /usr/src/app/run_and_deploy.sh
+RUN chmod +x ./run_and_deploy.sh
 RUN apt-get update
 RUN apt-get install bash -y
 RUN npm install -g pnpm

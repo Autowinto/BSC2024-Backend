@@ -6,6 +6,10 @@ import { Type, type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fasti
 // Routes
 import metersRoutes from './routes/meters.routes'
 
+import * as pg from 'pg'
+
+const { Client } = pg
+
 const fastify = Fastify({
   logger: true,
 }).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
@@ -27,8 +31,9 @@ await fastify.register(fastifySwaggerUI, {
   transformSpecificationClone: true,
 })
 
-fastify.register(metersRoutes, { prefix: 'meters' })
-
+fastify.get('/ping', async () => {
+  return { ping: 'pong' }
+})
 async function start() {
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' })
