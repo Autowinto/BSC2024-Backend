@@ -1,14 +1,9 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
-import { Type, type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
+import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
 
 // Routes
-import metersRoutes from './routes/meters.routes'
-
-import * as pg from 'pg'
-
-const { Client } = pg
 
 const fastify = Fastify({
   logger: true,
