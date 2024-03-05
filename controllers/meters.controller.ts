@@ -1,4 +1,4 @@
-import { prisma } from 'prisma/client'
+import { prisma } from '../prisma/client'
 import type { GetMeterByIdSchema } from '../routes/schemas'
 import type { FastifyReplyTypebox, FastifyRequestTypebox } from '../routes/types'
 
