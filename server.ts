@@ -27,10 +27,6 @@ await fastify.register(fastifySwaggerUI, {
     docExpansion: 'list',
     deepLinking: true,
   },
-  uiHooks: {
-    // onRequest(request, reply, next) { next() },
-    // preHandler(request, reply, next) { next() },
-  },
   staticCSP: true,
   transformStaticCSP: header => header,
   transformSpecificationClone: true,
