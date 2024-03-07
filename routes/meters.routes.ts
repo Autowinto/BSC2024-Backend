@@ -1,8 +1,8 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 
-import metersController from '../controllers/meters.controller'
 import { GetMeterByIdSchema, GetMetersSchema } from './schemas'
+import metersController from '@/controllers/meters.controller'
 
 export default async (fastify: FastifyInstance) => {
   // Might be a better way of doing this, but for now,

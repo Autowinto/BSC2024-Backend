@@ -4,10 +4,12 @@
     "lib": [
       "ESNext"
     ],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "paths": {},
+    "paths": {
+      "@/*": ["./*"]
+    },
     "types": [
       "node"
     ],
