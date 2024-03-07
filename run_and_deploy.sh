@@ -2,24 +2,24 @@
 chmod +x ./run_and_deploy.sh
 apt-get update
 apt-get install bash -y
-npm install -g pnpm
+npm install -g yarn
 apt-get install git -y
-pnpm install
+yarn install
 
 echo "Prisma Generate";
-pnpm prisma generate;
+yarn prisma generate;
 
 echo "The value of DEV_ENV is: $DEV_ENV"
 
 if [ "$DEV_ENV" = "YES" ]
 then
     echo "Starting Server in dev env"
-    pnpm test
+    yarn test
 else 
     echo "Building backend";
-    pnpm build;
+    yarn build;
     echo Starting Server
-    pnpm start
+    yarn start
 fi
 
 
