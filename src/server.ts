@@ -42,6 +42,10 @@ async function start() {
   }
 }
 
+export function testFunction(a: number, b: number): number {
+  return a + b
+}
+
 await fastify.ready()
 
 start()

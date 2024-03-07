@@ -4,6 +4,7 @@ import type { FastifyReplyTypebox, FastifyRequestTypebox } from '@/routes/types'
 
 export default {
   getMeters: async () => {
+    ''
     return await prisma.meter.findMany()
   },
 

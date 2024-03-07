@@ -13,12 +13,13 @@ echo "The value of DEV_ENV is: $DEV_ENV"
 if [ "$DEV_ENV" = "YES" ]
 then
     echo "Starting Server in dev env"
-    pnpm dev
+    pnpm test
 else 
     echo "Building backend";
     pnpm build;
     echo Starting Server
     pnpm start
 fi
+
 
 echo "Server Started";
