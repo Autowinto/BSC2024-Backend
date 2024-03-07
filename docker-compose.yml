@@ -1,34 +1,37 @@
 services:
   backend:
-    build:
-      context: .
-      dockerfile: dockerfile_backend
+    image: node:18
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
     ports:
       - "3000:3000"
     networks:
       - network
     command: sh run_and_deploy.sh
     depends_on:
-      - frontend
+      #- frontend
       - postgres
+    environment:
+      - DEV_ENV=${DEV_ENV}
 
-  frontend:
-    build:
-      context: .
-      dockerfile: dockerfile_frontend
-    ports:
-      - "3001:3001"
-    networks:
-      network:
-        aliases:
-          - frontend
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile_frontend
+  #   ports:
+  #     - "3001:3001"
+  #   networks:
+  #     network:
+  #       aliases:
+  #         - frontend
 
   postgres:
     image: postgres
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ordbogenpower
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
       - /var/lib/docker/volumes/postgres:/var/lib/postgresql/data
     ports:
