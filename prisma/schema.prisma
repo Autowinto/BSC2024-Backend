@@ -8,11 +8,12 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "localhost:5432"
+  url = env("DATABASE_URL")
 }
 
 model Meter {
   id   Int    @id @default(autoincrement())
+  externalId Int @unique
   name String
 }
 
