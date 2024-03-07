@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsx watch ./src/server.ts",
     "watch": "vitest watch",
-    "test": "concurrently \"pnpm watch\" \"pnpm dev\"",
+    "test": "concurrently \"yarn watch\" \"yarn dev\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsc && resolve-tspaths",
