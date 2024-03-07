@@ -68,6 +68,10 @@ fastify.addHook('preValidation', (request, reply, done) => {
 })
 fastify.register(metersRoutes, { prefix: 'meters' })
 
+export function testFunction(a: number, b: number): number {
+  return a + b
+}
+
 await fastify.ready()
 syncMeters()
 
