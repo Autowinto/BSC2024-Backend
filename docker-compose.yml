@@ -9,7 +9,6 @@ services:
       - network
     command: sh run_and_deploy.sh
     depends_on:
-      - frontend
       - postgres
 
   frontend:
