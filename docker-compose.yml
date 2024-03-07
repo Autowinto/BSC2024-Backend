@@ -29,9 +29,9 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ordbogenpower
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
       - /var/lib/docker/volumes/postgres:/var/lib/postgresql/data
     ports:

@@ -4,6 +4,7 @@ apt-get update
 apt-get install bash -y
 npm install -g pnpm
 apt-get install git -y
+pnpm install
 
 echo "Prisma Generate";
 pnpm prisma generate;
