@@ -33,15 +33,20 @@ await fastify.register(fastifySwagger, {
 
 // Move this to a function to make code prettier
 async function syncMeters() {
-  const meters = await meteringPoints.getMeteringPoints()
+  try {
+    const meters = await meteringPoints.getMeteringPoints()
 
-  for (const meter of meters) {
-    const meterNumber = Number.parseInt(meter.meterNumber)
-    await prisma.meter.upsert({
-      where: { externalId: meterNumber },
-      create: { name: meter.meterNumber, externalId: meterNumber },
-      update: {},
-    })
+    for (const meter of meters) {
+      const meterNumber = Number.parseInt(meter.meterNumber)
+      await prisma.meter.upsert({
+        where: { externalId: meterNumber },
+        create: { name: meter.meterNumber, externalId: meterNumber },
+        update: {},
+      })
+    }
+  }
+  catch (err) {
+    console.log(err)
   }
 }
 
