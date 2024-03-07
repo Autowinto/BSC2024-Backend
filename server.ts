@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
 import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
-import metersRoutes from './routes/meters.routes'
+import metersRoutes from '@/routes/meters.routes'
 
 // Routes
 
