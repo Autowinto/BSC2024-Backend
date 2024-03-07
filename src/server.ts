@@ -7,8 +7,8 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
-import meteringPoints from 'wrappers/energinet/routes/meteringPoints'
-import { prisma } from 'prisma/client'
+import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
+import { prisma } from '@/prisma/client'
 import metersRoutes from '@/routes/meters.routes'
 
 // Routes
@@ -63,7 +63,6 @@ fastify.register(fastifyPassport.initialize())
 fastify.register(fastifyPassport.secureSession())
 
 fastify.addHook('preValidation', (request, reply, done) => {
-  console.log('Authenticating request...')
   done()
 })
 fastify.register(metersRoutes, { prefix: 'meters' })

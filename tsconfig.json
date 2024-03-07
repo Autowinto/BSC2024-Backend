@@ -6,7 +6,7 @@
     ],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "paths": {
       "@/*": [
         "./src/*"
@@ -14,7 +14,8 @@
     },
     "types": [
       "node",
-      "vitest/globals"
+      "vitest/globals",
+      "vite/"
     ],
     "strictNullChecks": true,
     "allowUnreachableCode": false,

@@ -10,7 +10,7 @@ export default {
     reply.send(meters)
   },
 
-  getMeterById: async (request: FastifsyRequestTypebox<typeof GetMeterByIdSchema>, reply: FastifyReplyTypebox<typeof GetMeterByIdSchema>) => {
+  getMeterById: async (request: FastifyRequestTypebox<typeof GetMeterByIdSchema>, reply: FastifyReplyTypebox<typeof GetMeterByIdSchema>) => {
     const data = await prisma.meter.findFirst({ where: { id: request.params.id } })
 
     if (!data) {
