@@ -1,15 +1,20 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
-import fastifySecureSession from '@fastify/secure-session'
 import fastifyPassport from '@fastify/passport'
-import {Strategy} from 'passport-custom'
 import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
 import metersRoutes from '@/routes/meters.routes'
+import cors from '@fastify/cors'
+import helmet from '@fastify/helmet'
+import fastifySession from '@fastify/session'
+import fastifyCookie from '@fastify/cookie'
 
 const fastify = Fastify({
   logger: true,
 }).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
+
+fastify.register(helmet)
+fastify.register(cors, {})
 
 await fastify.register(fastifySwagger, {
   openapi: {
@@ -33,25 +38,16 @@ await fastify.register(fastifySwaggerUI, {
   transformSpecificationClone: true,
 })
 
-fastify.register(fastifySecureSession, {
-  sessionName: 'meterpreter-session',
-  cookieName: 'meterpreter-session-cookie',
-  // This needs to be changed to be read from a file or to fail somehow if it doesn't exist. Currently unsecure
-  key: process.env.SESSION_SECRET as string,
-})
+fastify.register(fastifyCookie)
+fastify.register(fastifySession, {secret: '123456789123456789123456789123456789'})
+
 fastify.register(fastifyPassport.initialize())
 fastify.register(fastifyPassport.secureSession())
 
-// Strategy doesn't auth anything currently.
-fastifyPassport.use('custom', new Strategy((req, done) => {
-  done(null, {name: 'Some Username'})
-}))
-
 fastify.addHook('preValidation', (request, reply, done) => {
-  fastifyPassport.authenticate('custom')
+  console.log('Authenticating request...')
+  done()
 })
-
-
 fastify.register(metersRoutes, { prefix: 'meters' })
 
 await fastify.ready()
