@@ -8,7 +8,7 @@ const Meter = Type.Object({
 export const GetMetersSchema = {
   tags: ['Meters'],
   response: {
-    200: Type.Array(Type.Object(Meter)),
+    200: Type.Array(Meter),
   },
 }
 

@@ -18,6 +18,11 @@
     "db:seed": "ts-node-dev prisma/seed.ts"
   },
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/passport": "^2.4.0",
+    "@fastify/session": "^10.7.0",
     "@fastify/static": "^7.0.1",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^3.0.0",
@@ -28,6 +33,7 @@
     "fastify-swagger": "^5.2.0",
     "fluent-json-schema": "^4.2.1",
     "fs": "0.0.1-security",
+    "passport-custom": "^1.1.1",
     "pg": "^8.11.3",
     "prisma": "^5.9.1",
     "swagger": "^0.7.5",

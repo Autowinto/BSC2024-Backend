@@ -1,10 +1,13 @@
 import { prisma } from '@/prisma/client'
 import type { GetMeterByIdSchema } from '@/routes/schemas'
 import type { FastifyReplyTypebox, FastifyRequestTypebox } from '@/routes/types'
+import { FastifyReply, FastifyRequest } from 'fastify'
 
 export default {
-  getMeters: async () => {
-    return await prisma.meter.findMany()
+  getMeters: async (request: FastifyRequest, reply: FastifyReply) => {
+    const meters = await prisma.meter.findMany()
+    console.log(meters)
+    reply.send(meters)
   },
 
   getMeterById: async (request: FastifyRequestTypebox<typeof GetMeterByIdSchema>, reply: FastifyReplyTypebox<typeof GetMeterByIdSchema>) => {
