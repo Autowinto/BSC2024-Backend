@@ -77,7 +77,7 @@ export function testFunction(a: number, b: number): number {
 }
 
 await fastify.ready()
-syncMeters()
+// syncMeters()
 
 fastify.listen({ port: 3000, host: '0.0.0.0' }).catch((err) => {
   return fastify.log.error(err)

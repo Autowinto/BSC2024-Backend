@@ -2,7 +2,6 @@
 chmod +x ./run_and_deploy.sh
 apt-get update
 apt-get install bash -y
-npm install -g yarn
 apt-get install git -y
 yarn install
 
@@ -14,7 +13,7 @@ echo "The value of DEV_ENV is: $DEV_ENV"
 if [ "$DEV_ENV" = "YES" ]
 then
     echo "Starting Server in dev env"
-    yarn test
+    yarn dev
 else 
     echo "Building backend";
     yarn build;
