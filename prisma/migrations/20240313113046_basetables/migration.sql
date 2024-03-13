@@ -9,12 +9,12 @@ CREATE TABLE "Appliance" (
 );
 
 -- CreateTable
-CREATE TABLE "MeasuringPoint" (
+CREATE TABLE "measuringPoint" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "meterId" INTEGER NOT NULL,
 
-    CONSTRAINT "MeasuringPoint_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "measuringPoint_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -28,10 +28,10 @@ CREATE TABLE "Measurement" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Appliance" ADD CONSTRAINT "Appliance_measuringPointId_fkey" FOREIGN KEY ("measuringPointId") REFERENCES "MeasuringPoint"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Appliance" ADD CONSTRAINT "Appliance_measuringPointId_fkey" FOREIGN KEY ("measuringPointId") REFERENCES "measuringPoint"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MeasuringPoint" ADD CONSTRAINT "MeasuringPoint_meterId_fkey" FOREIGN KEY ("meterId") REFERENCES "Meter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "measuringPoint" ADD CONSTRAINT "measuringPoint_meterId_fkey" FOREIGN KEY ("meterId") REFERENCES "Meter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Measurement" ADD CONSTRAINT "Measurement_measuringPointId_fkey" FOREIGN KEY ("measuringPointId") REFERENCES "MeasuringPoint"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Measurement" ADD CONSTRAINT "Measurement_measuringPointId_fkey" FOREIGN KEY ("measuringPointId") REFERENCES "measuringPoint"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
