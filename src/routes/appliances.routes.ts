@@ -7,4 +7,6 @@ export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
   app.get('/', { schema: GetAppliancesSchema }, appliancesControllers.getAppliances)
+
+  // app.post('/', appliancesControllers.createAppliance)
 }

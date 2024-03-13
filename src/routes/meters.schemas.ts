@@ -3,7 +3,7 @@ import { Type } from '@fastify/type-provider-typebox'
 const Meter = Type.Object({
   id: Type.Integer(),
   name: Type.String(),
-  measuringPoints: Type.Array(Type.Any()),
+  externalId: Type.Integer(),
 })
 
 export const GetMetersSchema = {

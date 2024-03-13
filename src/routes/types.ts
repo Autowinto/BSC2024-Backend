@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { ContextConfigDefault, FastifyReply, FastifyRequest, FastifySchema, RawReplyDefaultExpression, RawRequestDefaultExpression, RawServerDefault, RouteGenericInterface } from 'fastify'
 
-export type FastifyRequestTypebox<TSchema extends FastifySchema> = FastifyRequest<
+export type FastifyTypeBoxRequest<TSchema extends FastifySchema> = FastifyRequest<
   RouteGenericInterface,
   RawServerDefault,
   RawRequestDefaultExpression<RawServerDefault>,
@@ -9,7 +9,7 @@ export type FastifyRequestTypebox<TSchema extends FastifySchema> = FastifyReques
   TypeBoxTypeProvider
 >
 
-export type FastifyReplyTypebox<TSchema extends FastifySchema> = FastifyReply<
+export type FastifyTypeBoxReply<TSchema extends FastifySchema> = FastifyReply<
   RawServerDefault,
   RawRequestDefaultExpression,
   RawReplyDefaultExpression,

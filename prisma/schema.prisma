@@ -21,7 +21,7 @@ model Meter {
 model Appliance {
   id               Int             @id @default(autoincrement())
   name             String
-  expectedWattage  Decimal?
+  expectedWattage  Float?
   measuringPoint   MeasuringPoint? @relation(fields: [measuringPointId], references: [id])
   measuringPointId String?
 }
