@@ -1,7 +1,7 @@
 import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
-import fastifySwaggerUI from '@fastify/swagger-ui'
 import fastifyPassport from '@fastify/passport'
+import fastifyScalar from '@scalar/fastify-api-reference'
 import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
 import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
@@ -50,15 +50,13 @@ async function syncMeters() {
   }
 }
 
-await fastify.register(fastifySwaggerUI, {
-  routePrefix: '/api',
-  uiConfig: {
-    docExpansion: 'list',
-    deepLinking: true,
+await fastify.register(fastifyScalar, {
+  routePrefix: '/docs',
+  configuration: {
+    spec: {
+      content: () => fastify.swagger(),
+    },
   },
-  staticCSP: true,
-  transformStaticCSP: header => header,
-  transformSpecificationClone: true,
 })
 
 fastify.register(fastifyCookie)
