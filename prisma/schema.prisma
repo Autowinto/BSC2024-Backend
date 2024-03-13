@@ -12,10 +12,10 @@ datasource db {
 }
 
 model Meter {
-  id             Int              @id @default(autoincrement())
-  externalId     Int              @unique
-  name           String
-  measuringPoint MeasuringPoint[]
+  id              Int              @id @default(autoincrement())
+  externalId      Int              @unique
+  name            String
+  measuringPoints MeasuringPoint[]
 }
 
 model Appliance {

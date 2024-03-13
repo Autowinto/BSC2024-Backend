@@ -7,6 +7,9 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
+import appliancesRoutes from './routes/appliances.routes'
+import measurementsRoutes from './routes/measurements.routes'
+import measuringPointsRoutes from './routes/measuringPoints.routes'
 import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
 import { prisma } from '@/prisma/client'
 import metersRoutes from '@/routes/meters.routes'
@@ -46,8 +49,10 @@ async function syncMeters() {
     }
   }
   catch (err) {
-    console.log(err)
+    fastify.log.warn(err)
   }
+
+  fastify.log.info('Finished Meters Sync')
 }
 
 await fastify.register(fastifyScalar, {
@@ -68,6 +73,9 @@ fastify.register(fastifyPassport.secureSession())
 fastify.addHook('preValidation', (request, reply, done) => {
   done()
 })
+fastify.register(appliancesRoutes, { prefix: 'appliances' })
+fastify.register(measurementsRoutes, { prefix: 'measurements' })
+fastify.register(measuringPointsRoutes, { prefix: 'measuringPoints' })
 fastify.register(metersRoutes, { prefix: 'meters' })
 
 export function testFunction(a: number, b: number): number {
@@ -75,7 +83,7 @@ export function testFunction(a: number, b: number): number {
 }
 
 await fastify.ready()
-// syncMeters()
+syncMeters()
 
 fastify.listen({ port: 3000, host: '0.0.0.0' }).catch((err) => {
   return fastify.log.error(err)
