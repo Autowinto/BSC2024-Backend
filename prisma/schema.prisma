@@ -19,23 +19,26 @@ model Meter {
 }
 
 model Appliance {
-  id   Int    @id @default(autoincrement())
-  name String
+  id               Int             @id @default(autoincrement())
+  name             String
+  expectedWattage  Decimal?
+  MeasuringPoint   MeasuringPoint? @relation(fields: [measuringPointId], references: [id])
+  measuringPointId String?
 }
 
 model MeasuringPoint {
-  id          Int           @id @default(autoincrement())
-  name        String
-  meter       Meter         @relation(fields: [meterId], references: [id])
-  meterId     Int
-  Measurement Measurement[]
+  id           String        @id
+  name         String
+  meter        Meter         @relation(fields: [meterId], references: [id])
+  meterId      Int
+  measurements Measurement[]
+  appliances   Appliance[]
 }
 
 model Measurement {
   id               Int            @id @default(autoincrement())
-  name             String
   wattage          Decimal
   timeMeasured     DateTime
   measuringPoint   MeasuringPoint @relation(fields: [measuringPointId], references: [id])
-  measuringPointId Int
+  measuringPointId String
 }

@@ -6,7 +6,7 @@ apt-get install git -y
 yarn install
 
 echo "Prisma Generate";
-yarn prisma generate;
+yarn db:deploy;
 
 echo "The value of DEV_ENV is: $DEV_ENV"
 
