@@ -4,6 +4,7 @@ apt-get update
 apt-get install bash -y
 apt-get install git -y
 npm install -g pnpm
+pnpm config set store-dir /root/.local/share/pnpm/store
 pnpm install
 
 echo "Prisma Generate";
