@@ -7,9 +7,9 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
-import appliancesRoutes from './routes/devices'
-import measurementsRoutes from './routes/smartPlugMeasurements'
-import measuringPointsRoutes from './routes/smartPlugs'
+import devicesRoutes from './routes/devices'
+import smartPlugMeasurementsRoutes from './routes/smartPlugMeasurements'
+import smartPlugsRoutes from './routes/smartPlugs'
 import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
 import { prisma } from '@/prisma/client'
 import metersRoutes from '@/routes/powerReadingArea'
@@ -73,9 +73,9 @@ fastify.register(fastifyPassport.secureSession())
 fastify.addHook('preValidation', (request, reply, done) => {
   done()
 })
-fastify.register(appliancesRoutes, { prefix: 'appliances' })
-fastify.register(measurementsRoutes, { prefix: 'measurements' })
-fastify.register(measuringPointsRoutes, { prefix: 'measuringPoints' })
+fastify.register(devicesRoutes, { prefix: 'devices' })
+fastify.register(smartPlugMeasurementsRoutes, { prefix: 'smartPlugMeasurements' })
+fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
 fastify.register(metersRoutes, { prefix: 'meters' })
 
 export function testFunction(a: number, b: number): number {
