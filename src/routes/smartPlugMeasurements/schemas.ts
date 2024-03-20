@@ -23,3 +23,15 @@ export const GetMeasurementByIdSchema = {
     404: Type.Array(Type.Any()),
   },
 }
+
+export const CreateMeasurementSchema = {
+  tags: ['Measurement'],
+  body: Type.Object({
+    timeMeasured: Type.String(),
+    wattage: Type.Number(),
+    smartPlugId: Type.String(),
+  }),
+  response: {
+    201: Measurement,
+  },
+}
