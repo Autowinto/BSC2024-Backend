@@ -30,10 +30,10 @@ model Device {
 model SmartPlug {
   id                   String                 @id
   name                 String
-  meter                PowerReadingArea       @relation(fields: [meterId], references: [id])
-  meterId              Int
+  powerReadingArea     PowerReadingArea       @relation(fields: [powerReadingAreaId], references: [id])
+  powerReadingAreaId   Int
   smartPlugMeasurement SmartPlugMeasurement[]
-  appliances           Device[]
+  devices              Device[]
 }
 
 model SmartPlugMeasurement {

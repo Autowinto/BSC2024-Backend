@@ -7,12 +7,12 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
-import appliancesRoutes from './routes/appliances.routes'
-import measurementsRoutes from './routes/measurements.routes'
-import measuringPointsRoutes from './routes/measuringPoints.routes'
+import appliancesRoutes from './routes/devices'
+import measurementsRoutes from './routes/smartPlugMeasurements'
+import measuringPointsRoutes from './routes/smartPlugs'
 import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
 import { prisma } from '@/prisma/client'
-import metersRoutes from '@/routes/meters.routes'
+import metersRoutes from '@/routes/powerReadingArea'
 
 // Routes
 
@@ -41,7 +41,7 @@ async function syncMeters() {
 
     for (const meter of meters) {
       const meterNumber = Number.parseInt(meter.meterNumber)
-      await prisma.meter.upsert({
+      await prisma.powerReadingArea.upsert({
         where: { externalId: meterNumber },
         create: { name: meter.meterNumber, externalId: meterNumber },
         update: {},

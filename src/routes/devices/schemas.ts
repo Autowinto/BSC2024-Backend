@@ -1,39 +1,39 @@
 import type { Static } from '@fastify/type-provider-typebox'
 import { Type } from '@fastify/type-provider-typebox'
 
-const Appliance = Type.Object({
+const Device = Type.Object({
   id: Type.Integer(),
   name: Type.String(),
   expectedWattage: Type.Union([Type.Number(), Type.Null()]),
-  measuringPointId: Type.Union([Type.String(), Type.Null()]),
+  smartPlugId: Type.Union([Type.String(), Type.Null()]),
 })
 
-export type AppliancesType = Static<typeof Appliance>
+export type DevicesType = Static<typeof Device>
 
-export const GetAppliancesSchema = {
-  tags: ['Appliances'],
+export const GetDevicesSchema = {
+  tags: ['Devices'],
   response: {
-    200: Type.Array(Appliance),
+    200: Type.Array(Device),
   },
 }
 
-export const GetApplianceByIdSchema = {
-  tags: ['Appliances'],
+export const GetDeviceByIdSchema = {
+  tags: ['Devices'],
   params: Type.Object({
     id: Type.Integer(),
   }),
   response: {
-    200: Appliance,
+    200: Device,
     404: Type.Array(Type.Any()),
   },
 }
 
-export const CreateApplianceSchema = {
-  tags: ['Appliances'],
+export const CreateDeviceSchema = {
+  tags: ['Devices'],
   body: Type.Object({
     id: Type.Integer(),
   }),
   response: {
-    201: Appliance,
+    201: Device,
   },
 }
