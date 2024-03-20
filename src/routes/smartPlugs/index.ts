@@ -1,12 +1,12 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
-import { GetSmartPlugsSchema } from './schemas'
-import devicesController from '@/controllers/devices'
-import { prisma } from '@/prisma/client'
-import smartPlugMeasurementController from '@/controllers/smartPlugMeasurements'
+import { CreateSmartPlugSchema, GetSmartPlugsSchema } from './schemas'
+import smartPlugsController from '@/controllers/smartPlugs'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
-  app.get('/', { schema: GetSmartPlugsSchema }, smartPlugMeasurementController.get)
+  app.get('/', { schema: GetSmartPlugsSchema }, smartPlugsController.get)
+
+  app.post('/', { schema: CreateSmartPlugSchema }, smartPlugsController.create)
 }

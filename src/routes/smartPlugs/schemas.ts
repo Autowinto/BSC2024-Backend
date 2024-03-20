@@ -1,11 +1,9 @@
 import { Type } from '@fastify/type-provider-typebox'
 
 const SmartPlug = Type.Object({
-  id: Type.Integer(),
+  id: Type.String(),
   name: Type.String(),
   powerReadingAreaId: Type.Number(),
-  smartPlugMeasurements: Type.Array(Type.Any()),
-  devices: Type.Array(Type.Any()),
 })
 
 export const GetSmartPlugsSchema = {
@@ -23,5 +21,16 @@ export const GetSmartPlugByIdSchema = {
   response: {
     200: SmartPlug,
     404: Type.Array(Type.Any()),
+  },
+}
+
+export const CreateSmartPlugSchema = {
+  tags: ['SmartPlug'],
+  body: Type.Object({
+    name: Type.String(),
+    powerReadingAreaId: Type.Integer(),
+  }),
+  response: {
+    201: SmartPlug,
   },
 }
