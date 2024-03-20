@@ -11,34 +11,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Meter {
-  id              Int              @id @default(autoincrement())
-  externalId      Int              @unique
+// A Meter is the physical Meters in the office that Energinet shows in their API
+model PowerReadingArea {
+  id         Int         @id @default(autoincrement())
+  externalId Int         @unique
+  name       String
+  smartPlugs SmartPlug[]
+}
+
+model Device {
+  id              Int        @id @default(autoincrement())
   name            String
-  measuringPoints MeasuringPoint[]
+  expectedWattage Float?
+  smartPlug       SmartPlug? @relation(fields: [smartPlugId], references: [id])
+  smartPlugId     String?
 }
 
-model Appliance {
-  id               Int             @id @default(autoincrement())
-  name             String
-  expectedWattage  Float?
-  measuringPoint   MeasuringPoint? @relation(fields: [measuringPointId], references: [id])
-  measuringPointId String?
+model SmartPlug {
+  id                   String                 @id
+  name                 String
+  meter                PowerReadingArea       @relation(fields: [meterId], references: [id])
+  meterId              Int
+  smartPlugMeasurement SmartPlugMeasurement[]
+  appliances           Device[]
 }
 
-model MeasuringPoint {
-  id           String        @id
-  name         String
-  meter        Meter         @relation(fields: [meterId], references: [id])
-  meterId      Int
-  measurements Measurement[]
-  appliances   Appliance[]
-}
-
-model Measurement {
-  id               Int            @id @default(autoincrement())
-  wattage          Decimal
-  timeMeasured     DateTime
-  measuringPoint   MeasuringPoint @relation(fields: [measuringPointId], references: [id])
-  measuringPointId String
+model SmartPlugMeasurement {
+  id           Int       @id @default(autoincrement())
+  wattage      Decimal
+  timeMeasured DateTime
+  smartPlug    SmartPlug @relation(fields: [smartPlugId], references: [id])
+  smartPlugId  String
 }
