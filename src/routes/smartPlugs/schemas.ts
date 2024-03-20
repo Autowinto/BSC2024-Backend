@@ -27,6 +27,7 @@ export const GetSmartPlugByIdSchema = {
 export const CreateSmartPlugSchema = {
   tags: ['SmartPlug'],
   body: Type.Object({
+    id: Type.String(),
     name: Type.String(),
     powerReadingAreaId: Type.Integer(),
   }),

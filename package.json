@@ -38,6 +38,7 @@
     "@fastify/type-provider-typebox": "^4.0.0",
     "@prisma/client": "^5.9.1",
     "@scalar/fastify-api-reference": "^1.19.1",
+    "ajv-formats": "^2.1.1",
     "axios": "^1.6.7",
     "concurrently": "^8.2.2",
     "fastify": "^4.26.0",

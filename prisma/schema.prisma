@@ -13,41 +13,41 @@ datasource db {
 
 // A Meter is the physical Meters in the office that Energinet shows in their API
 model PowerReadingArea {
-  id           String         @id @unique @default(cuid())
-  externalId   Int?           @unique
-  devices      Devices[]
-  deviceGroups DeviceGroups[]
+  id           String        @id @unique @default(cuid())
+  externalId   Int?          @unique
+  devices      Device[]
+  deviceGroups DeviceGroup[]
 }
 
-model DeviceGroups {
+model DeviceGroup {
   id                 String            @id @unique @default(cuid())
-  devices            Devices[]
+  devices            Device[]
   name               String            @unique
   PowerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
   powerReadingAreaId String?
 }
 
-model Devices {
+model Device {
   id                 String            @id @unique @default(cuid())
   name               String?           @unique
   expectedWattage    Float?
   measuredWattage    Float?
   PowerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
   powerReadingAreaId String?
-  DeviceGroups       DeviceGroups?     @relation(fields: [deviceGroupsId], references: [id])
+  DeviceGroups       DeviceGroup?      @relation(fields: [deviceGroupsId], references: [id])
   deviceGroupsId     String?
   smartPlug          smartPlug[]
 }
 
 model smartPlug {
-  id                    String                  @id @unique @default(cuid())
-  Name                  String                  @unique
-  measuredDevice        Devices                 @relation(fields: [devicesId], references: [id])
+  id                    String                 @id @unique @default(cuid())
+  Name                  String                 @unique
+  measuredDevice        Device                 @relation(fields: [devicesId], references: [id])
   devicesId             String
-  SmartPlugMeasurements SmartPlugMeasurements[]
+  SmartPlugMeasurements SmartPlugMeasurement[]
 }
 
-model SmartPlugMeasurements {
+model SmartPlugMeasurement {
   id           String    @id @unique @default(cuid())
   wattage      Float?
   timeMeasured DateTime
