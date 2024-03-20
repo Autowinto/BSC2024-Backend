@@ -22,7 +22,6 @@ export default {
         powerReadingAreaId: body.powerReadingAreaId,
       },
     })
-
     reply.status(201).send(data)
   },
 }

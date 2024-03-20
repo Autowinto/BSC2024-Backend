@@ -38,7 +38,7 @@ model SmartPlug {
 
 model SmartPlugMeasurement {
   id           Int       @id @default(autoincrement())
-  wattage      Decimal
+  wattage      Float
   timeMeasured DateTime
   smartPlug    SmartPlug @relation(fields: [smartPlugId], references: [id])
   smartPlugId  String
