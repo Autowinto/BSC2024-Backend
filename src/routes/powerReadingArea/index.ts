@@ -1,14 +1,18 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 
-import { GetMeterByIdSchema, GetMetersSchema } from './schemas'
-import metersController from '@/controllers/powerReadingArea'
+import { GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema } from './schemas'
+import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()
-  fastify.get('/', { schema: GetMetersSchema }, metersController.get)
+  fastify.get('/', { schema: GetPowerReadingAreaSchema }, powerReadingAreaController.get)
 
   app.get('/:id', {
-    schema: GetMeterByIdSchema,
-  }, metersController.getById)
+    schema: GetPowerReadingAreaByIdSchema,
+  }, powerReadingAreaController.getById)
+
+  app.put('/:id', {
+    schema: UpdatePowerReadingArea,
+  })
 }
