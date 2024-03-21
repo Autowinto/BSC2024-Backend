@@ -14,6 +14,7 @@ datasource db {
 // A Meter is the physical Meters in the office that Energinet shows in their API
 model PowerReadingArea {
   id           String        @id @unique @default(cuid())
+  name         String
   externalId   Int?          @unique
   devices      Device[]
   deviceGroups DeviceGroup[]
@@ -23,7 +24,7 @@ model DeviceGroup {
   id                 String            @id @unique @default(cuid())
   devices            Device[]
   name               String            @unique
-  PowerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
+  powerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
   powerReadingAreaId String?
 }
 
@@ -32,7 +33,7 @@ model Device {
   name               String?           @unique
   expectedWattage    Float?
   measuredWattage    Float?
-  PowerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
+  powerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
   powerReadingAreaId String?
   DeviceGroups       DeviceGroup?      @relation(fields: [deviceGroupsId], references: [id])
   deviceGroupsId     String?
@@ -44,7 +45,7 @@ model smartPlug {
   Name                  String                 @unique
   measuredDevice        Device                 @relation(fields: [devicesId], references: [id])
   devicesId             String
-  SmartPlugMeasurements SmartPlugMeasurement[]
+  smartPlugMeasurements SmartPlugMeasurement[]
 }
 
 model SmartPlugMeasurement {
