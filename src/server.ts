@@ -7,7 +7,6 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
-import ajvFormats from 'ajv-formats'
 import devicesRoutes from './routes/devices'
 import smartPlugMeasurementsRoutes from './routes/smartPlugMeasurements'
 import smartPlugsRoutes from './routes/smartPlugs'
@@ -34,27 +33,6 @@ await fastify.register(fastifySwagger, {
 
   },
 })
-
-// Move this to a function to make code prettier
-async function syncMeters() {
-  try {
-    const meters = await meteringPoints.getMeteringPoints()
-
-    for (const meter of meters) {
-      const meterNumber = Number.parseInt(meter.meterNumber)
-      await prisma.powerReadingArea.upsert({
-        where: { externalId: meterNumber },
-        create: { name: meter.meterNumber, externalId: meterNumber },
-        update: {},
-      })
-    }
-  }
-  catch (err) {
-    fastify.log.warn(err)
-  }
-
-  fastify.log.info('Finished Meters Sync')
-}
 
 await fastify.register(fastifyScalar, {
   routePrefix: '/docs',
@@ -84,7 +62,6 @@ export function testFunction(a: number, b: number): number {
 }
 
 await fastify.ready()
-syncMeters()
 
 fastify.listen({ port: 3000, host: '0.0.0.0' }).catch((err) => {
   return fastify.log.error(err)
