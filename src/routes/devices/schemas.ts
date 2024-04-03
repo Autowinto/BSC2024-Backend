@@ -1,39 +1,60 @@
 import type { Static } from '@fastify/type-provider-typebox'
 import { Type } from '@fastify/type-provider-typebox'
 
-const Device = Type.Object({
-  id: Type.Integer(),
+export const Device = Type.Object({
+  id: Type.String(),
   name: Type.String(),
-  expectedWattage: Type.Union([Type.Number(), Type.Null()]),
-  smartPlugId: Type.Union([Type.String(), Type.Null()]),
+  description: Type.String(),
+  expectedWattage: Type.Number(),
+  measuredWattage: Type.Number(),
+  measurements: Type.Array(Type.Any()),
+  smartPlug: Type.Any(),
 })
 
-export type DevicesType = Static<typeof Device>
-
 export const GetDevicesSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
   response: {
     200: Type.Array(Device),
   },
 }
 
 export const GetDeviceByIdSchema = {
-  tags: ['Devices'],
-  params: Type.Object({
-    id: Type.Integer(),
-  }),
+  tags: ['Device'],
   response: {
     200: Device,
-    404: Type.Array(Type.Any()),
+    404: Type.Any(),
   },
 }
 
 export const CreateDeviceSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
   body: Type.Object({
-    id: Type.Integer(),
+    name: Type.String(),
+    description: Type.String(),
+    expectedWattage: Type.Number(),
+    measuredWattage: Type.Number(),
   }),
   response: {
     201: Device,
+  },
+}
+
+export const UpdateDeviceSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  body: Type.Object({
+    name: Type.String(),
+    description: Type.String(),
+    expectedWattage: Type.Number(),
+    measuredWattage: Type.Number(),
+    smartPlug: Type.Any(),
+  }),
+  response: {
+    200: Device,
   },
 }

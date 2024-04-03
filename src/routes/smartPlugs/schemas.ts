@@ -16,7 +16,7 @@ export const GetSmartPlugsSchema = {
 export const GetSmartPlugByIdSchema = {
   tags: ['SmartPlug'],
   params: Type.Object({
-    id: Type.Integer(),
+    id: Type.String(),
   }),
   response: {
     200: SmartPlug,
@@ -29,9 +29,24 @@ export const CreateSmartPlugSchema = {
   body: Type.Object({
     id: Type.String(),
     name: Type.String(),
-    powerReadingAreaId: Type.Integer(),
+    deviceId: Type.String(),
   }),
   response: {
     201: SmartPlug,
+  },
+}
+
+export const UpdateSmartPlugSchema = {
+  tags: ['SmartPlug'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  body: Type.Object({
+    name: Type.String(),
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: SmartPlug,
+    404: Type.Array(Type.Any()),
   },
 }

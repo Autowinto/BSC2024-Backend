@@ -26,8 +26,8 @@ model Device {
   measuredWattage    Float?
   powerReadingArea   PowerReadingArea @relation(fields: [powerReadingAreaId], references: [id])
   powerReadingAreaId String
-  Measurement        Measurement[]
-  SmartPlug          SmartPlug?
+  measurements       Measurement[]
+  smartPlug          SmartPlug?
 }
 
 model SmartPlug {

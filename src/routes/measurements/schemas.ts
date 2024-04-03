@@ -4,7 +4,7 @@ const Measurement = Type.Object({
   id: Type.Integer(),
   wattage: Type.Number(),
   timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'] }),
-  smartPlugId: Type.String({ examples: ['aooga'] }),
+  deviceId: Type.String({ examples: ['aooga'] }),
 })
 
 export const GetMeasurementsSchema = {
@@ -31,7 +31,7 @@ export const CreateMeasurementSchema = {
   body: Type.Object({
     timeMeasured: Type.String(),
     wattage: Type.Number(),
-    smartPlugId: Type.String(),
+    deviceId: Type.String(),
   }),
   response: {
     201: Measurement,
