@@ -12,7 +12,7 @@ datasource db {
 }
 
 model PowerReadingArea {
-  id         Int      @id @unique
+  id         String   @id @unique @default(cuid())
   name       String
   externalId Int      @unique
   devices    Device[]
@@ -25,7 +25,7 @@ model Device {
   expectedWattage    Float?
   measuredWattage    Float?
   powerReadingArea   PowerReadingArea @relation(fields: [powerReadingAreaId], references: [id])
-  powerReadingAreaId Int
+  powerReadingAreaId String
   Measurement        Measurement[]
   SmartPlug          SmartPlug?
 }
