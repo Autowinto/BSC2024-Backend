@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { GetMeterByIdSchema } from '@/routes/powerReadingArea/schemas'
+import type { GetPowerReadingAreaByIdSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 
 export default {
@@ -9,7 +9,7 @@ export default {
     reply.send(data)
   },
 
-  getById: async (request: FastifyTypeBoxRequest<typeof GetMeterByIdSchema>, reply: FastifyTypeBoxReply<typeof GetMeterByIdSchema>) => {
+  getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
     const data = await prisma.powerReadingArea.findFirst({ where: { id: request.params.id } })
 
     if (!data) {

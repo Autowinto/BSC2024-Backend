@@ -13,7 +13,7 @@ export const GetPowerReadingAreaSchema = {
   },
 }
 
-export const GetMeterByIdSchema = {
+export const GetPowerReadingAreaByIdSchema = {
   tags: ['PowerReadingArea'],
   params: Type.Object({
     id: Type.Integer(),
