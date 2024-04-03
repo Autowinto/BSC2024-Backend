@@ -11,47 +11,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// A Meter is the physical Meters in the office that Energinet shows in their API
 model PowerReadingArea {
-  id           String        @id @unique @default(cuid())
-  name         String
-  externalId   Int?          @unique
-  devices      Device[]
-  deviceGroups DeviceGroup[]
-}
-
-model DeviceGroup {
-  id                 String            @id @unique @default(cuid())
-  devices            Device[]
-  name               String            @unique
-  powerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
-  powerReadingAreaId String?
+  id         String   @id @unique @default(cuid())
+  name       String
+  externalId Int      @unique
+  devices    Device[]
 }
 
 model Device {
-  id                 String            @id @unique @default(cuid())
-  name               String?           @unique
+  id                 String           @id @unique @default(cuid())
+  name               String           @unique
+  description        String?
   expectedWattage    Float?
   measuredWattage    Float?
-  powerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
-  powerReadingAreaId String?
-  DeviceGroups       DeviceGroup?      @relation(fields: [deviceGroupsId], references: [id])
-  deviceGroupsId     String?
-  smartPlug          smartPlug[]
+  powerReadingArea   PowerReadingArea @relation(fields: [powerReadingAreaId], references: [id])
+  powerReadingAreaId String
+  Measurement        Measurement[]
+  SmartPlug          SmartPlug?
 }
 
-model smartPlug {
-  id                    String                 @id @unique @default(cuid())
-  Name                  String                 @unique
-  measuredDevice        Device                 @relation(fields: [devicesId], references: [id])
-  devicesId             String
-  smartPlugMeasurements SmartPlugMeasurement[]
+model SmartPlug {
+  id       String  @id @unique @default(cuid())
+  name     String  @unique
+  device   Device? @relation(fields: [deviceId], references: [id])
+  deviceId String? @unique
 }
 
-model SmartPlugMeasurement {
-  id           String    @id @unique @default(cuid())
-  wattage      Float?
+model Measurement {
+  id           String   @id @unique @default(cuid())
+  wattage      Float
   timeMeasured DateTime
-  smartPlug    smartPlug @relation(fields: [smartPlugId], references: [id])
-  smartPlugId  String
+  device       Device   @relation(fields: [deviceId], references: [id])
+  deviceId     String
 }
