@@ -1,6 +1,6 @@
 import { Type } from '@fastify/type-provider-typebox'
 
-const Measurement = Type.Object({
+export const Measurement = Type.Object({
   id: Type.Integer(),
   wattage: Type.Number(),
   timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'] }),

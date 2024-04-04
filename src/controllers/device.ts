@@ -26,7 +26,7 @@ export default {
         name: body.name,
         description: body.description,
         expectedWattage: body.expectedWattage,
-        powerReadingArea: body.powerReadingArea, // Add the powerReadingArea property
+        powerReadingArea: body.powerReadingArea,
       },
     })
   },

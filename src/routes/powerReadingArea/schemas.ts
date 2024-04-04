@@ -5,13 +5,23 @@ const PowerReadingArea = Type.Object({
   id: Type.String(),
   name: Type.String(),
   externalId: Type.Integer(),
-  devices: Type.Array(Type.Any()),
+  devices: Type.Array(Device),
 })
 
 export const GetPowerReadingAreaSchema = {
-  tags: ['PowerReadingArea'],
   response: {
-    200: Type.Array(PowerReadingArea),
+    200: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          externalId: { type: 'number' },
+        },
+        required: ['id', 'name', 'externalId'],
+      },
+    },
   },
 }
 
@@ -21,8 +31,15 @@ export const GetPowerReadingAreaByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: PowerReadingArea,
-    404: Type.Array(Type.Any()),
+    200: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        name: { type: 'string' },
+        externalId: { type: 'number' },
+      },
+      required: ['id', 'name', 'externalId'],
+    },
   },
 }
 
@@ -51,7 +68,7 @@ export const UpdatePowerReadingAreaSchema = {
   },
 }
 
-export const GetDevicesSchema = {
+export const GetDevicesInAreaSchema = {
   tags: ['PowerReadingArea'],
   params: Type.Object({
     id: Type.String(),

@@ -1,5 +1,5 @@
-import type { Static } from '@fastify/type-provider-typebox'
 import { Type } from '@fastify/type-provider-typebox'
+import { Measurement } from '@/routes/measurements/schemas'
 
 export const Device = Type.Object({
   id: Type.String(),
@@ -52,9 +52,18 @@ export const UpdateDeviceSchema = {
     description: Type.String(),
     expectedWattage: Type.Number(),
     measuredWattage: Type.Number(),
-    smartPlug: Type.Any(),
   }),
   response: {
     200: Device,
+  },
+}
+
+export const GetMeasurementsSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Measurement),
   },
 }

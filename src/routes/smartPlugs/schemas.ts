@@ -29,7 +29,6 @@ export const CreateSmartPlugSchema = {
   body: Type.Object({
     id: Type.String(),
     name: Type.String(),
-    deviceId: Type.String(),
   }),
   response: {
     201: SmartPlug,
