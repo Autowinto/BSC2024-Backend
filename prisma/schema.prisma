@@ -19,14 +19,15 @@ model PowerReadingArea {
 }
 
 model Device {
-  id               String             @id @unique @default(cuid())
-  name             String             @unique
-  description      String?
-  expectedWattage  Float?
-  measuredWattage  Float?
-  measurements     Measurement[]
-  smartPlug        SmartPlug?
-  PowerReadingArea PowerReadingArea[]
+  id                 String            @id @unique @default(cuid())
+  name               String            @unique
+  description        String?
+  expectedWattage    Float?
+  measuredWattage    Float?
+  measurements       Measurement[]
+  smartPlug          SmartPlug?
+  powerReadingArea   PowerReadingArea? @relation(fields: [powerReadingAreaId], references: [id])
+  powerReadingAreaId String?
 }
 
 model SmartPlug {

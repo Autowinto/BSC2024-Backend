@@ -1,7 +1,7 @@
 import { Type } from '@fastify/type-provider-typebox'
 
 export const Measurement = Type.Object({
-  id: Type.Integer(),
+  id: Type.String(),
   wattage: Type.Number(),
   timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'] }),
   deviceId: Type.String({ examples: ['aooga'] }),
@@ -18,7 +18,7 @@ export const GetMeasurementsSchema = {
 export const GetMeasurementByIdSchema = {
   tags: ['SmartPlugMeasurement'],
   params: Type.Object({
-    id: Type.Integer(),
+    id: Type.String(),
   }),
   response: {
     200: Measurement,

@@ -1,9 +1,9 @@
 import { Type } from '@fastify/type-provider-typebox'
 
-const SmartPlug = Type.Object({
+export const SmartPlug = Type.Object({
   id: Type.String(),
   name: Type.String(),
-  powerReadingAreaId: Type.Number(),
+  deviceId: Type.Union([Type.String(), Type.Null()]),
 })
 
 export const GetSmartPlugsSchema = {
@@ -47,5 +47,28 @@ export const UpdateSmartPlugSchema = {
   response: {
     200: SmartPlug,
     404: Type.Array(Type.Any()),
+  },
+}
+
+export const AssignDeviceToSmartPlugSchema = {
+  tags: ['SmartPlug'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  body: Type.Object({
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: SmartPlug,
+  },
+}
+
+export const RemoveDeviceFromAreaSchema = {
+  tags: ['SmartPlug'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: 'Device removed from area',
   },
 }

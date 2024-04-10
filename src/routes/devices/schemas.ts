@@ -4,11 +4,13 @@ import { Measurement } from '@/routes/measurements/schemas'
 export const Device = Type.Object({
   id: Type.String(),
   name: Type.String(),
-  description: Type.String(),
-  expectedWattage: Type.Number(),
-  measuredWattage: Type.Number(),
-  measurements: Type.Array(Type.Any()),
-  smartPlug: Type.Any(),
+  description: Type.Union([Type.String(), Type.Null()]),
+  expectedWattage: Type.Union([Type.Number(), Type.Null()]),
+  measuredWattage: Type.Union([Type.Number(), Type.Null()]),
+})
+
+export const DeviceMeasurements = Type.Object({
+  measurements: Type.Union([Type.Array(Measurement), Type.Null()]),
 })
 
 export const GetDevicesSchema = {
@@ -23,9 +25,22 @@ export const GetDevicesSchema = {
 
 export const GetDeviceByIdSchema = {
   tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
   response: {
     200: Device,
-    404: Type.Any(),
+    404: 'Device not found',
+  },
+}
+
+export const GetDeviceMeasurementsSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: DeviceMeasurements,
   },
 }
 
@@ -33,9 +48,8 @@ export const CreateDeviceSchema = {
   tags: ['Device'],
   body: Type.Object({
     name: Type.String(),
-    description: Type.String(),
-    expectedWattage: Type.Number(),
-    measuredWattage: Type.Number(),
+    description: Type.Union([Type.String(), Type.Null()]),
+    expectedWattage: Type.Union([Type.Number(), Type.Null()]),
   }),
   response: {
     201: Device,
@@ -51,7 +65,6 @@ export const UpdateDeviceSchema = {
     name: Type.String(),
     description: Type.String(),
     expectedWattage: Type.Number(),
-    measuredWattage: Type.Number(),
   }),
   response: {
     200: Device,
