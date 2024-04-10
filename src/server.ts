@@ -10,9 +10,7 @@ import fastifyCookie from '@fastify/cookie'
 import devicesRoutes from './routes/devices'
 import smartPlugMeasurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
-import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
-import { prisma } from '@/prisma/client'
-import metersRoutes from '@/routes/powerReadingArea'
+import powerReadingAreaRoutes from '@/routes/powerReadingArea'
 
 // Routes
 
@@ -55,7 +53,7 @@ fastify.addHook('preValidation', (request, reply, done) => {
 fastify.register(devicesRoutes, { prefix: 'devices' })
 fastify.register(smartPlugMeasurementsRoutes, { prefix: 'smartPlugMeasurements' })
 fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
-fastify.register(metersRoutes, { prefix: 'meters' })
+fastify.register(powerReadingAreaRoutes, { prefix: 'powerReadingArea' })
 
 export function testFunction(a: number, b: number): number {
   return a + b
