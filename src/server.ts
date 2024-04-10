@@ -8,7 +8,7 @@ import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
 import fastifyCookie from '@fastify/cookie'
 import devicesRoutes from './routes/devices'
-import smartPlugMeasurementsRoutes from './routes/smartPlugMeasurements'
+import smartPlugMeasurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
 import powerReadingAreaRoutes from '@/routes/powerReadingArea'
 

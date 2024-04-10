@@ -1,39 +1,72 @@
-import type { Static } from '@fastify/type-provider-typebox'
 import { Type } from '@fastify/type-provider-typebox'
+import { Measurement } from '@/routes/measurements/schemas'
 
-const Device = Type.Object({
-  id: Type.Integer(),
+export const Device = Type.Object({
+  id: Type.String(),
   name: Type.String(),
+  description: Type.Union([Type.String(), Type.Null()]),
   expectedWattage: Type.Union([Type.Number(), Type.Null()]),
-  smartPlugId: Type.Union([Type.String(), Type.Null()]),
+  measuredWattage: Type.Union([Type.Number(), Type.Null()]),
 })
 
-export type DevicesType = Static<typeof Device>
+export const DeviceMeasurements = Type.Object({
+  measurements: Type.Union([Type.Array(Measurement), Type.Null()]),
+})
 
 export const GetDevicesSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
   response: {
     200: Type.Array(Device),
   },
 }
 
 export const GetDeviceByIdSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
   params: Type.Object({
-    id: Type.Integer(),
+    id: Type.String(),
   }),
   response: {
     200: Device,
-    404: Type.Array(Type.Any()),
+    404: 'Device not found',
+  },
+}
+
+export const GetDeviceMeasurementsSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: DeviceMeasurements,
   },
 }
 
 export const CreateDeviceSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
   body: Type.Object({
-    id: Type.Integer(),
+    name: Type.String(),
+    description: Type.Union([Type.String(), Type.Null()]),
+    expectedWattage: Type.Union([Type.Number(), Type.Null()]),
   }),
   response: {
     201: Device,
+  },
+}
+
+export const UpdateDeviceSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  body: Type.Object({
+    name: Type.String(),
+    description: Type.String(),
+    expectedWattage: Type.Number(),
+  }),
+  response: {
+    200: Device,
   },
 }
