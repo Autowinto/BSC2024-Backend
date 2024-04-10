@@ -70,13 +70,3 @@ export const UpdateDeviceSchema = {
     200: Device,
   },
 }
-
-export const GetMeasurementsSchema = {
-  tags: ['Device'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
-  response: {
-    200: Type.Array(Measurement),
-  },
-}
