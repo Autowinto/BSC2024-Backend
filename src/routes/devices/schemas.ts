@@ -13,11 +13,10 @@ export const DeviceMeasurements = Type.Object({
   measurements: Type.Union([Type.Array(Measurement), Type.Null()]),
 })
 
+
+
 export const GetDevicesSchema = {
   tags: ['Device'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   response: {
     200: Type.Array(Device),
   },

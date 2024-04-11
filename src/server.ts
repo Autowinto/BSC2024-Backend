@@ -11,6 +11,7 @@ import devicesRoutes from './routes/devices'
 import smartPlugMeasurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
 import powerReadingAreaRoutes from '@/routes/powerReadingArea'
+import { Device, GetDeviceByIdSchema, GetDevicesSchema } from './routes/devices/schemas'
 
 // Routes
 
@@ -20,6 +21,7 @@ const fastify = Fastify({
 
 fastify.register(helmet)
 fastify.register(cors, {})
+
 
 await fastify.register(fastifySwagger, {
   openapi: {
