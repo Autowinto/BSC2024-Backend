@@ -1,10 +1,12 @@
 import type { FastifyRequest } from 'fastify'
+import type { Device } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { CreateDeviceSchema, GetDeviceByIdSchema, GetDeviceMeasurementsSchema, GetDevicesSchema, UpdateDeviceSchema } from '@/routes/devices/schemas'
+import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default {
-  get: async (reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
+  get: async (request: FastifyTypeBoxRequest<typeof GetDevicesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany()
     reply.send(data)
   },
@@ -15,19 +17,38 @@ export default {
       reply.code(404).send()
       return
     }
-    reply.send(data)
+    const device = {
+      Device: {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        expectedWattage: data.expectedWattage,
+        measuredWattage: data.measuredWattage,
+      },
+    }
+
+    reply.send(device)
   },
 
   create: async (request: FastifyTypeBoxRequest<typeof CreateDeviceSchema>, reply: FastifyTypeBoxReply<typeof CreateDeviceSchema>) => {
     const { body } = request
-    const data = await prisma.device.create({
-      data: {
-        name: body.name,
-        description: body.description,
-        expectedWattage: body.expectedWattage,
-      },
-    })
-    reply.code(201).send(data)
+
+    try {
+      powerReadingAreaController.createCommonArea()
+      const commonAreaId = await powerReadingAreaController.getIdByname('common-area')
+      const data = await prisma.device.create({
+        data: {
+          name: body.name,
+          description: body.description,
+          expectedWattage: body.expectedWattage,
+          powerReadingAreaId: commonAreaId,
+        },
+      })
+      reply.code(201).send(data)
+    }
+    catch (error) {
+      reply.code(400).send(error)
+    }
   },
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetDeviceMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetDeviceMeasurementsSchema>) => {

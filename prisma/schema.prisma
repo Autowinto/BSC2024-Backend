@@ -15,7 +15,8 @@ model PowerReadingArea {
   id         String   @id @unique @default(cuid())
   name       String
   externalId Int      @unique
-  devices    Device[]
+  deviceIds  String[]
+  Device     Device[]
 }
 
 model Device {

@@ -32,6 +32,18 @@ export const CreatePowerReadingAreaSchema = {
   }),
   response: {
     200: PowerReadingArea,
+    400: Type.String(),
+  },
+}
+
+export const GetPowerReadingAreaIdByNameSchema = {
+  tags: ['PowerReadingArea'],
+  params: Type.Object({
+    name: Type.String(),
+  }),
+  response: {
+    200: Type.String(),
+    404: Type.String(),
   },
 }
 

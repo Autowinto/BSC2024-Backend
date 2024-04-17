@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 
-import { GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema } from './schemas'
+import { CreatePowerReadingAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema } from './schemas'
 import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default async (fastify: FastifyInstance) => {
@@ -12,7 +12,5 @@ export default async (fastify: FastifyInstance) => {
     schema: GetPowerReadingAreaByIdSchema,
   }, powerReadingAreaController.getById)
 
-  // app.put('/:id', {
-  //   schema: UpdatePowerReadingArea,
-  // })
+  app.post('/create', { schema: CreatePowerReadingAreaSchema }, powerReadingAreaController.create)
 }

@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaIdByNameSchema, GetPowerReadingAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 
 export default {
@@ -40,6 +40,28 @@ export default {
     }
 
     reply.send(data)
+  },
+
+  getIdByname: async (nameToFind: string) => {
+    const data = await prisma.powerReadingArea.findFirst({
+      where: { name: nameToFind },
+      select: {
+        id: true,
+      },
+    })
+    if (!data)
+      return null
+
+    return data.id
+  },
+
+  createCommonArea: async () => {
+    await prisma.powerReadingArea.create({
+      data: {
+        name: 'common-area',
+        externalId: 0,
+      },
+    })
   },
 
   create: async (request: FastifyTypeBoxRequest<typeof CreatePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof CreatePowerReadingAreaSchema>) => {
