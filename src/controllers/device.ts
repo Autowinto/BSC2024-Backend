@@ -4,7 +4,7 @@ import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { CreateDeviceSchema, GetDeviceByIdSchema, GetDeviceMeasurementsSchema, GetDevicesSchema, UpdateDeviceSchema } from '@/routes/devices/schemas'
 
 export default {
-  get: async (request: FastifyRequest, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
+  get: async (reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany()
     reply.send(data)
   },

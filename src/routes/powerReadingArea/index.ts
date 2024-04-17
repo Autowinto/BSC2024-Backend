@@ -12,7 +12,7 @@ export default async (fastify: FastifyInstance) => {
     schema: GetPowerReadingAreaByIdSchema,
   }, powerReadingAreaController.getById)
 
-  app.put('/:id', {
-    schema: UpdatePowerReadingArea,
-  })
+  // app.put('/:id', {
+  //   schema: UpdatePowerReadingArea,
+  // })
 }

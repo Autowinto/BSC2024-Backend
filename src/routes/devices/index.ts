@@ -1,12 +1,12 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
-import { GetDevicesSchema } from './schemas'
-import appliancesControllers from '@/controllers/device'
+import { GetDeviceByIdSchema, GetDevicesSchema } from './schemas'
+import deviceController from '@/controllers/device'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
-  app.get('/', { schema: GetDevicesSchema }, appliancesControllers.get)
+  app.get('/', { schema: GetDevicesSchema }, deviceController.get)
 
-  // app.post('/', appliancesControllers.createAppliance)
+  app.get('/:id', { schema: GetDeviceByIdSchema }, deviceController.getById)
 }
