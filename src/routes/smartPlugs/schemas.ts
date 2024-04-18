@@ -37,12 +37,9 @@ export const CreateSmartPlugSchema = {
 
 export const UpdateSmartPlugSchema = {
   tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   body: Type.Object({
+    id: Type.String(),
     name: Type.String(),
-    deviceId: Type.String(),
   }),
   response: {
     200: SmartPlug,
@@ -52,23 +49,11 @@ export const UpdateSmartPlugSchema = {
 
 export const AssignDeviceToSmartPlugSchema = {
   tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   body: Type.Object({
-    deviceId: Type.String(),
+    deviceId: Type.Union([Type.String(), Type.Null()]),
+    id: Type.String(),
   }),
   response: {
     200: SmartPlug,
-  },
-}
-
-export const RemoveDeviceFromAreaSchema = {
-  tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
-  response: {
-    200: 'Device removed from area',
   },
 }

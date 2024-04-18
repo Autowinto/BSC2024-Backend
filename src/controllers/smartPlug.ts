@@ -1,5 +1,5 @@
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
+import { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
 import { prisma } from '@/prisma/client'
 
 export default {
@@ -31,12 +31,9 @@ export default {
   },
 
   update: async (request: FastifyTypeBoxRequest<typeof UpdateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof UpdateSmartPlugSchema>) => {
-    const { id } = request.params
     const { body } = request
     const data = await prisma.smartPlug.update({
-      where: {
-        id,
-      },
+      where: { id: body.id },
       data: {
         name: body.name,
       },
@@ -44,31 +41,14 @@ export default {
     reply.send(data)
   },
 
-  assignDevice: async (request: FastifyTypeBoxRequest<typeof AssignDeviceToSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof AssignDeviceToSmartPlugSchema>) => {
-    const { id } = request.params
+  AssignDeviceToSmartPlug: async (request: FastifyTypeBoxRequest<typeof AssignDeviceToSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof AssignDeviceToSmartPlugSchema>) => {
     const { body } = request
     const data = await prisma.smartPlug.update({
-      where: {
-        id,
-      },
+      where: { id: body.id },
       data: {
         deviceId: body.deviceId,
       },
     })
     reply.send(data)
-  },
-
-  removeDevice: async (request: FastifyTypeBoxRequest<typeof AssignDeviceToSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof AssignDeviceToSmartPlugSchema>) => {
-    const { id } = request.params
-    const data = await prisma.smartPlug.update({
-      where: {
-        id,
-      },
-      data: {
-        deviceId: null,
-      },
-    })
-    reply.send(data)
-  },
-
+  }
 }

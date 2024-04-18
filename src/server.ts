@@ -53,7 +53,7 @@ export function createServer() {
 
   fastify.register(devicesRoutes, { prefix: 'devices' })
   fastify.register(measurementsRoutes, { prefix: 'measurements' })
-  fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
+  fastify.register(smartPlugsRoutes, { prefix: 'smartplugs' })
   fastify.register(powerReadingArea, { prefix: 'areas' })
 
   return fastify
