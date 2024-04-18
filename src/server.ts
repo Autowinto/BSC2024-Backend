@@ -10,9 +10,9 @@ import fastifyCookie from '@fastify/cookie'
 import devicesRoutes from './routes/devices'
 import measurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
+import powerReadingArea from '@/routes/powerReadingArea'
 import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
 import { prisma } from '@/prisma/client'
-import metersRoutes from '@/routes/powerReadingArea'
 
 export function createServer() {
   const fastify = Fastify({
@@ -54,7 +54,7 @@ export function createServer() {
   fastify.register(devicesRoutes, { prefix: 'devices' })
   fastify.register(measurementsRoutes, { prefix: 'measurements' })
   fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
-  fastify.register(metersRoutes, { prefix: 'meters' })
+  fastify.register(powerReadingArea, { prefix: 'areas' })
 
   return fastify
 }

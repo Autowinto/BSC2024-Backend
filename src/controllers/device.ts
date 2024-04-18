@@ -2,7 +2,7 @@ import type { FastifyRequest } from 'fastify'
 import type { Device } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, GetDeviceByIdSchema, GetDeviceMeasurementsSchema, GetDevicesSchema, UpdateDeviceSchema } from '@/routes/devices/schemas'
+import type { CreateDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, UpdateDeviceSchema } from '@/routes/devices/schemas'
 import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default {
@@ -34,14 +34,11 @@ export default {
     const { body } = request
 
     try {
-      powerReadingAreaController.createCommonArea()
-      const commonAreaId = await powerReadingAreaController.getIdByname('common-area')
       const data = await prisma.device.create({
         data: {
           name: body.name,
           description: body.description,
           expectedWattage: body.expectedWattage,
-          powerReadingAreaId: commonAreaId,
         },
       })
       reply.code(201).send(data)
@@ -51,23 +48,53 @@ export default {
     }
   },
 
-  getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetDeviceMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetDeviceMeasurementsSchema>) => {
-    const data = await prisma.measurement.findMany({ where: { deviceId: request.params.id } })
-    if (!data) {
+  update: async (request: FastifyTypeBoxRequest<typeof UpdateDeviceSchema>, reply: FastifyTypeBoxReply<typeof UpdateDeviceSchema>) => {
+    const { body } = request
+
+    const device = await prisma.device.findFirst({ where: { id: body.id } })
+
+    if (!device) {
       reply.code(404).send()
       return
     }
-    reply.send({ measurements: data })
-  },
 
-  update: async (request: FastifyTypeBoxRequest<typeof UpdateDeviceSchema>, reply: FastifyTypeBoxReply<typeof UpdateDeviceSchema>) => {
-    const { body } = request
+    let name: string | null = ""
+    let description: string | null = ""
+    //expected wattage is number or null
+    let expectedWattage: number | null = null
+    let measuredWattage: number | null = null
+
+    if (body.name) {
+      name = body.name
+    } else {
+      name = device.name
+    }
+
+    if (body.description) {
+      description = body.description
+    } else {
+      description = device.description
+    }
+
+    if (body.expectedWattage) {
+      expectedWattage = body.expectedWattage
+    } else {
+      expectedWattage = device.expectedWattage
+    }
+
+    if (body.measuredWattage) {
+      measuredWattage = body.measuredWattage
+    } else {
+      measuredWattage = device.measuredWattage
+    }
+
     const data = await prisma.device.update({
-      where: { id: request.params.id },
+      where: { id: body.id },
       data: {
-        name: body.name,
-        description: body.description,
-        expectedWattage: body.expectedWattage,
+        name: name,
+        description: description,
+        expectedWattage: expectedWattage,
+        measuredWattage: measuredWattage,
       },
     })
     reply.send(data)
