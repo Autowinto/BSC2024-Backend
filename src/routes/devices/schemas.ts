@@ -1,4 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { Measurement } from '../measurements/schemas'
 
 export const Device = Type.Object({
   id: Type.String(),
@@ -56,5 +57,13 @@ export const UpdateDeviceSchema = {
   },
 }
 
-
-
+export const GetMeasurementsSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Measurement),
+    404: Type.String(),
+  },
+}
