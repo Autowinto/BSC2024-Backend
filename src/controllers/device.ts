@@ -2,7 +2,8 @@ import type { FastifyRequest } from 'fastify'
 import type { Device } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsSchema, UpdateDeviceSchema } from '@/routes/devices/schemas'
+import type { type CreateDeviceSchema, DeleteDeviceSchema, type GetDeviceByIdSchema, type GetDevicesSchema, type GetMeasurementsSchema, type UpdateDeviceSchema } from '@/routes/devices/schemas'
+import { PowerReadingArea } from '@/routes/powerReadingArea/schemas'
 import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default {
@@ -103,5 +104,31 @@ export default {
       return
     }
     reply.send(data)
+  },
+
+  deleteDevice: async (request: FastifyTypeBoxRequest<typeof DeleteDeviceSchema>, reply: FastifyTypeBoxReply<typeof DeleteDeviceSchema>) => {
+    const { id } = request.params
+
+    const device = await prisma.device.findFirst({ where: { id } })
+
+    if (!device) {
+      reply.code(404).send()
+      return
+    }
+
+    const powerReadingAreas = await prisma.powerReadingArea.findMany({
+      where: { Devices: { some: { id } } },
+    })
+
+    for (const area of powerReadingAreas) {
+      await powerReadingAreaController.RemoveDeviceFromArea({
+        areaId: area.id,
+        deviceId: id,
+      },
+      )
+    }
+
+    await prisma.device.delete({ where: { id } })
+    reply.send()
   },
 }

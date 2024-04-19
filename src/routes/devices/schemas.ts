@@ -67,3 +67,14 @@ export const GetMeasurementsSchema = {
     404: Type.String(),
   },
 }
+
+export const DeleteDeviceSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: Type.String(),
+    404: Type.String(),
+  },
+}

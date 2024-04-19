@@ -1,8 +1,8 @@
+import { connect } from 'node:http2'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, RemoveDeviceFromAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, RemoveDeviceFromAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import { connect } from 'http2'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
@@ -13,7 +13,7 @@ export default {
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
     const data = await prisma.powerReadingArea.findFirst({
-      where: { id: request.params.id }
+      where: { id: request.params.id },
     })
     if (!data) {
       reply.code(404).send()
@@ -39,27 +39,24 @@ export default {
       return
     }
 
-    let name: string | null = ""
+    let name: string | null = ''
     let externalId: number | null = null
 
-
-    if (body.name) {
+    if (body.name)
       name = body.name
-    } else {
+    else
       name = area.name
-    }
 
-    if (body.externalId) {
+    if (body.externalId)
       externalId = body.externalId
-    } else {
+    else
       externalId = area.externalId
-    }
 
     const data = await prisma.powerReadingArea.update({
       where: { id: body.id },
       data: {
-        name: name,
-        externalId: externalId,
+        name,
+        externalId,
       },
     })
     reply.send(data)
@@ -71,20 +68,20 @@ export default {
       where: { id: body.areaId },
       data: {
         Devices: {
-          connect: { id: body.deviceId }
-        }
+          connect: { id: body.deviceId },
+        },
       },
     })
   },
 
-  RemoveDeviceFromArea: async (request: FastifyTypeBoxRequest<typeof RemoveDeviceFromAreaSchema>, reply: FastifyTypeBoxReply<typeof RemoveDeviceFromAreaSchema>) => {
+  RemoveDeviceFromArea: async (request: FastifyTypeBoxRequest<typeof RemoveDeviceFromAreaSchema>) => {
     const { body } = request
     const removeDeviceFromArea = await prisma.powerReadingArea.update({
       where: { id: body.areaId },
       data: {
         Devices: {
-          disconnect: { id: body.deviceId }
-        }
+          disconnect: { id: body.deviceId },
+        },
       },
     })
   },
@@ -92,7 +89,7 @@ export default {
   GetDevicesInArea: async (request: FastifyTypeBoxRequest<typeof GetDevicesInAreaSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesInAreaSchema>) => {
     const areaWithDevices = await prisma.powerReadingArea.findUnique({
       where: { id: request.params.areaId },
-      include: { Devices: true }
+      include: { Devices: true },
     })
 
     if (!areaWithDevices) {
