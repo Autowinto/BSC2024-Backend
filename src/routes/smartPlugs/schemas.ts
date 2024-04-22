@@ -8,6 +8,7 @@ export const SmartPlug = Type.Object({
 
 export const GetSmartPlugsSchema = {
   tags: ['SmartPlug'],
+  description: 'Returns all smart plugs',
   response: {
     200: Type.Array(SmartPlug),
   },
@@ -15,6 +16,7 @@ export const GetSmartPlugsSchema = {
 
 export const GetSmartPlugByIdSchema = {
   tags: ['SmartPlug'],
+  description: 'Returns a smart plug by its id',
   params: Type.Object({
     id: Type.String(),
   }),
@@ -26,6 +28,7 @@ export const GetSmartPlugByIdSchema = {
 
 export const CreateSmartPlugSchema = {
   tags: ['SmartPlug'],
+  description: 'Create a new smart plug. This should be done automatically when a new smart plug is added to the network.',
   body: Type.Object({
     id: Type.String(),
     name: Type.String(),
@@ -38,6 +41,7 @@ export const CreateSmartPlugSchema = {
 
 export const UpdateSmartPlugSchema = {
   tags: ['SmartPlug'],
+  description: 'Update a smart plug.',
   body: Type.Object({
     id: Type.String(),
     name: Type.String(),
@@ -50,6 +54,7 @@ export const UpdateSmartPlugSchema = {
 
 export const AssignDeviceToSmartPlugSchema = {
   tags: ['SmartPlug'],
+  description: 'Assign a device to a smart plug. When this is done all measurements from the smartplug will be associated with the device.',
   body: Type.Object({
     deviceId: Type.Union([Type.String(), Type.Null()]),
     id: Type.String(),
