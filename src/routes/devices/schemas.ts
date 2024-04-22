@@ -25,10 +25,8 @@ export const GetDeviceByIdSchema = {
     200: Type.Object({
       Device,
     }),
-  },
-  error: {
     404: Type.String(),
-  },
+  }
 }
 
 export const CreateDeviceSchema = {
@@ -54,6 +52,8 @@ export const UpdateDeviceSchema = {
   }),
   response: {
     200: Device,
+    400: Type.String(),
+    404: Type.String(),
   },
 }
 

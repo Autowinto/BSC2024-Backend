@@ -24,5 +24,7 @@ export const CreateMeasurementSchema = {
   }),
   response: {
     201: Measurement,
+    400: Type.String(),
+    404: Type.String(),
   },
 }

@@ -20,7 +20,7 @@ export const GetSmartPlugByIdSchema = {
   }),
   response: {
     200: SmartPlug,
-    404: Type.Array(Type.Any()),
+    404: Type.String(),
   },
 }
 
@@ -32,6 +32,7 @@ export const CreateSmartPlugSchema = {
   }),
   response: {
     201: SmartPlug,
+    400: Type.String(),
   },
 }
 
@@ -43,7 +44,7 @@ export const UpdateSmartPlugSchema = {
   }),
   response: {
     200: SmartPlug,
-    404: Type.Array(Type.Any()),
+    404: Type.String(),
   },
 }
 
@@ -55,5 +56,6 @@ export const AssignDeviceToSmartPlugSchema = {
   }),
   response: {
     200: SmartPlug,
+    404: Type.String(),
   },
 }

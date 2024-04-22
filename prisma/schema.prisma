@@ -11,22 +11,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model DeviceOnArea {
+  id       Int              @id @default(autoincrement())
+  count    Int // additional field
+  deviceId String
+  areaId   String
+  Device   Device           @relation(fields: [deviceId], references: [id])
+  Area     PowerReadingArea @relation(fields: [areaId], references: [id])
+
+  @@unique([deviceId, areaId])
+}
+
 model PowerReadingArea {
-  id         String   @id @unique @default(cuid())
-  name       String
-  externalId Int      @unique
-  Devices    Device[]
+  id           String         @id @unique @default(cuid())
+  name         String
+  externalId   Int            @unique
+  DeviceOnArea DeviceOnArea[]
 }
 
 model Device {
-  id                String             @id @unique @default(cuid())
-  name              String             @unique
-  description       String?
-  expectedWattage   Float?
-  measuredWattage   Float?
-  measurements      Measurement[]
-  smartPlug         SmartPlug?
-  powerReadingAreas PowerReadingArea[]
+  id              String         @id @unique @default(cuid())
+  name            String         @unique
+  description     String?
+  expectedWattage Float?
+  measuredWattage Float?
+  measurements    Measurement[]
+  smartPlug       SmartPlug?
+  DeviceOnArea    DeviceOnArea[]
 }
 
 model SmartPlug {
