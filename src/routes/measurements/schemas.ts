@@ -10,6 +10,7 @@ export const Measurement = Type.Object({
 
 export const GetMeasurementsSchema = {
   tags: ['SmartPlugMeasurement'],
+  description: "Returns all measurements. Don't know what this would be used for tbh.",
   response: {
     501: Type.Any(),
     200: Type.Array(Measurement),
@@ -18,6 +19,7 @@ export const GetMeasurementsSchema = {
 
 export const CreateMeasurementSchema = {
   tags: ['SmartPlugMeasurement'],
+  description: "Create a new measurement. This must be done every time we receive a measurement from a smart plug.",
   body: Type.Object({
     smartPlugId: Type.String(),
     wattage: Type.Number(),

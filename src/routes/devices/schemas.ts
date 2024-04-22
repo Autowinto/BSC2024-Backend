@@ -11,6 +11,7 @@ export const Device = Type.Object({
 
 export const GetDevicesSchema = {
   tags: ['Device'],
+  description: "Return all devices",
   response: {
     200: Type.Array(Device),
   },
@@ -18,6 +19,7 @@ export const GetDevicesSchema = {
 
 export const GetDeviceByIdSchema = {
   tags: ['Device'],
+  description: "Return a device by its id",
   params: Type.Object({
     id: Type.String(),
   }),
@@ -31,6 +33,7 @@ export const GetDeviceByIdSchema = {
 
 export const CreateDeviceSchema = {
   tags: ['Device'],
+  description: "Create a new device. The expectedWattage and description are optional.",
   body: Type.Object({
     name: Type.String(),
     description: Type.Union([Type.String(), Type.Null()]),
@@ -43,6 +46,7 @@ export const CreateDeviceSchema = {
 
 export const UpdateDeviceSchema = {
   tags: ['Device'],
+  description: "Update a device. Any field left explicitly as null (field=null in body) will not be updated.",
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
@@ -59,6 +63,7 @@ export const UpdateDeviceSchema = {
 
 export const GetMeasurementsSchema = {
   tags: ['Device'],
+  description: "Return all measurements for a device",
   params: Type.Object({
     deviceId: Type.String(),
   }),
@@ -70,6 +75,7 @@ export const GetMeasurementsSchema = {
 
 export const DeleteDeviceSchema = {
   tags: ['Device'],
+  description: "Delete a device. All its measurements are also deleted, and it is automatically removed from any areas it is a part of.",
   params: Type.Object({
     id: Type.String(),
   }),
