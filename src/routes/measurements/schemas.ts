@@ -4,8 +4,9 @@ export const Measurement = Type.Object({
   id: Type.String(),
   wattage: Type.Number(),
   timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'] }),
-  deviceId: Type.String({ examples: ['aooga'] }),
-})
+  deviceId: Type.String(),
+},
+)
 
 export const GetMeasurementsSchema = {
   tags: ['SmartPlugMeasurement'],
@@ -15,25 +16,15 @@ export const GetMeasurementsSchema = {
   },
 }
 
-export const GetMeasurementByIdSchema = {
-  tags: ['SmartPlugMeasurement'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
-  response: {
-    200: Measurement,
-    404: Type.Array(Type.Any()),
-  },
-}
-
 export const CreateMeasurementSchema = {
   tags: ['SmartPlugMeasurement'],
   body: Type.Object({
-    timeMeasured: Type.String(),
+    smartPlugId: Type.String(),
     wattage: Type.Number(),
-    deviceId: Type.String(),
   }),
   response: {
     201: Measurement,
+    400: Type.String(),
+    404: Type.String(),
   },
 }

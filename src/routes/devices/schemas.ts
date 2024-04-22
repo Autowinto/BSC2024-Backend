@@ -1,5 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
-import { Measurement } from '@/routes/measurements/schemas'
+import { Measurement } from '../measurements/schemas'
 
 export const Device = Type.Object({
   id: Type.String(),
@@ -9,15 +9,8 @@ export const Device = Type.Object({
   measuredWattage: Type.Union([Type.Number(), Type.Null()]),
 })
 
-export const DeviceMeasurements = Type.Object({
-  measurements: Type.Union([Type.Array(Measurement), Type.Null()]),
-})
-
 export const GetDevicesSchema = {
   tags: ['Device'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   response: {
     200: Type.Array(Device),
   },
@@ -29,19 +22,11 @@ export const GetDeviceByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: Device,
-    404: 'Device not found',
-  },
-}
-
-export const GetDeviceMeasurementsSchema = {
-  tags: ['Device'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
-  response: {
-    200: DeviceMeasurements,
-  },
+    200: Type.Object({
+      Device,
+    }),
+    404: Type.String(),
+  }
 }
 
 export const CreateDeviceSchema = {
@@ -58,15 +43,38 @@ export const CreateDeviceSchema = {
 
 export const UpdateDeviceSchema = {
   tags: ['Device'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   body: Type.Object({
-    name: Type.String(),
-    description: Type.String(),
-    expectedWattage: Type.Number(),
+    id: Type.String(),
+    name: Type.Union([Type.String(), Type.Null()]),
+    description: Type.Union([Type.String(), Type.Null()]),
+    expectedWattage: Type.Union([Type.Number(), Type.Null()]),
+    measuredWattage: Type.Union([Type.Number(), Type.Null()]),
   }),
   response: {
     200: Device,
+    400: Type.String(),
+    404: Type.String(),
+  },
+}
+
+export const GetMeasurementsSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Measurement),
+    404: Type.String(),
+  },
+}
+
+export const DeleteDeviceSchema = {
+  tags: ['Device'],
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: Type.String(),
+    404: Type.String(),
   },
 }

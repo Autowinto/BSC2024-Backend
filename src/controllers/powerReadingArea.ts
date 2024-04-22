@@ -1,99 +1,199 @@
+import { connect } from 'node:http2'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
     const data = await prisma.powerReadingArea.findMany({
-      select: {
-        id: true,
-        name: true,
-        externalId: true,
-        devices: {
-          select: {
-            id: true,
-          },
-        },
-      },
     })
-    reply.send(data)
+    reply.status(200).send(data)
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
     const data = await prisma.powerReadingArea.findFirst({
       where: { id: request.params.id },
-      select: {
-        id: true,
-        name: true,
-        externalId: true,
-        devices: {
-          select: {
-            id: true,
-          },
-        },
-      },
     })
     if (!data) {
-      reply.code(404).send()
+      reply.status(404).send("PowerReadingArea not found")
       return
     }
 
-    reply.send(data)
+    reply.status(200).send(data)
   },
 
   create: async (request: FastifyTypeBoxRequest<typeof CreatePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof CreatePowerReadingAreaSchema>) => {
-    const data = await prisma.powerReadingArea.create({
-      data: request.body,
-    })
-    reply.send(data)
+    try {
+      const data = await prisma.powerReadingArea.create({
+        data: request.body,
+      })
+      reply.status(200).send(data)
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
   },
 
   update: async (request: FastifyTypeBoxRequest<typeof UpdatePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof UpdatePowerReadingAreaSchema>) => {
-    const { id } = request.params
     const { body } = request
-    const data = await prisma.powerReadingArea.update({
-      where: {
-        id,
-      },
-      data: body,
-    })
-    reply.send(data)
+    const area = await prisma.powerReadingArea.findFirst({ where: { id: body.id } })
+
+    if (!area) {
+      reply.code(404).send("PowerReadingArea not found")
+      return
+    }
+
+    try {
+      let name: string | null = ''
+      let externalId: number | null = null
+
+      if (body.name)
+        name = body.name
+      else
+        name = area.name
+
+      if (body.externalId)
+        externalId = body.externalId
+      else
+        externalId = area.externalId
+
+      const data = await prisma.powerReadingArea.update({
+        where: { id: body.id },
+        data: {
+          name,
+          externalId,
+        },
+      })
+      reply.send(data)
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
   },
 
-  addDevice: async (request: FastifyTypeBoxRequest<typeof AddDeviceToAreaSchema>, reply: FastifyTypeBoxReply<typeof AddDeviceToAreaSchema>) => {
-    const { id } = request.params
-    const { deviceId } = request.body
-    const data = await prisma.powerReadingArea.update({
-      where: {
-        id,
-      },
-      data: {
-        devices: {
-          connect: {
-            id: deviceId,
-          },
-        },
-      },
+  AddDeviceToArea: async (request: FastifyTypeBoxRequest<typeof AddDeviceToAreaSchema>, reply: FastifyTypeBoxReply<typeof AddDeviceToAreaSchema>) => {
+    const { body } = request
+
+    const area = await prisma.powerReadingArea.findFirst({
+      where: { id: body.areaId },
     })
-    reply.send(data)
+    if (!area) {
+      reply.status(404).send("Area not found")
+      return
+    }
+
+    const device = await prisma.device.findFirst({
+      where: { id: body.deviceId },
+    })
+    if (!device) {
+      reply.status(404).send("Device not found")
+      return
+    }
+
+    try {
+      const addDeviceToArea = await prisma.deviceOnArea.create({
+        data: {
+          areaId: body.areaId,
+          deviceId: body.deviceId,
+          count: body.count,
+        }
+      })
+
+      reply.status(200).send(addDeviceToArea)
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
   },
 
-  removeDevice: async (request: FastifyTypeBoxRequest<typeof AddDeviceToAreaSchema>, reply: FastifyTypeBoxReply<typeof AddDeviceToAreaSchema>) => {
-    const { id } = request.params
-    const { deviceId } = request.body
-    const data = await prisma.powerReadingArea.update({
-      where: {
-        id,
-      },
-      data: {
-        devices: {
-          disconnect: {
-            id: deviceId,
-          },
-        },
-      },
+  RemoveDeviceFromArea: async (request: FastifyTypeBoxRequest<typeof RemoveDeviceFromAreaSchema>, reply: FastifyTypeBoxReply<typeof RemoveDeviceFromAreaSchema>) => {
+    const { body } = request
+
+    const area = await prisma.powerReadingArea.findFirst({
+      where: { id: body.areaId },
     })
-    reply.send(data)
+    if (!area) {
+      reply.status(404).send("Area not found")
+      return
+    }
+
+    const device = await prisma.device.findFirst({
+      where: { id: body.deviceId },
+    })
+    if (!device) {
+      reply.status(404).send("Device not found")
+      return
+    }
+
+    try {
+      const removeDeviceFromArea = await prisma.deviceOnArea.delete({
+        where: {
+          deviceId_areaId: {
+            deviceId: body.deviceId,
+            areaId: body.areaId
+          }
+        },
+      })
+
+      reply.status(200).send("Device removed from area successfully")
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
   },
+
+  UpdateDeviceOnArea: async (request: FastifyTypeBoxRequest<typeof UpdateDeviceOnAreaSchema>, reply: FastifyTypeBoxReply<typeof UpdateDeviceOnAreaSchema>) => {
+    const { body } = request
+
+    const area = await prisma.powerReadingArea.findFirst({
+      where: { id: body.areaId },
+    })
+    if (!area) {
+      reply.status(404).send("Area not found")
+      return
+    }
+
+    const device = await prisma.device.findFirst({
+      where: { id: body.deviceId },
+    })
+    if (!device) {
+      reply.status(404).send("Device not found")
+      return
+    }
+
+    try {
+      await prisma.deviceOnArea.update({
+        where: {
+          deviceId_areaId: {
+            deviceId: body.deviceId,
+            areaId: body.areaId
+          }
+        },
+        data: {
+          count: body.count,
+        }
+      }
+      )
+      reply.status(200).send({ count: request.body.count, deviceId: request.body.deviceId, areaId: request.body.areaId })
+    }
+    catch (err) {
+      reply.status(400).send(err)
+      return
+    }
+  },
+
+  GetDevicesInArea: async (request: FastifyTypeBoxRequest<typeof GetDevicesInAreaSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesInAreaSchema>) => {
+    const areaWithDevices = await prisma.deviceOnArea.findMany({
+      where: { areaId: request.params.areaId },
+    })
+
+    if (!areaWithDevices) {
+      reply.status(404).send("No devices found in area")
+      return
+    }
+
+    reply.status(200).send(areaWithDevices)
+  },
+
 }
