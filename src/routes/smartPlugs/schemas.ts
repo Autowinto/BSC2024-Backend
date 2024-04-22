@@ -20,7 +20,7 @@ export const GetSmartPlugByIdSchema = {
   }),
   response: {
     200: SmartPlug,
-    404: Type.Array(Type.Any()),
+    404: Type.String(),
   },
 }
 
@@ -32,43 +32,30 @@ export const CreateSmartPlugSchema = {
   }),
   response: {
     201: SmartPlug,
+    400: Type.String(),
   },
 }
 
 export const UpdateSmartPlugSchema = {
   tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   body: Type.Object({
+    id: Type.String(),
     name: Type.String(),
-    deviceId: Type.String(),
   }),
   response: {
     200: SmartPlug,
-    404: Type.Array(Type.Any()),
+    404: Type.String(),
   },
 }
 
 export const AssignDeviceToSmartPlugSchema = {
   tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
   body: Type.Object({
-    deviceId: Type.String(),
+    deviceId: Type.Union([Type.String(), Type.Null()]),
+    id: Type.String(),
   }),
   response: {
     200: SmartPlug,
-  },
-}
-
-export const RemoveDeviceFromAreaSchema = {
-  tags: ['SmartPlug'],
-  params: Type.Object({
-    id: Type.String(),
-  }),
-  response: {
-    200: 'Device removed from area',
+    404: Type.String(),
   },
 }

@@ -1,33 +1,51 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateMeasurementSchema, GetMeasurementByIdSchema } from '@/routes/measurements/schemas'
+import type { CreateMeasurementSchema, GetMeasurementsSchema } from '@/routes/measurements/schemas'
 
 export default {
-  get: async (request: FastifyRequest, reply: FastifyReply) => {
-    const data = await prisma.device.findMany()
-    reply.send(data)
+  get: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
+    const data = await prisma.measurement.findMany()
+    reply.status(200).send(data)
   },
 
-  create: async (request: FastifyTypeBoxRequest<typeof CreateMeasurementSchema>, _reply: FastifyReply) => {
+  create: async (request: FastifyTypeBoxRequest<typeof CreateMeasurementSchema>, reply: FastifyReply) => {
     const { body } = request
-    await prisma.measurement.create({
-      data: {
-        timeMeasured: new Date(body.timeMeasured),
-        wattage: body.wattage,
-        deviceId: body.deviceId,
+
+    let deviceId = ''
+
+    // find deviceId based on smartplugId
+    const smartplug = await prisma.smartPlug.findFirst({
+      where: {
+        id: body.smartPlugId,
+      },
+      select: {
+        deviceId: true,
       },
     })
-  },
 
-  getById: async (request: FastifyTypeBoxRequest<typeof GetMeasurementByIdSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementByIdSchema>) => {
-    const data = await prisma.measurement.findFirst({ where: { id: request.params.id } })
-
-    if (!data) {
-      reply.code(404).send()
+    if (smartplug?.deviceId) {
+      deviceId = smartplug.deviceId
+    }
+    else {
+      reply.code(404).send('SmartPlug/device not found')
       return
     }
 
-    reply.send(data)
+    try {
+      await prisma.measurement.create({
+        data: {
+          wattage: body.wattage,
+          timeMeasured: new Date(),
+          deviceId,
+        },
+      })
+    }
+    catch (error) {
+      reply.code(400).send(error)
+    }
+
+    reply.code(201).send('Measurement created')
+
   },
 }
