@@ -43,7 +43,7 @@ export const UpdatePowerReadingAreaSchema = {
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
-    externalId: Type.Union([Type.Number(), Type.Null()])
+    externalId: Type.Union([Type.Number(), Type.Null()]),
   }),
   response: {
     200: PowerReadingArea,
@@ -113,7 +113,7 @@ export const UpdateDeviceOnAreaSchema = {
 export const GetDevicesInAreaSchema = {
   tags: ['PowerReadingArea'],
   params: Type.Object({
-    areaId: Type.String(),
+    id: Type.String(),
   }),
   response: {
     200: Type.Array(Type.Object({
