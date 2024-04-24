@@ -46,6 +46,5 @@ export default {
     }
 
     reply.code(201).send('Measurement created')
-
   },
 }

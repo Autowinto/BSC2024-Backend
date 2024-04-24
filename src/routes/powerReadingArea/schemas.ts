@@ -4,8 +4,8 @@ import device from '@/controllers/device'
 
 export const PowerReadingArea = Type.Object({
   id: Type.String(),
-  name: Type.String(),
-  externalId: Type.Integer(),
+  name: Type.Union([Type.String(), Type.Null()]),
+  externalId: Type.String(),
 })
 
 export const GetPowerReadingAreaSchema = {
@@ -23,20 +23,16 @@ export const GetPowerReadingAreaByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: PowerReadingArea,
+    200: Type.String(),
     404: Type.String(),
   },
 }
 
-export const CreatePowerReadingAreaSchema = {
+export const LoadPowerReadingAreasSchema = {
   tags: ['PowerReadingArea'],
-  description: "Create a new power reading area",
-  body: Type.Object({
-    name: Type.String(),
-    externalId: Type.Integer(),
-  }),
+  description: 'Loads power reading areas from the Energinet API to the backend.',
   response: {
-    200: PowerReadingArea,
+    200: Type.String(),
     400: Type.String(),
   },
 }
@@ -47,7 +43,7 @@ export const UpdatePowerReadingAreaSchema = {
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
-    externalId: Type.Union([Type.Number(), Type.Null()])
+    externalId: Type.Union([Type.String(), Type.Null()]),
   }),
   response: {
     200: PowerReadingArea,
@@ -121,7 +117,7 @@ export const GetDevicesInAreaSchema = {
   tags: ['PowerReadingArea'],
   description: "Get all devices in an area.",
   params: Type.Object({
-    areaId: Type.String(),
+    id: Type.String(),
   }),
   response: {
     200: Type.Array(Type.Object({
@@ -129,6 +125,19 @@ export const GetDevicesInAreaSchema = {
       deviceId: Type.String(),
       areaId: Type.String(),
     })),
+    404: Type.String(),
+  },
+}
+
+export const DeletePowerReadingAreaSchema = {
+  tags: ['PowerReadingArea'],
+  description: 'Deletes a power reading area from the backend.',
+  body: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: Type.String(),
+    400: Type.String(),
     404: Type.String(),
   },
 }
