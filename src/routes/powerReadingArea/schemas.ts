@@ -121,3 +121,16 @@ export const GetDevicesInAreaSchema = {
     404: Type.String(),
   },
 }
+
+export const DeletePowerReadingAreaSchema = {
+  tags: ['PowerReadingArea'],
+  description: 'Deletes a power reading area from the backend.',
+  body: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    200: Type.String(),
+    400: Type.String(),
+    404: Type.String(),
+  },
+}

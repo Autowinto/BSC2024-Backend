@@ -1,7 +1,7 @@
 import { connect } from 'node:http2'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, CreatePowerReadingAreasSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, CreatePowerReadingAreasSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
 
@@ -196,9 +196,16 @@ export default {
         if (existingArea)
           continue
 
+        let roomName: string | null = ''
+
+        if (area.roomId === null)
+          roomName = area.meteringPointId
+        else
+          roomName = area.roomId
+
         await prisma.powerReadingArea.create({
           data: {
-            name: area.roomId,
+            name: roomName,
             externalId: area.meteringPointId,
           },
         })
@@ -209,4 +216,36 @@ export default {
       reply.status(400).send(error)
     }
   },
+
+  DeletePowerReadingArea: async (request: FastifyTypeBoxRequest<typeof DeletePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof DeletePowerReadingAreaSchema>) => {
+    const { body } = request
+
+    const area = await prisma.powerReadingArea.findFirst({
+      where: { id: body.id },
+    })
+    if (!area) {
+      reply.status(404).send('Area not found')
+      return
+    }
+
+    try {
+      await prisma.deviceOnArea.deleteMany({
+        where: { areaId: body.id },
+      })
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
+
+    try {
+      await prisma.powerReadingArea.delete({
+        where: { id: body.id },
+      })
+      reply.status(200).send('Area deleted successfully')
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
+  },
+
 }
