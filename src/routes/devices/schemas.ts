@@ -10,14 +10,14 @@ export const Device = Type.Object({
 })
 
 export const GetDevicesSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   response: {
     200: Type.Array(Device),
   },
 }
 
 export const GetDeviceByIdSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   params: Type.Object({
     id: Type.String(),
   }),
@@ -26,11 +26,11 @@ export const GetDeviceByIdSchema = {
       Device,
     }),
     404: Type.String(),
-  }
+  },
 }
 
 export const CreateDeviceSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   body: Type.Object({
     name: Type.String(),
     description: Type.Union([Type.String(), Type.Null()]),
@@ -42,7 +42,7 @@ export const CreateDeviceSchema = {
 }
 
 export const UpdateDeviceSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
@@ -58,7 +58,7 @@ export const UpdateDeviceSchema = {
 }
 
 export const GetMeasurementsSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   params: Type.Object({
     deviceId: Type.String(),
   }),
@@ -69,7 +69,7 @@ export const GetMeasurementsSchema = {
 }
 
 export const DeleteDeviceSchema = {
-  tags: ['Device'],
+  tags: ['Devices'],
   params: Type.Object({
     id: Type.String(),
   }),
