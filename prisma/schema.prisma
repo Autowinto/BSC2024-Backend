@@ -24,8 +24,8 @@ model DeviceOnArea {
 
 model PowerReadingArea {
   id           String         @id @unique @default(cuid())
-  name         String
-  externalId   Int            @unique
+  name         String?
+  externalId   String         @unique
   DeviceOnArea DeviceOnArea[]
 }
 

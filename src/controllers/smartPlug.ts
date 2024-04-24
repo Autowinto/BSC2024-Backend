@@ -1,7 +1,7 @@
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
-import { prisma } from '@/prisma/client'
 import { i } from 'vitest/dist/reporters-MmQN-57K.js'
+import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
+import type { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
+import { prisma } from '@/prisma/client'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetSmartPlugsSchema>, reply: FastifyTypeBoxReply<typeof GetSmartPlugsSchema>) => {
@@ -12,6 +12,13 @@ export default {
   create: async (request: FastifyTypeBoxRequest<typeof CreateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof CreateSmartPlugSchema>) => {
     const { body } = request
 
+    // check if already exists a smartPlug with the same id
+    const smartPlug = await prisma.smartPlug.findFirst({ where: { id: body.id } })
+    if (smartPlug) {
+      reply.code(200).send('SmartPlug already exists')
+      return
+    }
+
     try {
       const data = await prisma.smartPlug.create({
         data: {
@@ -20,19 +27,17 @@ export default {
         },
       })
       reply.code(201).send(data)
-
     }
     catch (error) {
       reply.status(400).send(error)
     }
-
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetSmartPlugByIdSchema>, reply: FastifyTypeBoxReply<typeof GetSmartPlugByIdSchema>) => {
     const data = await prisma.smartPlug.findFirst({ where: { id: request.params.id } })
 
     if (!data) {
-      reply.code(404).send("SmartPlug not found")
+      reply.code(404).send('SmartPlug not found')
       return
     }
 
@@ -51,18 +56,18 @@ export default {
       reply.send(data)
     }
     catch (error) {
-      reply.status(404).send("SmartPlug not found")
+      reply.status(404).send('SmartPlug not found')
     }
   },
 
   AssignDeviceToSmartPlug: async (request: FastifyTypeBoxRequest<typeof AssignDeviceToSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof AssignDeviceToSmartPlugSchema>) => {
     const { body } = request
 
-    //check if device exists
+    // check if device exists
     if (body.deviceId != null) {
       const device = await prisma.device.findFirst({ where: { id: body.deviceId } })
       if (!device) {
-        reply.code(404).send("Device not found")
+        reply.code(404).send('Device not found')
         return
       }
     }
@@ -77,7 +82,7 @@ export default {
       reply.send(data)
     }
     catch (error) {
-      reply.code(404).send("SmartPlug not found")
+      reply.code(404).send('SmartPlug not found')
     }
-  }
+  },
 }

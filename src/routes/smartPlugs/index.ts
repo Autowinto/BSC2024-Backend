@@ -16,4 +16,3 @@ export default async (fastify: FastifyInstance) => {
 
   app.put('/assign', { schema: AssignDeviceToSmartPlugSchema }, smartPlugsController.AssignDeviceToSmartPlug)
 }
-
