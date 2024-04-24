@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 
-import { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from './schemas'
+import { AddDeviceToAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from './schemas'
 import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default async (fastify: FastifyInstance) => {
@@ -17,8 +17,6 @@ export default async (fastify: FastifyInstance) => {
     schema: GetDevicesInAreaSchema,
   }, powerReadingAreaController.GetDevicesInArea)
 
-  app.post('/', { schema: CreatePowerReadingAreaSchema }, powerReadingAreaController.create)
-
   app.put('/', { schema: UpdatePowerReadingAreaSchema }, powerReadingAreaController.update)
 
   app.post('/addDevice', { schema: AddDeviceToAreaSchema }, powerReadingAreaController.AddDeviceToArea)
@@ -30,4 +28,8 @@ export default async (fastify: FastifyInstance) => {
   app.put('/updateDevice', {
     schema: UpdateDeviceOnAreaSchema,
   }, powerReadingAreaController.UpdateDeviceOnArea)
+
+  app.get('/load', {
+    schema: LoadPowerReadingAreasSchema,
+  }, powerReadingAreaController.LoadPowerReadingAreas)
 }

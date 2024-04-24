@@ -4,8 +4,8 @@ import device from '@/controllers/device'
 
 export const PowerReadingArea = Type.Object({
   id: Type.String(),
-  name: Type.String(),
-  externalId: Type.Integer(),
+  name: Type.Union([Type.String(), Type.Null()]),
+  externalId: Type.String(),
 })
 
 export const GetPowerReadingAreaSchema = {
@@ -21,19 +21,16 @@ export const GetPowerReadingAreaByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: PowerReadingArea,
+    200: Type.String(),
     404: Type.String(),
   },
 }
 
-export const CreatePowerReadingAreaSchema = {
+export const LoadPowerReadingAreasSchema = {
   tags: ['PowerReadingArea'],
-  body: Type.Object({
-    name: Type.String(),
-    externalId: Type.Integer(),
-  }),
+  description: 'Loads power reading areas from the Energinet API to the backend.',
   response: {
-    200: PowerReadingArea,
+    200: Type.String(),
     400: Type.String(),
   },
 }
@@ -43,7 +40,7 @@ export const UpdatePowerReadingAreaSchema = {
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
-    externalId: Type.Union([Type.Number(), Type.Null()]),
+    externalId: Type.Union([Type.String(), Type.Null()]),
   }),
   response: {
     200: PowerReadingArea,

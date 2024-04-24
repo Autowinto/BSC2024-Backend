@@ -1,8 +1,9 @@
 import { connect } from 'node:http2'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, CreatePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, CreatePowerReadingAreasSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
+import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
@@ -23,18 +24,6 @@ export default {
     reply.status(200).send(data)
   },
 
-  create: async (request: FastifyTypeBoxRequest<typeof CreatePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof CreatePowerReadingAreaSchema>) => {
-    try {
-      const data = await prisma.powerReadingArea.create({
-        data: request.body,
-      })
-      reply.status(200).send(data)
-    }
-    catch (error) {
-      reply.status(400).send(error)
-    }
-  },
-
   update: async (request: FastifyTypeBoxRequest<typeof UpdatePowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof UpdatePowerReadingAreaSchema>) => {
     const { body } = request
     const area = await prisma.powerReadingArea.findFirst({ where: { id: body.id } })
@@ -46,7 +35,7 @@ export default {
 
     try {
       let name: string | null = ''
-      let externalId: number | null = null
+      let externalId: string | null = null
 
       if (body.name)
         name = body.name
@@ -195,4 +184,29 @@ export default {
     reply.status(200).send(areaWithDevices)
   },
 
+  LoadPowerReadingAreas: async (request: FastifyTypeBoxRequest<typeof LoadPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof LoadPowerReadingAreasSchema>) => {
+    // send request to src/wrappers/energinet/routes/meteringPoints.ts'
+    try {
+      const areas = await meteringPointsController.getMeteringPoints()
+      for (const area of areas) {
+        // check if metering point already exists
+        const existingArea = await prisma.powerReadingArea.findFirst({
+          where: { externalId: area.meteringPointId },
+        })
+        if (existingArea)
+          continue
+
+        await prisma.powerReadingArea.create({
+          data: {
+            name: area.roomId,
+            externalId: area.meteringPointId,
+          },
+        })
+        reply.status(200).send('Areas loaded successfully')
+      }
+    }
+    catch (error) {
+      reply.status(400).send(error)
+    }
+  },
 }
