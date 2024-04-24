@@ -7,14 +7,9 @@ export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
   app.get('/', { schema: GetDevicesSchema }, deviceController.get)
-
   app.get('/:id', { schema: GetDeviceByIdSchema }, deviceController.getById)
-
-  app.post('/create', { schema: CreateDeviceSchema }, deviceController.create)
-
-  app.put('/update', { schema: UpdateDeviceSchema }, deviceController.update)
-
-  app.get('/measurements/:deviceId', { schema: GetMeasurementsSchema }, deviceController.getMeasurements)
-
+  app.get('/:deviceId/measurements', { schema: GetMeasurementsSchema }, deviceController.getMeasurements)
+  app.post('/', { schema: CreateDeviceSchema }, deviceController.create)
+  app.put('/', { schema: UpdateDeviceSchema }, deviceController.update)
   app.delete('/:id', { schema: DeleteDeviceSchema }, deviceController.deleteDevice)
 }

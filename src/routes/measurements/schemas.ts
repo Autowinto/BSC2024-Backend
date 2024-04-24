@@ -9,7 +9,7 @@ export const Measurement = Type.Object({
 )
 
 export const GetMeasurementsSchema = {
-  tags: ['SmartPlugMeasurement'],
+  tags: ['Measurements'],
   response: {
     501: Type.Any(),
     200: Type.Array(Measurement),
@@ -17,7 +17,7 @@ export const GetMeasurementsSchema = {
 }
 
 export const CreateMeasurementSchema = {
-  tags: ['SmartPlugMeasurement'],
+  tags: ['Measurements'],
   body: Type.Object({
     smartPlugId: Type.String(),
     wattage: Type.Number(),

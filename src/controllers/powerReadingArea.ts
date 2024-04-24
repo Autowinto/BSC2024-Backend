@@ -16,7 +16,7 @@ export default {
       where: { id: request.params.id },
     })
     if (!data) {
-      reply.status(404).send("PowerReadingArea not found")
+      reply.status(404).send('PowerReadingArea not found')
       return
     }
 
@@ -40,7 +40,7 @@ export default {
     const area = await prisma.powerReadingArea.findFirst({ where: { id: body.id } })
 
     if (!area) {
-      reply.code(404).send("PowerReadingArea not found")
+      reply.code(404).send('PowerReadingArea not found')
       return
     }
 
@@ -79,7 +79,7 @@ export default {
       where: { id: body.areaId },
     })
     if (!area) {
-      reply.status(404).send("Area not found")
+      reply.status(404).send('Area not found')
       return
     }
 
@@ -87,7 +87,7 @@ export default {
       where: { id: body.deviceId },
     })
     if (!device) {
-      reply.status(404).send("Device not found")
+      reply.status(404).send('Device not found')
       return
     }
 
@@ -97,7 +97,7 @@ export default {
           areaId: body.areaId,
           deviceId: body.deviceId,
           count: body.count,
-        }
+        },
       })
 
       reply.status(200).send(addDeviceToArea)
@@ -114,7 +114,7 @@ export default {
       where: { id: body.areaId },
     })
     if (!area) {
-      reply.status(404).send("Area not found")
+      reply.status(404).send('Area not found')
       return
     }
 
@@ -122,7 +122,7 @@ export default {
       where: { id: body.deviceId },
     })
     if (!device) {
-      reply.status(404).send("Device not found")
+      reply.status(404).send('Device not found')
       return
     }
 
@@ -131,12 +131,12 @@ export default {
         where: {
           deviceId_areaId: {
             deviceId: body.deviceId,
-            areaId: body.areaId
-          }
+            areaId: body.areaId,
+          },
         },
       })
 
-      reply.status(200).send("Device removed from area successfully")
+      reply.status(200).send('Device removed from area successfully')
     }
     catch (error) {
       reply.status(400).send(error)
@@ -150,7 +150,7 @@ export default {
       where: { id: body.areaId },
     })
     if (!area) {
-      reply.status(404).send("Area not found")
+      reply.status(404).send('Area not found')
       return
     }
 
@@ -158,7 +158,7 @@ export default {
       where: { id: body.deviceId },
     })
     if (!device) {
-      reply.status(404).send("Device not found")
+      reply.status(404).send('Device not found')
       return
     }
 
@@ -167,29 +167,28 @@ export default {
         where: {
           deviceId_areaId: {
             deviceId: body.deviceId,
-            areaId: body.areaId
-          }
+            areaId: body.areaId,
+          },
         },
         data: {
           count: body.count,
-        }
-      }
+        },
+      },
       )
       reply.status(200).send({ count: request.body.count, deviceId: request.body.deviceId, areaId: request.body.areaId })
     }
     catch (err) {
-      reply.status(400).send(err)
-      return
+      return reply.status(400).send(err)
     }
   },
 
   GetDevicesInArea: async (request: FastifyTypeBoxRequest<typeof GetDevicesInAreaSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesInAreaSchema>) => {
     const areaWithDevices = await prisma.deviceOnArea.findMany({
-      where: { areaId: request.params.areaId },
+      where: { areaId: request.params.id },
     })
 
     if (!areaWithDevices) {
-      reply.status(404).send("No devices found in area")
+      reply.status(404).send('No devices found in area')
       return
     }
 
