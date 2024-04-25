@@ -31,7 +31,7 @@ describe('measurementController', () => {
 
         await prisma.smartPlug.create({
             data: {
-                id: '1',
+                id: 'test-smartplug',
                 name: 'Test Smartplug Measurement',
                 deviceId: device.id
             },
@@ -148,7 +148,7 @@ describe('measurementController', () => {
 
         await prisma.smartPlug.update({
             where: {
-                id: smartPlug?.id,
+                id: smartPlug.id,
             },
             data: {
                 deviceId: null,

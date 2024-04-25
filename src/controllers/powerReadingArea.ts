@@ -1,7 +1,7 @@
 import { connect } from 'node:http2'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, CreatePowerReadingAreasSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
 
@@ -15,12 +15,16 @@ export default {
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
     const data = await prisma.powerReadingArea.findFirst({
       where: { id: request.params.id },
+      select: {
+        id: true,
+        name: true,
+        externalId: true,
+      },
     })
     if (!data) {
       reply.status(404).send('PowerReadingArea not found')
       return
     }
-
     reply.status(200).send(data)
   },
 
