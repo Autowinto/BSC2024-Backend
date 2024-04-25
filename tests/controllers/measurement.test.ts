@@ -2,8 +2,6 @@ import type { FastifyInstance, FastifyReply } from 'fastify'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { createServer } from '../../src/server'
 import { prisma } from '../../src/prisma/client'
-import device from '@/controllers/device'
-import { s } from 'vitest/dist/reporters-MmQN-57K.js'
 describe('measurementController', () => {
     let server: FastifyInstance
     beforeAll(async () => {
