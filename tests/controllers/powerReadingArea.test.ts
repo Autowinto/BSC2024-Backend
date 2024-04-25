@@ -4,7 +4,6 @@ import { createServer } from '../../src/server'
 import { prisma } from '../../src/prisma/client'
 import exp from 'constants'
 
-await new Promise(r => setTimeout(r, 1000));
 
 describe('powerReadingAreaController', () => {
     let server: FastifyInstance
