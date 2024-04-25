@@ -32,7 +32,7 @@ export const GetDeviceByIdSchema = {
 }
 
 export const UpdateMeasuredWattageSchema = {
-  tags: ['Devices'],
+  tags: ['Device'],
   description: 'Update the measured wattage of a device by averaging its measurements. ONLY includes values where wattage != 0',
   body: Type.Object({
     id: Type.String(),

@@ -1,5 +1,5 @@
 import type { FastifyRequest } from 'fastify'
-import type { Device } from '@prisma/client'
+import type { Device, Measurement } from '@prisma/client'
 import { c } from 'node_modules/vite/dist/node/types.d-FdqQ54oU'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
@@ -103,9 +103,9 @@ export default {
   },
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
-    const data = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
-    if (!data) {
-      reply.code(404).send('Measurements not found')
+    const data: Array<Measurement> = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
+    if (data.length === 0) {
+      reply.status(404).send('Measurements not found')
       return
     }
     reply.status(200).send(data)
