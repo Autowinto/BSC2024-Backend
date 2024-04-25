@@ -2,6 +2,8 @@ import type { FastifyInstance, FastifyReply } from 'fastify'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { createServer } from '../../src/server'
 import { prisma } from '../../src/prisma/client'
+await new Promise(r => setTimeout(r, 2000));
+
 describe('smartPlugController', () => {
     let server: FastifyInstance
     beforeAll(async () => {

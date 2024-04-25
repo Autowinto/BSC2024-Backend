@@ -23,7 +23,7 @@ export const GetPowerReadingAreaByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: Type.String(),
+    200: PowerReadingArea,
     404: Type.String(),
   },
 }
