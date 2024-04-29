@@ -7,7 +7,7 @@ export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
     const data = await prisma.powerReadingArea.findMany({
     })
-    reply.status(200).send({ count: 10, collection: data })
+    reply.status(200).send({ totalItems: 10, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
