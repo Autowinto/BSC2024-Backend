@@ -1,5 +1,3 @@
-import { connect } from 'node:http2'
-import type { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '@/prisma/client'
 import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
@@ -9,7 +7,7 @@ export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
     const data = await prisma.powerReadingArea.findMany({
     })
-    reply.status(200).send(data)
+    reply.status(200).send({ totalItems: data.length, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {

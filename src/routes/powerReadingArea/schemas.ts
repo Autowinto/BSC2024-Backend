@@ -1,6 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
-import { Device } from '@/routes/devices/schemas'
-import device from '@/controllers/device'
+import { Collection, PaginationParams } from '../shared'
 
 export const PowerReadingArea = Type.Object({
   id: Type.String(),
@@ -10,15 +9,17 @@ export const PowerReadingArea = Type.Object({
 
 export const GetPowerReadingAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "Returns all power reading areas",
+  description: 'Returns all power reading areas',
+  params: PaginationParams,
   response: {
-    200: Type.Array(PowerReadingArea),
+
+    200: Collection(Type.Array(PowerReadingArea)),
   },
 }
 
 export const GetPowerReadingAreaByIdSchema = {
   tags: ['PowerReadingArea'],
-  description: "Returns a power reading area by its id",
+  description: 'Returns a power reading area by its id',
   params: Type.Object({
     id: Type.String(),
   }),
@@ -39,7 +40,7 @@ export const LoadPowerReadingAreasSchema = {
 
 export const UpdatePowerReadingAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "Update a power reading area. Any field explicitly set to null (field=null in body) will not be updated. This is NOT for devices in the area.",
+  description: 'Update a power reading area. Any field explicitly set to null (field=null in body) will not be updated. This is NOT for devices in the area.',
   body: Type.Object({
     id: Type.String(),
     name: Type.Union([Type.String(), Type.Null()]),
@@ -63,7 +64,7 @@ export const DeviceOnAreaSchema = {
 
 export const AddDeviceToAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "Add an existing device to an existing area.",
+  description: 'Add an existing device to an existing area.',
   body: Type.Object({
     count: Type.Number(),
     areaId: Type.String(),
@@ -83,7 +84,7 @@ export const AddDeviceToAreaSchema = {
 
 export const RemoveDeviceFromAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "remove a device from an area. This will not delete the device or the area, just remove the relation.",
+  description: 'remove a device from an area. This will not delete the device or the area, just remove the relation.',
   body: Type.Object({
     areaId: Type.String(),
     deviceId: Type.String(),
@@ -97,7 +98,7 @@ export const RemoveDeviceFromAreaSchema = {
 
 export const UpdateDeviceOnAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "Update the count of a device in an area.",
+  description: 'Update the count of a device in an area.',
   body: Type.Object({
     deviceId: Type.String(),
     areaId: Type.String(),
@@ -115,7 +116,7 @@ export const UpdateDeviceOnAreaSchema = {
 
 export const GetDevicesInAreaSchema = {
   tags: ['PowerReadingArea'],
-  description: "Get all devices in an area.",
+  description: 'Get all devices in an area.',
   params: Type.Object({
     id: Type.String(),
   }),
