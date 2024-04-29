@@ -8,7 +8,7 @@ export const PaginationParams = Type.Object({
 
 export function Collection(item: TSchema) {
   return Type.Object({
-    totalItems: Type.Number(),
-    items: Type.Array(item),
+    count: Type.Number(),
+    collection: Type.Array(item),
   })
 }

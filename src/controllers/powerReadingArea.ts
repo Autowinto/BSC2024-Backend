@@ -7,7 +7,7 @@ export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
     const data = await prisma.powerReadingArea.findMany({
     })
-    reply.status(200).send({ totalItems: data.length, items: data })
+    reply.status(200).send({ count: 10, collection: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
@@ -118,7 +118,7 @@ export default {
     }
 
     try {
-      const removeDeviceFromArea = await prisma.deviceOnArea.delete({
+      await prisma.deviceOnArea.delete({
         where: {
           deviceId_areaId: {
             deviceId: body.deviceId,
