@@ -40,6 +40,23 @@ export default {
           deviceId,
         },
       })
+
+      const measurements = await prisma.measurement.findMany({ where: { deviceId: body.id, wattage: { not: 0 } } })
+      if (!measurements) {
+        reply.code(404).send('Measurements not found')
+        return
+      }
+
+      const measurementsWattageSum = measurements.reduce((sum, measurement) => sum + measurement.wattage, 0)
+      const measurementsCount = measurements.length
+      const averageWattage = measurementsCount > 0 ? measurementsWattageSum / measurementsCount : 0
+
+      await prisma.device.update({
+        where: { id: deviceId },
+        data: {
+          measuredWattage: averageWattage,
+        },
+      })
     }
     catch (error) {
       reply.code(400).send(error)

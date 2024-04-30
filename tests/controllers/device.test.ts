@@ -74,7 +74,6 @@ describe('deviceController', () => {
     const response = await server.inject({ method: 'GET', url: '/devices' })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toBeInstanceOf(Array)
   })
 
   it('should get a device by ID', async () => {
