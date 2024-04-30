@@ -35,6 +35,7 @@ model Device {
   description     String?
   expectedWattage Float?
   measuredWattage Float?
+  hoursActiveWeek Int
   measurements    Measurement[]
   smartPlug       SmartPlug?
   DeviceOnArea    DeviceOnArea[]

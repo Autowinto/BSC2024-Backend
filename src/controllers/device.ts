@@ -26,6 +26,7 @@ export default {
         description: data.description,
         expectedWattage: data.expectedWattage,
         measuredWattage: data.measuredWattage,
+        hoursActiveWeek: data.hoursActiveWeek,
       },
     }
 
@@ -41,6 +42,7 @@ export default {
           name: body.name,
           description: body.description,
           expectedWattage: body.expectedWattage,
+          hoursActiveWeek: body.hoursActiveWeek,
         },
       })
       reply.code(201).send(data)
@@ -65,6 +67,7 @@ export default {
       let description: string | null = ''
       let expectedWattage: number | null = null
       let measuredWattage: number | null = null
+      let hoursActiveWeek: number | null = null
 
       if (body.name)
         name = body.name
@@ -86,6 +89,11 @@ export default {
       else
         measuredWattage = device.measuredWattage
 
+      if (body.hoursActiveWeek)
+        hoursActiveWeek = body.hoursActiveWeek
+      else
+        hoursActiveWeek = device.hoursActiveWeek
+
       const data = await prisma.device.update({
         where: { id: body.id },
         data: {
@@ -93,6 +101,7 @@ export default {
           description,
           expectedWattage,
           measuredWattage,
+          hoursActiveWeek,
         },
       })
       reply.status(200).send(data)

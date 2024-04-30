@@ -33,7 +33,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
-      - /var/lib/docker/volumes/postgres:/var/lib/postgresql/data
+      - /Users/Rasmus/volumes/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
