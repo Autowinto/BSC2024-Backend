@@ -5,9 +5,12 @@ import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
+    const pageSize = request.query.pageSize ? request.query.pageSize : 10
+    const page = request.query.page ? request.query.page : 1
+
     const data = await prisma.powerReadingArea.findMany({
-      take: request.query.pageSize,
-      skip: (request.query.page - 1) * request.query.pageSize,
+      take: pageSize,
+      skip: (page - 1) * pageSize,
     })
     reply.status(200).send({ totalItems: data.length, items: data })
   },
