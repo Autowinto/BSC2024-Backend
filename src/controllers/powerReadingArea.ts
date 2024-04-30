@@ -1,9 +1,7 @@
-import { Value } from '@sinclair/typebox/value'
 import { prisma } from '@/prisma/client'
-import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
+import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
-import { PaginationParams } from '@/routes/shared'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
@@ -192,7 +190,7 @@ export default {
     reply.status(200).send(areaWithDevices)
   },
 
-  LoadPowerReadingAreas: async (request: FastifyTypeBoxRequest<typeof LoadPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof LoadPowerReadingAreasSchema>) => {
+  LoadPowerReadingAreas: async (request: FastifyTypeBoxRequest<typeof LoadPowerReadingAreasSchema>, reply: FastifyTypeBoxReply<typeof LoadPowerReadingAreasSchema>) => {
     // send request to src/wrappers/energinet/routes/meteringPoints.ts'
     try {
       const areas = await meteringPointsController.getMeteringPoints()
