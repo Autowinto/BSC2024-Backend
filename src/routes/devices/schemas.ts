@@ -1,5 +1,6 @@
 import { Type } from '@fastify/type-provider-typebox'
 import { Measurement } from '../measurements/schemas'
+import { Collection } from '../shared'
 
 export const Device = Type.Object({
   id: Type.String(),
@@ -14,7 +15,7 @@ export const GetDevicesSchema = {
   tags: ['Device'],
   description: 'Return all devices',
   response: {
-    200: Type.Array(Device),
+    200: Collection(Device),
   },
 }
 

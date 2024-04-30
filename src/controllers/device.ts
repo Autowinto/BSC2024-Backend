@@ -1,16 +1,12 @@
-import type { FastifyRequest } from 'fastify'
-import type { Device, Measurement } from '@prisma/client'
-import { c } from 'node_modules/vite/dist/node/types.d-FdqQ54oU'
+import type { Measurement } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
-import { PowerReadingArea } from '@/routes/powerReadingArea/schemas'
-import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetDevicesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany()
-    reply.status(200).send(data)
+    reply.status(200).send({ totalItems: data.length, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetDeviceByIdSchema>, reply: FastifyTypeBoxReply<typeof GetDeviceByIdSchema>) => {
