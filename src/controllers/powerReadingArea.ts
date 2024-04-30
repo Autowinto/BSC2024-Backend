@@ -1,12 +1,13 @@
+import { Value } from '@sinclair/typebox/value'
 import { prisma } from '@/prisma/client'
 import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
+import { PaginationParams } from '@/routes/shared'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {
-    const pageSize = request.query.pageSize ? request.query.pageSize : 10
-    const page = request.query.page ? request.query.page : 1
+    const { page, pageSize } = request.query
 
     const data = await prisma.powerReadingArea.findMany({
       take: pageSize,

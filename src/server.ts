@@ -17,7 +17,7 @@ import { prisma } from '@/prisma/client'
 export function createServer() {
   const fastify = Fastify({
     logger: true,
-  }).setValidatorCompiler(TypeBoxValidatorCompiler).withTypeProvider<TypeBoxTypeProvider>()
+  }).withTypeProvider<TypeBoxTypeProvider>()
 
   fastify.register(helmet)
   fastify.register(cors, {})

@@ -10,7 +10,7 @@ export const PowerReadingArea = Type.Object({
 export const GetPowerReadingAreaSchema = {
   tags: ['PowerReadingArea'],
   description: 'Returns all power reading areas',
-  querystring: Type.Partial(PaginationParams),
+  querystring: PaginationParams,
   response: {
     200: Collection(PowerReadingArea),
   },
