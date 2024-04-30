@@ -73,7 +73,8 @@ describe('powerReadingAreaController', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toBeInstanceOf(Array)
+    expect(response.json()).toBeInstanceOf(Object)
+    expect(response.json().items).toBeInstanceOf(Array)
   })
   it('should delete a power reading area', async () => {
     const area = await prisma.powerReadingArea.findFirst({
