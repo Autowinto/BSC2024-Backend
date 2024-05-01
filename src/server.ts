@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifyPassport from '@fastify/passport'
 import fastifyScalar from '@scalar/fastify-api-reference'
-import { type TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifySession from '@fastify/session'
@@ -10,9 +10,8 @@ import fastifyCookie from '@fastify/cookie'
 import devicesRoutes from './routes/devices'
 import measurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
+import powerUsage from './routes/powerUsage'
 import powerReadingArea from '@/routes/powerReadingArea'
-import meteringPoints from '@/wrappers/energinet/routes/meteringPoints'
-import { prisma } from '@/prisma/client'
 
 export function createServer() {
   const fastify = Fastify({
@@ -53,8 +52,9 @@ export function createServer() {
 
   fastify.register(devicesRoutes, { prefix: 'devices' })
   fastify.register(measurementsRoutes, { prefix: 'measurements' })
-  fastify.register(smartPlugsRoutes, { prefix: 'smartplugs' })
+  fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
   fastify.register(powerReadingArea, { prefix: 'areas' })
+  fastify.register(powerUsage, { prefix: 'powerUsage' })
 
   return fastify
 }

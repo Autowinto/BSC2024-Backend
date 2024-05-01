@@ -1,6 +1,13 @@
 import client from '../client'
 
-type Aggregation = 'Actual' | 'Year' | 'Quarter' | 'Month' | 'Day' | 'Hour'
+enum Aggregation {
+  ACTUAL = 'actual',
+  QUARTER = 'quarter',
+  HOUR = 'hour',
+  DAY = 'day',
+  MONTH = 'month',
+  YEAR = 'year',
+}
 
 interface GetTimeseriesParameters {
   aggregation: Aggregation
