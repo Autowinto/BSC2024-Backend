@@ -57,6 +57,11 @@ model Measurement {
   deviceId     String
 }
 
+model DeviceHourlyAverage {
+  id       Int    @id @default(autoincrement())
+  deviceId String
+}
+
 model DeviceCategory {
   id   String @id @unique @default(cuid())
   name String @unique

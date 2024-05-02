@@ -20,6 +20,41 @@ export const GetDevicesSchema = {
   },
 }
 
+export const GetDevicesHourlyUsageSchema = {
+  tags: ['Device'],
+  description: 'Return a list of wattage measurements with 1 for each hour in a day',
+  params: Type.Object({
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Type.Number()),
+    404: Type.String(),
+  }
+}
+
+export const GetDeviceCategoriesSchema = {
+  tags: ['Device'],
+  description: 'Return all device categories',
+  response: {
+    200: Type.Array((Type.Object({
+      id: Type.String(),
+      name: Type.String(),
+    }))),
+  },
+}
+
+export const GetDevicesInCategorySchema = {
+  tags: ['Device'],
+  description: 'Return all devices in a given category',
+  params: Type.Object({
+    categoryId: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Device),
+    404: Type.String(),
+  },
+}
+
 export const GetMeasurementsInIntervalSchema = {
   tags: ['Device'],
   description: 'Return all measurements for a device in a given interval',
