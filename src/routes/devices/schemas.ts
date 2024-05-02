@@ -9,6 +9,7 @@ export const Device = Type.Object({
   expectedWattage: Type.Union([Type.Number(), Type.Null()]),
   measuredWattage: Type.Union([Type.Number(), Type.Null()]),
   hoursActiveWeek: Type.Number(),
+  categoryId: Type.Union([Type.String(), Type.Null()]),
 })
 
 export const GetDevicesSchema = {
@@ -16,6 +17,22 @@ export const GetDevicesSchema = {
   description: 'Return all devices',
   response: {
     200: Collection(Device),
+  },
+}
+
+export const GetMeasurementsInIntervalSchema = {
+  tags: ['Device'],
+  description: 'Return all measurements for a device in a given interval',
+  params: Type.Object({
+    deviceId: Type.String(),
+  }),
+  query: Type.Object({
+    start: Type.String(),
+    end: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Measurement),
+    404: Type.String(),
   },
 }
 
@@ -54,6 +71,7 @@ export const CreateDeviceSchema = {
     description: Type.Union([Type.String(), Type.Null()]),
     expectedWattage: Type.Union([Type.Number(), Type.Null()]),
     hoursActiveWeek: Type.Number(),
+    categoryId: Type.Union([Type.String(), Type.Null()]),
   }),
   response: {
     201: Device,
@@ -70,6 +88,7 @@ export const UpdateDeviceSchema = {
     expectedWattage: Type.Union([Type.Number(), Type.Null()]),
     measuredWattage: Type.Union([Type.Number(), Type.Null()]),
     hoursActiveWeek: Type.Union([Type.Number(), Type.Null()]),
+    categoryId: Type.Union([Type.String(), Type.Null()]),
   }),
   response: {
     200: Device,

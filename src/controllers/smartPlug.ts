@@ -1,4 +1,3 @@
-import { i } from 'vitest/dist/reporters-MmQN-57K.js'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
 import { prisma } from '@/prisma/client'

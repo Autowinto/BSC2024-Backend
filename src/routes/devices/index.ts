@@ -1,6 +1,6 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
-import { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from './schemas'
+import { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from './schemas'
 import deviceController from '@/controllers/device'
 
 export default async (fastify: FastifyInstance) => {
@@ -13,4 +13,5 @@ export default async (fastify: FastifyInstance) => {
   app.put('/', { schema: UpdateDeviceSchema }, deviceController.update)
   app.delete('/:id', { schema: DeleteDeviceSchema }, deviceController.deleteDevice)
   app.put('/updateMeasuredWattage', { schema: UpdateMeasuredWattageSchema }, deviceController.updateMeasuredWattage)
+  app.get('/:deviceId/measurements/range', { schema: GetMeasurementsInIntervalSchema }, deviceController.getMeasurementsInInterval)
 }

@@ -1,7 +1,13 @@
 import type { Measurement } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+
+interface QueryParams {
+  start: string
+  end: string
+}
+
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetDevicesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
@@ -23,6 +29,7 @@ export default {
         expectedWattage: data.expectedWattage,
         measuredWattage: data.measuredWattage,
         hoursActiveWeek: data.hoursActiveWeek,
+        categoryId: data.categoryId,
       },
     }
 
@@ -39,6 +46,7 @@ export default {
           description: body.description,
           expectedWattage: body.expectedWattage,
           hoursActiveWeek: body.hoursActiveWeek,
+          categoryId: body.categoryId,
         },
       })
       reply.code(201).send(data)
@@ -64,6 +72,7 @@ export default {
       let expectedWattage: number | null = null
       let measuredWattage: number | null = null
       let hoursActiveWeek: number | null = null
+      let categoryId: string | null = null
 
       if (body.name)
         name = body.name
@@ -89,6 +98,11 @@ export default {
         hoursActiveWeek = body.hoursActiveWeek
       else
         hoursActiveWeek = device.hoursActiveWeek
+
+      if (body.categoryId)
+        categoryId = body.categoryId
+      else
+        categoryId = device.categoryId
 
       const data = await prisma.device.update({
         where: { id: body.id },
@@ -168,5 +182,31 @@ export default {
 
     await prisma.device.delete({ where: { id } })
     reply.status(200).send('Device deleted successfully')
+  },
+
+
+  getMeasurementsInInterval: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsInIntervalSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsInIntervalSchema>) => {
+    const { deviceId } = request.params
+    const { start, end } = request.query as QueryParams
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+
+    const data: Array<Measurement> = await prisma.measurement.findMany({
+      where: {
+        deviceId,
+        timeMeasured: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+    })
+
+    if (data.length === 0) {
+      reply.status(404).send('Measurements not found')
+      return
+    }
+
+    reply.status(200).send(data)
+
   },
 }

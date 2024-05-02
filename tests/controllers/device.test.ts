@@ -21,6 +21,7 @@ describe('deviceController', () => {
         description: 'Test Description',
         expectedWattage: 100,
         hoursActiveWeek: 10,
+        categoryId: null,
       },
     })
   })
@@ -116,6 +117,7 @@ describe('deviceController', () => {
         description: 'New Description',
         expectedWattage: 200,
         hoursActiveWeek: 10,
+        categoryId: null,
       },
     })
 
@@ -155,6 +157,7 @@ describe('deviceController', () => {
         expectedWattage: 300,
         measuredWattage: null,
         hoursActiveWeek: 10,
+        categoryId: null,
       },
     })
 
@@ -182,6 +185,7 @@ describe('deviceController', () => {
         expectedWattage: 300,
         measuredWattage: null,
         hoursActiveWeek: 10,
+        categoryId: null,
       },
     })
 
@@ -210,6 +214,7 @@ describe('deviceController', () => {
         expectedWattage: 300,
         measuredWattage: 'invalid',
         hoursActiveWeek: 10,
+        categoryId: null,
       },
     })
 

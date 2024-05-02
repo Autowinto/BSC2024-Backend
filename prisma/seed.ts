@@ -19,6 +19,7 @@ async function seedCategories() {
             { name: 'Smart Home Devices' },
             { name: 'Electric Tables' },
             { name: 'Electric Car Chargers' },
+            { name: 'Others' }
         ];
 
         for (const category of categories) {
