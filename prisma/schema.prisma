@@ -39,6 +39,7 @@ model Device {
   measurements    Measurement[]
   smartPlug       SmartPlug?
   DeviceOnArea    DeviceOnArea[]
+  categoryId      String?
 }
 
 model SmartPlug {
@@ -54,4 +55,9 @@ model Measurement {
   timeMeasured DateTime
   device       Device   @relation(fields: [deviceId], references: [id])
   deviceId     String
+}
+
+model DeviceCategory {
+  id   String @id @unique @default(cuid())
+  name String @unique
 }

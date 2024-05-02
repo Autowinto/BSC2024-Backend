@@ -9,6 +9,7 @@ pnpm install
 
 echo "Prisma Generate";
 pnpm db:deploy;
+pnpm db:seed;
 
 echo "The value of DEV_ENV is: $DEV_ENV"
 

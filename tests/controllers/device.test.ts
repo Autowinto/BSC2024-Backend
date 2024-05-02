@@ -64,9 +64,9 @@ describe('deviceController', () => {
 
     await prisma.device.deleteMany({
       where:
-            {
-              name: 'Test Device',
-            },
+      {
+        name: 'Test Device',
+      },
     })
   })
 
@@ -121,11 +121,11 @@ describe('deviceController', () => {
 
     const device = await prisma.device.findFirst({
       where:
-            {
-              name: 'Test Device',
-              description: 'New Description',
-              expectedWattage: 200,
-            },
+      {
+        name: 'Test Device',
+        description: 'New Description',
+        expectedWattage: 200,
+      },
     })
 
     expect(device).toBeTruthy()
@@ -160,11 +160,11 @@ describe('deviceController', () => {
 
     const updatedDevice = await prisma.device.findFirst({
       where:
-            {
-              name: 'Test Device',
-              description: 'Updated Description',
-              expectedWattage: 300,
-            },
+      {
+        name: 'Test Device',
+        description: 'Updated Description',
+        expectedWattage: 300,
+      },
     })
 
     expect(updatedDevice).toBeTruthy()
@@ -240,9 +240,9 @@ describe('deviceController', () => {
 
     const deletedDevice = await prisma.device.findFirst({
       where:
-            {
-              name: 'Test Device',
-            },
+      {
+        name: 'Test Device',
+      },
     })
 
     expect(response.statusCode).toBe(200)
@@ -297,17 +297,17 @@ describe('deviceController', () => {
 
     const deletedDevice = await prisma.device.findFirst({
       where:
-            {
-              name: 'Test Device',
-            },
+      {
+        name: 'Test Device',
+      },
     })
 
     const deletedDeviceOnArea = await prisma.deviceOnArea.findFirst({
       where:
-            {
-              deviceId: device.id,
-              areaId: area.id,
-            },
+      {
+        deviceId: device.id,
+        areaId: area.id,
+      },
     })
 
     expect(response.statusCode).toBe(200)
@@ -389,9 +389,9 @@ describe('deviceController', () => {
 
     const updatedDevice = await prisma.device.findFirst({
       where:
-            {
-              name: 'Test Device',
-            },
+      {
+        name: 'Test Device',
+      },
     })
 
     const expectedWattage: number = calculateExpectedWattage()

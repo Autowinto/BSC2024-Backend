@@ -18,7 +18,7 @@
     "db:reset": "dotenv -e .env.prisma -- prisma migrate reset --force && prisma generate",
     "db:deploy": "prisma migrate deploy && prisma generate",
     "db:migrate": "dotenv -e .env.prisma -- prisma migrate dev",
-    "db:seed": "ts-node-dev prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "overrides": {
     "pnpm": {
