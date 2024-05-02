@@ -1,6 +1,14 @@
 import client from '../client'
+import meteringPoints from './meteringPoints'
 
-type Aggregation = 'Actual' | 'Year' | 'Quarter' | 'Month' | 'Day' | 'Hour'
+enum Aggregation {
+  ACTUAL = 'Actual',
+  QUARTER = 'Quarter',
+  HOUR = 'Hour',
+  DAY = 'Day',
+  MONTH = 'Month',
+  YEAR = 'Year',
+}
 
 interface GetTimeseriesParameters {
   aggregation: Aggregation
@@ -8,9 +16,17 @@ interface GetTimeseriesParameters {
   dateTo: string
 }
 
+interface GetTimeseriesBody {
+  meteringPoints: string[]
+}
+
 export default {
-  getTimeseries: async (params: GetTimeseriesParameters) => {
-    return await client.post(`gettimeseries/${params.dateFrom}/${params.dateTo}/${params.aggregation}`)
+  getTimeseries: async (params: GetTimeseriesParameters, body: GetTimeseriesBody) => {
+    return await client.post(`/meterdata/gettimeseries/${params.dateFrom}/${params.dateTo}/${params.aggregation}`, {
+      meteringPoints: {
+        meteringPoint: body.meteringPoints,
+      },
+    })
   },
   getMeterReadings: () => {
   },
