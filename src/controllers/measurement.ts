@@ -13,6 +13,7 @@ export default {
     const { body } = request
 
     let deviceId = ''
+    let newMeasurement
 
     // find deviceId based on smartplugId
     const smartplug = await prisma.smartPlug.findFirst({
@@ -33,7 +34,7 @@ export default {
     }
 
     try {
-      await prisma.measurement.create({
+      newMeasurement = await prisma.measurement.create({
         data: {
           wattage: body.wattage,
           timeMeasured: new Date(),
@@ -41,7 +42,7 @@ export default {
         },
       })
 
-      const measurements = await prisma.measurement.findMany({ where: { deviceId: body.id, wattage: { not: 0 } } })
+      const measurements = await prisma.measurement.findMany({ where: { deviceId: newMeasurement.deviceId, wattage: { not: 0 } } })
       if (!measurements) {
         reply.code(404).send('Measurements not found')
         return
@@ -61,6 +62,44 @@ export default {
     catch (error) {
       reply.code(400).send(error)
     }
+
+    if (!newMeasurement) {
+      reply.code(404).send('Measurement not found')
+      return
+    }
+
+    const currentHour: number = newMeasurement.timeMeasured.getHours()
+
+    // get all measurements for the current hour and device
+
+    const measurementsForDevice = await prisma.measurement.findMany({
+      where: {
+        deviceId,
+      },
+    })
+
+    let measurementCount: number = 0
+    let wattageSum: number = 0
+
+    for (const measurement of measurementsForDevice) {
+      const measurementHour: number = measurement.timeMeasured.getHours()
+      if (measurementHour === currentHour) {
+        measurementCount++
+        wattageSum += measurement.wattage
+      }
+    }
+
+    const averageWattage = wattageSum / measurementCount
+
+    await prisma.deviceHourlyAverage.updateMany({
+      where: {
+        deviceId: newMeasurement.deviceId,
+        hour: currentHour,
+      },
+      data: {
+        wattage: averageWattage,
+      },
+    })
 
     reply.code(201).send('Measurement created')
   },

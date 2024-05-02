@@ -1,7 +1,8 @@
 import type { Measurement } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDeviceCategoriesSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDeviceCategoriesSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetHourlyMeasurementsSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt'
 
 interface QueryParams {
   start: string
@@ -49,8 +50,21 @@ export default {
           categoryId: body.categoryId,
         },
       })
+
+      // create a DeviceHourlyAverage for each hour of the day
+      for (let i = 0; i < 24; i++) {
+        await prisma.deviceHourlyAverage.create({
+          data: {
+            deviceId: data.id,
+            hour: i,
+            wattage: 0,
+          },
+        })
+      }
       reply.code(201).send(data)
     }
+
+
     catch (error) {
       reply.code(400).send(error)
     }
@@ -132,6 +146,19 @@ export default {
     reply.status(200).send(data)
   },
 
+  getHourlyMeasurements: async (request: FastifyTypeBoxRequest<typeof GetHourlyMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetHourlyMeasurementsSchema>) => {
+    const data: Array<any> = await prisma.deviceHourlyAverage.findMany({ where: { deviceId: request.params.deviceId } })
+    if (data === undefined || data.length === 0) {
+      reply.status(404).send('Measurements not found')
+      return
+    }
+    let wattages = []
+    for (let i = 0; i < data.length; i++) {
+      wattages.push(data[i].wattage)
+    }
+    reply.status(200).send(wattages)
+  },
+
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
     const data: Array<Measurement> = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
     if (data.length === 0) {
@@ -187,9 +214,15 @@ export default {
       where: { deviceId: device.id },
     })
 
+
+    await prisma.deviceHourlyAverage.deleteMany({
+      where: { deviceId: device.id },
+    })
+
     await prisma.measurement.deleteMany({
       where: { deviceId: device.id },
     })
+
 
     await prisma.device.delete({ where: { id } })
     reply.status(200).send('Device deleted successfully')

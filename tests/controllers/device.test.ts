@@ -63,6 +63,16 @@ describe('deviceController', () => {
       })
     }
 
+    if (device) {
+      await prisma.deviceHourlyAverage.deleteMany({
+        where: {
+          deviceId: {
+            equals: device.id,
+          },
+        },
+      })
+    }
+
     await prisma.device.deleteMany({
       where:
       {
@@ -192,7 +202,7 @@ describe('deviceController', () => {
     expect(response.statusCode).toBe(404)
   })
 
-  it('should return 400 on invalid request but correct id', async () => {
+  it('should return 400 on invalid request but correct id on PUT', async () => {
     const device = await prisma.device.findFirst({
       where: {
         name: 'Test Device',
