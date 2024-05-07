@@ -12,7 +12,7 @@ export default {
 
     const areas = await prisma.powerReadingArea.findMany()
 
-    const data = await meterData.getTimeseries({
+    const external = await meterData.getTimeseries({
       dateFrom,
       dateTo,
       aggregation,
@@ -20,8 +20,8 @@ export default {
       meteringPoints: areas.map(area => area.externalId),
     })
 
-    const transformedData = transformTimeseriesData(data.data)
-    reply.status(200).send(transformedData)
+    const transformedData: any[] = transformTimeseriesData(external.data)
+    reply.status(200).send({ external: { areas: transformedData, total: 0 } }, internal: { areas: [564.4, 543.4], total: 0 })
   },
   // getByArea: async (request: FastifyTypeBoxRequest<typeof G>)
 }
