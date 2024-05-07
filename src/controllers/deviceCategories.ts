@@ -1,3 +1,7 @@
+import { prisma } from '@/prisma/client'
+import type { GetDeviceCategoriesSchema } from '@/routes/deviceCategories/schemas'
+import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
+
 export default {
   get: async (
     request: FastifyTypeBoxRequest<typeof GetDeviceCategoriesSchema>,

@@ -9,10 +9,13 @@ export default async (fastify: FastifyInstance) => {
   app.get('/', { schema: GetDevicesSchema }, deviceController.get)
   app.get('/:id', { schema: GetDeviceByIdSchema }, deviceController.getById)
   app.get('/:deviceId/measurements', { schema: GetMeasurementsSchema }, deviceController.getMeasurements)
-  app.post('/', { schema: CreateDeviceSchema }, deviceController.create)
-  app.put('/', { schema: UpdateDeviceSchema }, deviceController.update)
-  app.delete('/:id', { schema: DeleteDeviceSchema }, deviceController.deleteDevice)
-  app.put('/updateMeasuredWattage', { schema: UpdateMeasuredWattageSchema }, deviceController.updateMeasuredWattage)
   app.get('/:deviceId/measurements/range', { schema: GetMeasurementsInIntervalSchema }, deviceController.getMeasurementsInInterval)
   app.get('/categories/:categoryId', { schema: GetDevicesInCategorySchema }, deviceController.getDevicesInCategory)
+
+  app.post('/', { schema: CreateDeviceSchema }, deviceController.create)
+
+  app.put('/', { schema: UpdateDeviceSchema }, deviceController.update)
+  app.put('/updateMeasuredWattage', { schema: UpdateMeasuredWattageSchema }, deviceController.updateMeasuredWattage)
+
+  app.delete('/:id', { schema: DeleteDeviceSchema }, deviceController.deleteDevice)
 }
