@@ -29,17 +29,6 @@ export const GetDevicesHourlyUsageSchema = {
   response: {
     200: Type.Array(Type.Number()),
     404: Type.String(),
-  }
-}
-
-export const GetDeviceCategoriesSchema = {
-  tags: ['Device'],
-  description: 'Return all device categories',
-  response: {
-    200: Type.Array((Type.Object({
-      id: Type.String(),
-      name: Type.String(),
-    }))),
   },
 }
 
@@ -50,7 +39,7 @@ export const GetDevicesInCategorySchema = {
     categoryId: Type.String(),
   }),
   response: {
-    200: Type.Array(Device),
+    200: Collection(Device),
     404: Type.String(),
   },
 }
@@ -139,7 +128,9 @@ export const GetMeasurementsSchema = {
     deviceId: Type.String(),
   }),
   response: {
-    200: Type.Array(Measurement),
+    200: Collection(
+      Measurement,
+    ),
     404: Type.String(),
   },
 }

@@ -1,13 +1,12 @@
 import type { Measurement } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDeviceCategoriesSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
 
 interface QueryParams {
   start: string
   end: string
 }
-
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetDevicesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
@@ -122,14 +121,9 @@ export default {
     }
   },
 
-  getCategories: async (request: FastifyTypeBoxRequest<typeof GetDeviceCategoriesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
-    const data = await prisma.deviceCategory.findMany()
-    reply.status(200).send(data)
-  },
-
   getDevicesInCategory: async (request: FastifyTypeBoxRequest<typeof GetDevicesInCategorySchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany({ where: { categoryId: request.params.categoryId } })
-    reply.status(200).send(data)
+    reply.status(200).send({ items: data, totalItems: data.length })
   },
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
@@ -138,7 +132,7 @@ export default {
       reply.status(404).send('Measurements not found')
       return
     }
-    reply.status(200).send(data)
+    reply.status(200).send({ totalItems: data.length, items: data })
   },
 
   updateMeasuredWattage: async (request: FastifyTypeBoxRequest<typeof UpdateMeasuredWattageSchema>, reply: FastifyTypeBoxReply<typeof UpdateMeasuredWattageSchema>) => {
@@ -195,7 +189,6 @@ export default {
     reply.status(200).send('Device deleted successfully')
   },
 
-
   getMeasurementsInInterval: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsInIntervalSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsInIntervalSchema>) => {
     const { deviceId } = request.params
     const { start, end } = request.query as QueryParams
@@ -218,6 +211,5 @@ export default {
     }
 
     reply.status(200).send(data)
-
   },
 }

@@ -10,8 +10,9 @@ import fastifyCookie from '@fastify/cookie'
 import devicesRoutes from './routes/devices'
 import measurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
-import powerUsage from './routes/powerUsage'
-import powerReadingArea from '@/routes/powerReadingArea'
+import powerUsageRoutes from './routes/powerUsage'
+import powerReadingAreasRoutes from '@/routes/powerReadingArea'
+import deviceCategoriesRoutes from '@/routes/deviceCategories'
 
 export function createServer() {
   const fastify = Fastify({
@@ -51,10 +52,11 @@ export function createServer() {
   })
 
   fastify.register(devicesRoutes, { prefix: 'devices' })
+  fastify.register(deviceCategoriesRoutes, { prefix: 'deviceCategories' })
   fastify.register(measurementsRoutes, { prefix: 'measurements' })
-  fastify.register(smartPlugsRoutes, { prefix: 'smartplugs' })
-  fastify.register(powerReadingArea, { prefix: 'areas' })
-  fastify.register(powerUsage, { prefix: 'powerUsage' })
+  fastify.register(powerReadingAreasRoutes, { prefix: 'areas' })
+  fastify.register(powerUsageRoutes, { prefix: 'powerUsage' })
+  fastify.register(smartPlugsRoutes, { prefix: 'smartPlugs' })
 
   return fastify
 }
