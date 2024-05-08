@@ -105,7 +105,7 @@ export default {
         categoryId = device.categoryId
 
       const data = await prisma.device.update({
-        where: { id: body.id },
+        where: { id: params.id },
         data: {
           name,
           description,

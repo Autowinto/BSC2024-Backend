@@ -122,7 +122,7 @@ export const GetDevicesInAreaSchema = {
     id: Type.String(),
   }),
   response: {
-    200: Type.Array(Type.Object({
+    200: Collection(Type.Object({
       count: Type.Number(),
       deviceId: Type.String(),
       areaId: Type.String(),

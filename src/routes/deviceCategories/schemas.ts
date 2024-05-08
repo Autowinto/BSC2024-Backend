@@ -20,9 +20,9 @@ export const GetDeviceCategoriesSchema = {
 export const CreateDeviceCategoriesSchema = {
   tags,
   description: 'Create a new device category',
-  body: {
+  body: Type.Object({
     name: Type.String(),
-  },
+  }),
   response: {
     201: DeviceCategory,
   },
@@ -31,6 +31,12 @@ export const CreateDeviceCategoriesSchema = {
 export const UpdateDeviceCategoriesSchema = {
   tags,
   description: 'Update a device category',
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  body: Type.Object({
+    name: Type.String(),
+  }),
   response: {
     200: DeviceCategory,
   },

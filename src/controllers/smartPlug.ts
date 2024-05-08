@@ -5,7 +5,7 @@ import { prisma } from '@/prisma/client'
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetSmartPlugsSchema>, reply: FastifyTypeBoxReply<typeof GetSmartPlugsSchema>) => {
     const data = await prisma.smartPlug.findMany()
-    reply.status(200).send(data)
+    reply.status(200).send({ items: data, totalItems: data.length })
   },
 
   create: async (request: FastifyTypeBoxRequest<typeof CreateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof CreateSmartPlugSchema>) => {
@@ -45,9 +45,10 @@ export default {
 
   update: async (request: FastifyTypeBoxRequest<typeof UpdateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof UpdateSmartPlugSchema>) => {
     const { body } = request
+    const { id } = request.params
     try {
       const data = await prisma.smartPlug.update({
-        where: { id: body.id },
+        where: { id },
         data: {
           name: body.name,
         },
