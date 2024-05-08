@@ -105,8 +105,10 @@ export const CreateDeviceSchema = {
 export const UpdateDeviceSchema = {
   tags: ['Device'],
   description: 'Update a device. Any field left explicitly as null (field=null in body) will not be updated.',
-  body: Type.Object({
+  params: Type.Object({
     id: Type.String(),
+  }),
+  body: Type.Object({
     name: Type.Union([Type.String(), Type.Null()]),
     description: Type.Union([Type.String(), Type.Null()]),
     expectedWattage: Type.Union([Type.Number(), Type.Null()]),

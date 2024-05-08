@@ -1,4 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { Collection, PaginationParams } from '../shared'
 
 const tags = ['Smart Plug']
 
@@ -11,8 +12,9 @@ export const SmartPlug = Type.Object({
 export const GetSmartPlugsSchema = {
   tags,
   description: 'Returns all smart plugs',
+  querystring: PaginationParams,
   response: {
-    200: Type.Array(SmartPlug),
+    200: Collection(SmartPlug),
   },
 }
 
@@ -44,8 +46,10 @@ export const CreateSmartPlugSchema = {
 export const UpdateSmartPlugSchema = {
   tags,
   description: 'Update a smart plug.',
-  body: Type.Object({
+  params: Type.Object({
     id: Type.String(),
+  }),
+  body: Type.Object({
     name: Type.String(),
   }),
   response: {

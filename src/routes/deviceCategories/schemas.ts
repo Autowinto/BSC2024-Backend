@@ -16,3 +16,33 @@ export const GetDeviceCategoriesSchema = {
     ),
   },
 }
+
+export const CreateDeviceCategoriesSchema = {
+  tags,
+  description: 'Create a new device category',
+  body: {
+    name: Type.String(),
+  },
+  response: {
+    201: DeviceCategory,
+  },
+}
+
+export const UpdateDeviceCategoriesSchema = {
+  tags,
+  description: 'Update a device category',
+  response: {
+    200: DeviceCategory,
+  },
+}
+
+export const DeleteDeviceCategoriesSchema = {
+  tags,
+  description: 'Delete a device category',
+  params: Type.Object({
+    id: Type.String(),
+  }),
+  response: {
+    204: Type.Any(),
+  },
+}

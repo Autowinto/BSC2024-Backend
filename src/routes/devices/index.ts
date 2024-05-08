@@ -8,13 +8,19 @@ export default async (fastify: FastifyInstance) => {
 
   app.get('/', { schema: GetDevicesSchema }, deviceController.get)
   app.get('/:id', { schema: GetDeviceByIdSchema }, deviceController.getById)
+
+  // TODO: Merge following two routes into one. Handle with parameters
   app.get('/:deviceId/measurements', { schema: GetMeasurementsSchema }, deviceController.getMeasurements)
   app.get('/:deviceId/measurements/range', { schema: GetMeasurementsInIntervalSchema }, deviceController.getMeasurementsInInterval)
+
+  // TODO: Move this to deviceCategories such that route is /categories/:id/devices
   app.get('/categories/:categoryId', { schema: GetDevicesInCategorySchema }, deviceController.getDevicesInCategory)
 
   app.post('/', { schema: CreateDeviceSchema }, deviceController.create)
 
-  app.put('/', { schema: UpdateDeviceSchema }, deviceController.update)
+  app.put('/:id', { schema: UpdateDeviceSchema }, deviceController.update)
+
+  // TODO: This should happen automatically upon a new measurement being added
   app.put('/updateMeasuredWattage', { schema: UpdateMeasuredWattageSchema }, deviceController.updateMeasuredWattage)
 
   app.delete('/:id', { schema: DeleteDeviceSchema }, deviceController.deleteDevice)

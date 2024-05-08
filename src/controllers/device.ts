@@ -57,8 +57,9 @@ export default {
 
   update: async (request: FastifyTypeBoxRequest<typeof UpdateDeviceSchema>, reply: FastifyTypeBoxReply<typeof UpdateDeviceSchema>) => {
     const { body } = request
+    const { params } = request
 
-    const device = await prisma.device.findFirst({ where: { id: body.id } })
+    const device = await prisma.device.findFirst({ where: { id: params.id } })
 
     if (!device) {
       reply.code(404).send('Device not found')
@@ -135,6 +136,30 @@ export default {
     reply.status(200).send({ totalItems: data.length, items: data })
   },
 
+  getMeasurementsInInterval: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsInIntervalSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsInIntervalSchema>) => {
+    const { deviceId } = request.params
+    const { start, end } = request.query as QueryParams
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+
+    const data: Array<Measurement> = await prisma.measurement.findMany({
+      where: {
+        deviceId,
+        timeMeasured: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+    })
+
+    if (data.length === 0) {
+      reply.status(404).send('Measurements not found')
+      return
+    }
+
+    reply.status(200).send(data)
+  },
+
   updateMeasuredWattage: async (request: FastifyTypeBoxRequest<typeof UpdateMeasuredWattageSchema>, reply: FastifyTypeBoxReply<typeof UpdateMeasuredWattageSchema>) => {
     const { body } = request
     try {
@@ -189,27 +214,4 @@ export default {
     reply.status(200).send('Device deleted successfully')
   },
 
-  getMeasurementsInInterval: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsInIntervalSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsInIntervalSchema>) => {
-    const { deviceId } = request.params
-    const { start, end } = request.query as QueryParams
-    const startDate = new Date(start)
-    const endDate = new Date(end)
-
-    const data: Array<Measurement> = await prisma.measurement.findMany({
-      where: {
-        deviceId,
-        timeMeasured: {
-          gte: startDate,
-          lte: endDate,
-        },
-      },
-    })
-
-    if (data.length === 0) {
-      reply.status(404).send('Measurements not found')
-      return
-    }
-
-    reply.status(200).send(data)
-  },
 }
