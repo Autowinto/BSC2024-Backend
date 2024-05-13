@@ -127,10 +127,6 @@ export default {
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
     const data: Array<Measurement> = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
-    if (data.length === 0) {
-      reply.status(404).send('Measurements not found')
-      return
-    }
     reply.status(200).send({ totalItems: data.length, items: data })
   },
 
