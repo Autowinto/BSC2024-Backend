@@ -67,9 +67,7 @@ export const GetDeviceByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: Type.Object({
-      Device,
-    }),
+    200: Device,
     404: Type.String(),
   },
 }

@@ -21,15 +21,13 @@ export default {
       return
     }
     const device = {
-      Device: {
-        id: data.id,
-        name: data.name,
-        description: data.description,
-        expectedWattage: data.expectedWattage,
-        measuredWattage: data.measuredWattage,
-        hoursActiveWeek: data.hoursActiveWeek,
-        categoryId: data.categoryId,
-      },
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      expectedWattage: data.expectedWattage,
+      measuredWattage: data.measuredWattage,
+      hoursActiveWeek: data.hoursActiveWeek,
+      categoryId: data.categoryId,
     }
 
     reply.status(200).send(device)

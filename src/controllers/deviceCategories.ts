@@ -12,9 +12,11 @@ export default {
     request: FastifyTypeBoxRequest<typeof GetDeviceCategoriesSchema>,
     reply: FastifyTypeBoxReply<typeof GetDeviceCategoriesSchema>,
   ) => {
-    const data = await prisma.deviceCategory.findMany()
+    const { pageSize, page } = request.query
+    const data = await prisma.deviceCategory.findMany({ take: pageSize, skip: pageSize * (page - 1) })
+    const count = await prisma.deviceCategory.count()
 
-    reply.send({ items: data, totalItems: data.length })
+    reply.send({ items: data, totalItems: count })
   },
 
   create: async (

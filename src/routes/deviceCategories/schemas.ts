@@ -1,5 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
-import { Collection } from '../shared'
+import { Collection, PaginationParams } from '../shared'
 
 const tags = ['Device Categories']
 const DeviceCategory = Type.Object({
@@ -10,6 +10,7 @@ const DeviceCategory = Type.Object({
 export const GetDeviceCategoriesSchema = {
   tags,
   description: 'Return all device categories',
+  querystring: PaginationParams,
   response: {
     200: Collection(
       DeviceCategory,
