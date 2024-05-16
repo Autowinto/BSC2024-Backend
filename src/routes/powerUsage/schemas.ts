@@ -3,9 +3,20 @@ import { format, subDays } from 'date-fns'
 
 const tags = ['Power Usage']
 
+const PowerUsageDataTransform = Type.Object({
+  areas: Type.Array(Type.Object(
+    {
+      id: Type.String(),
+      data: Type.Array(Type.Number()),
+    },
+  ),
+  ),
+  total: Type.Number(),
+})
+
 const PowerUsage = Type.Object({
-  internal: Type.Any(),
-  external: Type.Any({}),
+  internal: PowerUsageDataTransform,
+  external: PowerUsageDataTransform,
 })
 
 enum Aggregation {

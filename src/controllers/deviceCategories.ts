@@ -13,7 +13,7 @@ export default {
     reply: FastifyTypeBoxReply<typeof GetDeviceCategoriesSchema>,
   ) => {
     const { pageSize, page } = request.query
-    const data = await prisma.deviceCategory.findMany({ take: pageSize, skip: pageSize * (page - 1) })
+    const data = await prisma.deviceCategory.findMany({ take: pageSize, skip: pageSize * (page - 1), orderBy: { name: 'asc' } })
     const count = await prisma.deviceCategory.count()
 
     reply.send({ items: data, totalItems: count })
@@ -34,7 +34,8 @@ export default {
   ) => {
     const { body } = request
     const { id } = request.params
-    const result = await prisma.deviceCategory.update({ where: { id }, data: body })
+    console.log(body, id)
+    const result = await prisma.deviceCategory.update({ where: { id }, data: { name: body.name } })
     reply.send(result)
   },
 

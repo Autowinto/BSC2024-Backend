@@ -4,8 +4,9 @@ import { prisma } from '@/prisma/client'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetSmartPlugsSchema>, reply: FastifyTypeBoxReply<typeof GetSmartPlugsSchema>) => {
-    const data = await prisma.smartPlug.findMany()
-    reply.status(200).send({ items: data, totalItems: data.length })
+    const data = await prisma.smartPlug.findMany({ orderBy: { name: 'asc' } })
+    const count = await prisma.smartPlug.count()
+    reply.status(200).send({ items: data, totalItems: count })
   },
 
   create: async (request: FastifyTypeBoxRequest<typeof CreateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof CreateSmartPlugSchema>) => {

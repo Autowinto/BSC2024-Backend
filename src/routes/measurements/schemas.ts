@@ -1,4 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { Collection } from '../shared'
 
 const tags = ['Smart Plug Measurement']
 
@@ -15,7 +16,7 @@ export const GetMeasurementsSchema = {
   description: 'Returns all measurements. Don\'t know what this would be used for tbh.',
   response: {
     501: Type.Any(),
-    200: Type.Array(Measurement),
+    200: Collection(Measurement),
   },
 }
 

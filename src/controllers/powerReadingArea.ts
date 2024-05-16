@@ -10,8 +10,10 @@ export default {
     const data = await prisma.powerReadingArea.findMany({
       take: pageSize,
       skip: (page - 1) * pageSize,
+      orderBy: { name: 'asc' },
     })
-    reply.status(200).send({ totalItems: data.length, items: data })
+    const count = await prisma.powerReadingArea.count()
+    reply.status(200).send({ totalItems: count, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
