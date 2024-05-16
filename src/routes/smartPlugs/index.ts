@@ -12,7 +12,7 @@ export default async (fastify: FastifyInstance) => {
 
   app.post('/', { schema: CreateSmartPlugSchema }, smartPlugsController.create)
 
-  app.put('/', { schema: UpdateSmartPlugSchema }, smartPlugsController.update)
+  app.put('/:id', { schema: UpdateSmartPlugSchema }, smartPlugsController.update)
 
   app.put('/assign', { schema: AssignDeviceToSmartPlugSchema }, smartPlugsController.AssignDeviceToSmartPlug)
 }

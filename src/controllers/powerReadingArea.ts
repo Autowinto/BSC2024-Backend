@@ -10,8 +10,10 @@ export default {
     const data = await prisma.powerReadingArea.findMany({
       take: pageSize,
       skip: (page - 1) * pageSize,
+      orderBy: { name: 'asc' },
     })
-    reply.status(200).send({ totalItems: data.length, items: data })
+    const count = await prisma.powerReadingArea.count()
+    reply.status(200).send({ totalItems: count, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaByIdSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaByIdSchema>) => {
@@ -182,12 +184,14 @@ export default {
       where: { areaId: request.params.id },
     })
 
+    const count = await prisma.deviceOnArea.count()
+
     if (!areaWithDevices) {
       reply.status(404).send('No devices found in area')
       return
     }
 
-    reply.status(200).send(areaWithDevices)
+    reply.status(200).send({ items: areaWithDevices, totalItems: count })
   },
 
   LoadPowerReadingAreas: async (request: FastifyTypeBoxRequest<typeof LoadPowerReadingAreasSchema>, reply: FastifyTypeBoxReply<typeof LoadPowerReadingAreasSchema>) => {

@@ -29,17 +29,6 @@ export const GetDevicesHourlyUsageSchema = {
   response: {
     200: Type.Array(Type.Number()),
     404: Type.String(),
-  }
-}
-
-export const GetDeviceCategoriesSchema = {
-  tags: ['Device'],
-  description: 'Return all device categories',
-  response: {
-    200: Type.Array((Type.Object({
-      id: Type.String(),
-      name: Type.String(),
-    }))),
   },
 }
 
@@ -62,7 +51,7 @@ export const GetDevicesInCategorySchema = {
     categoryId: Type.String(),
   }),
   response: {
-    200: Type.Array(Device),
+    200: Collection(Device),
     404: Type.String(),
   },
 }
@@ -90,9 +79,7 @@ export const GetDeviceByIdSchema = {
     id: Type.String(),
   }),
   response: {
-    200: Type.Object({
-      Device,
-    }),
+    200: Device,
     404: Type.String(),
   },
 }
@@ -128,8 +115,10 @@ export const CreateDeviceSchema = {
 export const UpdateDeviceSchema = {
   tags: ['Device'],
   description: 'Update a device. Any field left explicitly as null (field=null in body) will not be updated.',
-  body: Type.Object({
+  params: Type.Object({
     id: Type.String(),
+  }),
+  body: Type.Object({
     name: Type.Union([Type.String(), Type.Null()]),
     description: Type.Union([Type.String(), Type.Null()]),
     expectedWattage: Type.Union([Type.Number(), Type.Null()]),
@@ -151,7 +140,9 @@ export const GetMeasurementsSchema = {
     deviceId: Type.String(),
   }),
   response: {
-    200: Type.Array(Measurement),
+    200: Collection(
+      Measurement,
+    ),
     404: Type.String(),
   },
 }

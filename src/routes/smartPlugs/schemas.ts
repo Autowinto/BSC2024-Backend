@@ -1,4 +1,7 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { Collection, PaginationParams } from '../shared'
+
+const tags = ['Smart Plug']
 
 export const SmartPlug = Type.Object({
   id: Type.String(),
@@ -7,15 +10,16 @@ export const SmartPlug = Type.Object({
 })
 
 export const GetSmartPlugsSchema = {
-  tags: ['SmartPlug'],
+  tags,
   description: 'Returns all smart plugs',
+  querystring: PaginationParams,
   response: {
-    200: Type.Array(SmartPlug),
+    200: Collection(SmartPlug),
   },
 }
 
 export const GetSmartPlugByIdSchema = {
-  tags: ['SmartPlug'],
+  tags,
   description: 'Returns a smart plug by its id',
   params: Type.Object({
     id: Type.String(),
@@ -27,7 +31,7 @@ export const GetSmartPlugByIdSchema = {
 }
 
 export const CreateSmartPlugSchema = {
-  tags: ['SmartPlug'],
+  tags,
   description: 'Create a new smart plug. This should be done automatically when a new smart plug is added to the network.',
   body: Type.Object({
     id: Type.String(),
@@ -40,11 +44,14 @@ export const CreateSmartPlugSchema = {
 }
 
 export const UpdateSmartPlugSchema = {
-  tags: ['SmartPlug'],
+  tags,
   description: 'Update a smart plug.',
-  body: Type.Object({
+  params: Type.Object({
     id: Type.String(),
+  }),
+  body: Type.Object({
     name: Type.String(),
+    deviceId: Type.Union([Type.String(), Type.Null()], { default: null }),
   }),
   response: {
     200: SmartPlug,
@@ -53,7 +60,7 @@ export const UpdateSmartPlugSchema = {
 }
 
 export const AssignDeviceToSmartPlugSchema = {
-  tags: ['SmartPlug'],
+  tags,
   description: 'Assign a device to a smart plug. When this is done all measurements from the smartplug will be associated with the device.',
   body: Type.Object({
     deviceId: Type.Union([Type.String(), Type.Null()]),

@@ -1,4 +1,8 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { format, sub } from 'date-fns'
+import { Collection } from '../shared'
+
+const tags = ['Smart Plug Measurement']
 
 export const Measurement = Type.Object({
   id: Type.String(),
@@ -9,17 +13,21 @@ export const Measurement = Type.Object({
 )
 
 export const GetMeasurementsSchema = {
-  tags: ['SmartPlugMeasurement'],
-  description: "Returns all measurements. Don't know what this would be used for tbh.",
+  tags,
+  description: 'Returns all measurements. Don\'t know what this would be used for tbh.',
+  querystring: Type.Object({
+    dateFrom: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(sub(new Date(), { hours: 1 }), 'yyyy-MM-dd') }),
+    dateTo: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(new Date(), 'yyyy-MM-dd') }),
+  }),
   response: {
     501: Type.Any(),
-    200: Type.Array(Measurement),
+    200: Collection(Measurement),
   },
 }
 
 export const CreateMeasurementSchema = {
-  tags: ['SmartPlugMeasurement'],
-  description: "Create a new measurement. This must be done every time we receive a measurement from a smart plug.",
+  tags,
+  description: 'Create a new measurement. This must be done every time we receive a measurement from a smart plug.',
   body: Type.Object({
     smartPlugId: Type.String(),
     wattage: Type.Number(),
