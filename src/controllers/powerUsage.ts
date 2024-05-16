@@ -21,7 +21,7 @@ export default {
     })
 
     const transformedData: any[] = transformTimeseriesData(external.data)
-    reply.status(200).send({ external: { areas: transformedData, total: 0 }, internal: { areas: [564.4, 543.4], total: 0 } })
+    reply.status(200).send({ external: { areas: transformedData, total: 0 }, internal: { areas: [[564.4], [543.4]], total: 0 } })
   },
 }
 

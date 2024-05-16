@@ -4,8 +4,8 @@ import { format, subDays } from 'date-fns'
 const tags = ['Power Usage']
 
 const PowerUsage = Type.Object({
-  internal: Type.Object({}),
-  external: Type.Object({}),
+  internal: Type.Any(),
+  external: Type.Any({}),
 })
 
 enum Aggregation {
@@ -26,6 +26,6 @@ export const GetPowerUsageSchema = {
     aggregation: Type.Enum(Aggregation, { default: Aggregation.DAY }),
   }),
   response: {
-    200: Type.Array(PowerUsage),
+    200: PowerUsage,
   },
 }
