@@ -51,6 +51,7 @@ export const UpdateSmartPlugSchema = {
   }),
   body: Type.Object({
     name: Type.String(),
+    deviceId: Type.Union([Type.String(), Type.Null()], { default: null }),
   }),
   response: {
     200: SmartPlug,

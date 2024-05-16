@@ -5,6 +5,8 @@ import type { CreateMeasurementSchema, GetMeasurementsSchema } from '@/routes/me
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
+    const { dateFrom, dateTo } = request.query
+
     const data = await prisma.measurement.findMany({ orderBy: { timeMeasured: 'asc' } })
     const count = await prisma.measurement.count()
     reply.status(200).send({ items: data, totalItems: count })

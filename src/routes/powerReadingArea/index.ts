@@ -21,7 +21,7 @@ export default async (fastify: FastifyInstance) => {
 
   app.post('/addDevice', { schema: AddDeviceToAreaSchema }, powerReadingAreaController.AddDeviceToArea)
 
-  app.delete('/removeDevice', {
+  app.put('/removeDevice', {
     schema: RemoveDeviceFromAreaSchema,
   }, powerReadingAreaController.RemoveDeviceFromArea)
 

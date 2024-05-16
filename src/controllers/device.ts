@@ -11,7 +11,9 @@ interface QueryParams {
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetDevicesSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany()
-    reply.status(200).send({ totalItems: data.length, items: data })
+    const count = await prisma.device.count()
+
+    reply.status(200).send({ totalItems: count, items: data })
   },
 
   getById: async (request: FastifyTypeBoxRequest<typeof GetDeviceByIdSchema>, reply: FastifyTypeBoxReply<typeof GetDeviceByIdSchema>) => {

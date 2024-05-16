@@ -184,12 +184,14 @@ export default {
       where: { areaId: request.params.id },
     })
 
+    const count = await prisma.deviceOnArea.count()
+
     if (!areaWithDevices) {
       reply.status(404).send('No devices found in area')
       return
     }
 
-    reply.status(200).send(areaWithDevices)
+    reply.status(200).send({ items: areaWithDevices, totalItems: count })
   },
 
   LoadPowerReadingAreas: async (request: FastifyTypeBoxRequest<typeof LoadPowerReadingAreasSchema>, reply: FastifyTypeBoxReply<typeof LoadPowerReadingAreasSchema>) => {

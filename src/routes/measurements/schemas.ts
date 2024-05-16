@@ -1,4 +1,5 @@
 import { Type } from '@fastify/type-provider-typebox'
+import { format, sub } from 'date-fns'
 import { Collection } from '../shared'
 
 const tags = ['Smart Plug Measurement']
@@ -14,6 +15,10 @@ export const Measurement = Type.Object({
 export const GetMeasurementsSchema = {
   tags,
   description: 'Returns all measurements. Don\'t know what this would be used for tbh.',
+  querystring: Type.Object({
+    dateFrom: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(sub(new Date(), { hours: 1 }), 'yyyy-MM-dd') }),
+    dateTo: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(new Date(), 'yyyy-MM-dd') }),
+  }),
   response: {
     501: Type.Any(),
     200: Collection(Measurement),

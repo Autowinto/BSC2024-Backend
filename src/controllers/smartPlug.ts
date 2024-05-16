@@ -47,17 +47,23 @@ export default {
   update: async (request: FastifyTypeBoxRequest<typeof UpdateSmartPlugSchema>, reply: FastifyTypeBoxReply<typeof UpdateSmartPlugSchema>) => {
     const { body } = request
     const { id } = request.params
+
+    // Due to a bug in validation library, we need to check if deviceId is empty
+    if (body.deviceId === '')
+      body.deviceId = null
+
     try {
       const data = await prisma.smartPlug.update({
         where: { id },
         data: {
           name: body.name,
+          deviceId: body.deviceId,
         },
       })
       reply.send(data)
     }
     catch (error) {
-      reply.status(404).send('SmartPlug not found')
+      reply.status(500).send(error.message)
     }
   },
 
