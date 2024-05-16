@@ -121,6 +121,18 @@ export const UpdateDeviceSchema = {
   },
 }
 
+export const GetHourlyMeasurementsSchema = {
+  tags: ['Device'],
+  description: 'Returns hourly average wattage measurements for a device',
+  params: Type.Object({
+    deviceId: Type.String(),
+  }),
+  response: {
+    200: Type.Array(Type.Number()),
+    404: Type.String(),
+  },
+}
+
 export const GetMeasurementsSchema = {
   tags: ['Device'],
   description: 'Return all measurements for a device',

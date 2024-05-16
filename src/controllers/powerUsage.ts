@@ -20,11 +20,51 @@ export default {
       meteringPoints: areas.map(area => area.externalId),
     })
 
+    const internal: { areas: any[] } = { areas: [] }
+
+    for (const area of areas) {
+      const deviceOnAreas = await prisma.deviceOnArea.findMany({ where: { areaId: area.id } })
+      const areaDeviceIds = deviceOnAreas.map(deviceOnArea => deviceOnArea.deviceId)
+      const devices = await prisma.device.findMany({ where: { id: { in: areaDeviceIds } } })
+      const deviceIds = devices.map(device => device.id)
+
+      const deviceHourlyAverages = await prisma.deviceHourlyAverage.findMany({
+        where: {
+          deviceId: {
+            in: deviceIds,
+          },
+        },
+      })
+      console.log(deviceHourlyAverages)
+
+      const totalPowerUsage = deviceHourlyAverages.map(o => o.wattage / 1000)
+
+      internal.areas.push({
+        id: area.id,
+        data: totalPowerUsage,
+      })
+    }
+
+    // Get all powerreadingareas
+    // Get all devices in powerreadingareas
+    // Get all deviceHourlyAverages for each device
+    // Add these together to get the total power usage for the internal areas
+    // add area to the internal object
+
+    // const data: Array<any> = await prisma.deviceHourlyAverage.findMany({ where: { deviceId: request.params.deviceId } })
+    // if (data === undefined || data.length === 0) {
+    //   reply.status(404).send('Measurements not found')
+    //   return
+    // }
+    // const wattages = []
+    // for (let i = 0; i < data.length; i++)
+    //   wattages.push(data[i].wattage)
+
     const transformedData: any[] = transformTimeseriesData(external.data)
     reply.status(200).send(
       {
-        external: { areas: transformedData, total: 0 },
-        internal: { areas: [{ id: 'Test', data: [251] }], total: 0 },
+        external: { areas: transformedData },
+        internal,
       },
     )
   },

@@ -1,7 +1,7 @@
 import type { Measurement } from '@prisma/client'
 import { prisma } from '@/prisma/client'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetHourlyMeasurementsSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
 import type { CreateMeasurementSchema } from '@/routes/measurements/schemas'
 
 interface QueryParams {
@@ -136,6 +136,19 @@ export default {
   getDevicesInCategory: async (request: FastifyTypeBoxRequest<typeof GetDevicesInCategorySchema>, reply: FastifyTypeBoxReply<typeof GetDevicesSchema>) => {
     const data = await prisma.device.findMany({ where: { categoryId: request.params.categoryId } })
     reply.status(200).send({ items: data, totalItems: data.length })
+  },
+
+  getHourlyMeasurements: async (request: FastifyTypeBoxRequest<typeof GetHourlyMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetHourlyMeasurementsSchema>) => {
+    const data: Array<any> = await prisma.deviceHourlyAverage.findMany({ where: { deviceId: request.params.deviceId } })
+    if (data === undefined || data.length === 0) {
+      reply.status(404).send('Measurements not found')
+      return
+    }
+    const wattages = []
+    for (let i = 0; i < data.length; i++)
+      wattages.push(data[i].wattage)
+
+    reply.status(200).send(wattages)
   },
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {

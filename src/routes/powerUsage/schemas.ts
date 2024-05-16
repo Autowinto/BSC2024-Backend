@@ -11,7 +11,6 @@ const PowerUsageDataTransform = Type.Object({
     },
   ),
   ),
-  total: Type.Number(),
 })
 
 const PowerUsage = Type.Object({
@@ -38,5 +37,6 @@ export const GetPowerUsageSchema = {
   }),
   response: {
     200: PowerUsage,
+    404: Type.Any(),
   },
 }
