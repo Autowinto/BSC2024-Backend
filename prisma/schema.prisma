@@ -30,16 +30,17 @@ model PowerReadingArea {
 }
 
 model Device {
-  id              String         @id @unique @default(cuid())
-  name            String         @unique
-  description     String?
-  expectedWattage Float?
-  measuredWattage Float?
-  hoursActiveWeek Int
-  measurements    Measurement[]
-  smartPlug       SmartPlug?
-  DeviceOnArea    DeviceOnArea[]
-  categoryId      String?
+  id                  String                @id @unique @default(cuid())
+  name                String                @unique
+  description         String?
+  expectedWattage     Float?
+  measuredWattage     Float?
+  hoursActiveWeek     Int
+  measurements        Measurement[]
+  smartPlug           SmartPlug?
+  DeviceOnArea        DeviceOnArea[]
+  categoryId          String?
+  DeviceHourlyAverage DeviceHourlyAverage[]
 }
 
 model SmartPlug {
@@ -59,6 +60,9 @@ model Measurement {
 
 model DeviceHourlyAverage {
   id       Int    @id @default(autoincrement())
+  hour     Int
+  wattage  Float
+  device   Device @relation(fields: [deviceId], references: [id])
   deviceId String
 }
 
