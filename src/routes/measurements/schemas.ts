@@ -7,7 +7,7 @@ const tags = ['Smart Plug Measurement']
 export const Measurement = Type.Object({
   id: Type.String(),
   wattage: Type.Number(),
-  timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'] }),
+  timeMeasured: Type.Unsafe<Date>({ type: 'string', format: 'date-time', examples: ['2024-12-31 23:59:59'] }),
   deviceId: Type.String(),
 },
 )
@@ -16,8 +16,8 @@ export const GetMeasurementsSchema = {
   tags,
   description: 'Returns all measurements. Don\'t know what this would be used for tbh.',
   querystring: Type.Object({
-    dateFrom: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(sub(new Date(), { hours: 1 }), 'yyyy-MM-dd') }),
-    dateTo: Type.Unsafe<Date>({ type: 'string', format: 'datetime', examples: ['2024-12-31 23:59:59'], default: format(new Date(), 'yyyy-MM-dd') }),
+    dateFrom: Type.Unsafe<Date>({ type: 'string', format: 'date-time', examples: ['2024-12-31 23:59:59'], default: format(sub(new Date(), { hours: 1 }), 'yyyy-MM-dd') }),
+    dateTo: Type.Unsafe<Date>({ type: 'string', format: 'date-time', examples: ['2024-12-31 23:59:59'], default: format(new Date(), 'yyyy-MM-dd') }),
   }),
   response: {
     501: Type.Any(),

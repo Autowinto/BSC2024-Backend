@@ -180,16 +180,14 @@ export default {
   },
 
   GetDevicesInArea: async (request: FastifyTypeBoxRequest<typeof GetDevicesInAreaSchema>, reply: FastifyTypeBoxReply<typeof GetDevicesInAreaSchema>) => {
+    prisma.powerReadingArea.findFirstOrThrow({ where: { id: request.params.id } }).catch(() => {
+      return reply.status(404).send('Area not found')
+    })
     const areaWithDevices = await prisma.deviceOnArea.findMany({
       where: { areaId: request.params.id },
     })
 
     const count = await prisma.deviceOnArea.count()
-
-    if (!areaWithDevices) {
-      reply.status(404).send('No devices found in area')
-      return
-    }
 
     reply.status(200).send({ items: areaWithDevices, totalItems: count })
   },
