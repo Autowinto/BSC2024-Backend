@@ -1,6 +1,6 @@
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from '@/routes/smartPlugs/schemas'
-import { prisma } from '@/prisma/client'
+import { prisma } from '@/prisma/dbClient'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetSmartPlugsSchema>, reply: FastifyTypeBoxReply<typeof GetSmartPlugsSchema>) => {
@@ -40,6 +40,7 @@ export default {
       reply.code(404).send('SmartPlug not found')
       return
     }
+
 
     reply.status(200).send(data)
   },

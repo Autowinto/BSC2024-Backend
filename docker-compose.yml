@@ -1,45 +1,33 @@
+version: '3.8'
+
 services:
+  dashboard:
+    image: ghcr.io/autowinto/bsc2024-dashboard:latest
+    container_name: bsc2024-dashboard
+    ports:
+      - "8080:8080"
+
   backend:
-    image: node:18
-    volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
+    image: ghcr.io/autowinto/bsc2024-backend:latest
+    container_name: bsc2024-backend
     ports:
       - "3000:3000"
-    networks:
-      - network
-    command: sh run_and_deploy.sh
-    depends_on:
-      #- frontend
-      - postgres
     environment:
       - DEV_ENV=${DEV_ENV}
+    depends_on:
+      - db
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: dockerfile_frontend
-  #   ports:
-  #     - "3001:3001"
-  #   networks:
-  #     network:
-  #       aliases:
-  #         - frontend
-
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_DB: ordbogenpower
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    volumes:
-      - /Users/Rasmus/volumes/postgres:/var/lib/postgresql/data
+  db:
+    image: postgres:13
+    container_name: postgres-db
     ports:
       - "5432:5432"
-    networks:
-      network:
-        aliases:
-          - postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-networks:
-  network:
+volumes:
+  postgres_data:

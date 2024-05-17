@@ -1,4 +1,4 @@
-import { prisma } from '@/prisma/client'
+import { prisma } from '@/prisma/dbClient'
 import type {
   CreateDeviceCategoriesSchema,
   DeleteDeviceCategoriesSchema,
@@ -34,7 +34,6 @@ export default {
   ) => {
     const { body } = request
     const { id } = request.params
-    console.log(body, id)
     const result = await prisma.deviceCategory.update({ where: { id }, data: { name: body.name } })
     reply.send(result)
   },

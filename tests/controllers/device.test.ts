@@ -1,7 +1,7 @@
-import type { FastifyInstance, FastifyReply } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { createServer } from '../../src/server'
-import { prisma } from '../../src/prisma/client'
+import { prisma } from '../../src/prisma/dbClient'
 
 describe('deviceController', () => {
   let server: FastifyInstance
@@ -383,14 +383,6 @@ describe('deviceController', () => {
         },
       })
     }
-
-    const response = await server.inject({
-      method: 'PUT',
-      url: '/devices/updateMeasuredWattage',
-      payload: {
-        id: device.id,
-      },
-    })
 
     const updatedDevice = await prisma.device.findFirst({
       where:

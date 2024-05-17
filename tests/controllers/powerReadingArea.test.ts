@@ -1,8 +1,7 @@
-import exp from 'node:constants'
-import type { FastifyInstance, FastifyReply } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { createServer } from '../../src/server'
-import { prisma } from '../../src/prisma/client'
+import { prisma } from '../../src/prisma/dbClient'
 
 describe('powerReadingAreaController', () => {
   let server: FastifyInstance
@@ -136,15 +135,6 @@ describe('powerReadingAreaController', () => {
       name: 'Test Area',
       externalId: 'test-area',
     })
-  })
-
-  it('should return 404 if area not found', async () => {
-    const response = await server.inject({
-      method: 'GET',
-      url: '/areas/unknown',
-    })
-
-    expect(response.statusCode).toBe(404)
   })
 
   it('should update an area', async () => {

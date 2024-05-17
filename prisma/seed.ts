@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/prisma/dbClient'
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient()
 
 async function seedCategories() {
     try {
@@ -19,21 +19,24 @@ async function seedCategories() {
             { name: 'Smart Home Devices' },
             { name: 'Electric Tables' },
             { name: 'Electric Car Chargers' },
-            { name: 'Others' }
-        ];
+            { name: 'Others' },
+        ]
 
         for (const category of categories) {
-            const existingCategory = await prisma.deviceCategory.findFirst({ where: { name: category.name } });
-            if (existingCategory) continue;
-            await prisma.deviceCategory.create({ data: category });
+            const existingCategory = await prisma.deviceCategory.findFirst({ where: { name: category.name } })
+            if (existingCategory)
+                continue
+            await prisma.deviceCategory.create({ data: category })
         }
 
-        console.log('Categories seeded successfully!');
-    } catch (error) {
-        console.error('Error seeding categories:', error);
-    } finally {
-        await prisma.$disconnect();
+        console.log('Categories seeded successfully!')
+    }
+    catch (error) {
+        console.error('Error seeding categories:', error)
+    }
+    finally {
+        await prisma.$disconnect()
     }
 }
 
-seedCategories();
+seedCategories()

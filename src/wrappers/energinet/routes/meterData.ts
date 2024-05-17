@@ -1,5 +1,4 @@
 import client from '../client'
-import meteringPoints from './meteringPoints'
 
 enum Aggregation {
   ACTUAL = 'Actual',

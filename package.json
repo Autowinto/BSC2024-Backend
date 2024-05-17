@@ -38,6 +38,7 @@
     "@fastify/type-provider-typebox": "^4.0.0",
     "@jest/globals": "^29.7.0",
     "@prisma/client": "^5.9.1",
+    "@scalar/api-reference": "^1.22.41",
     "@scalar/fastify-api-reference": "^1.19.1",
     "@sinclair/typebox": "^0.32.27",
     "ajv-formats": "^2.1.1",

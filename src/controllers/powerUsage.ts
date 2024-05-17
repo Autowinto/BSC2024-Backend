@@ -1,4 +1,4 @@
-import { prisma } from '@/prisma/client'
+import { prisma } from '@/prisma/dbClient'
 import meterData from '@/wrappers/energinet/routes/meterData'
 import type { GetPowerUsageSchema } from '@/routes/powerUsage/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
@@ -17,16 +17,16 @@ export default {
       dateTo,
       aggregation,
     }, {
-      meteringPoints: areas.map(area => area.externalId),
+      meteringPoints: areas.map((area: any) => area.externalId),
     })
 
     const internal: { areas: any[] } = { areas: [] }
 
     for (const area of areas) {
       const deviceOnAreas = await prisma.deviceOnArea.findMany({ where: { areaId: area.id } })
-      const areaDeviceIds = deviceOnAreas.map(deviceOnArea => deviceOnArea.deviceId)
+      const areaDeviceIds = deviceOnAreas.map((deviceOnArea: any) => deviceOnArea.deviceId)
       const devices = await prisma.device.findMany({ where: { id: { in: areaDeviceIds } } })
-      const deviceIds = devices.map(device => device.id)
+      const deviceIds = devices.map((device: any) => device.id)
 
       const deviceHourlyAverages = await prisma.deviceHourlyAverage.findMany({
         where: {
@@ -35,9 +35,8 @@ export default {
           },
         },
       })
-      console.log(deviceHourlyAverages)
 
-      const totalPowerUsage = deviceHourlyAverages.map(o => o.wattage / 1000)
+      const totalPowerUsage = deviceHourlyAverages.map((o: any) => o.wattage / 1000)
 
       internal.areas.push({
         id: area.id,
@@ -72,8 +71,8 @@ export default {
 
 function transformTimeseriesData(data: any) {
   const returnObject = data.result
-    .map(o => o.MyEnergyData_MarketDocument.TimeSeries[0])
-    .map((o) => { return { id: o.mRID, data: o.Period[0].Point.map(p => p['out_Quantity.quantity']) } })
+    .map((o: any) => o.MyEnergyData_MarketDocument.TimeSeries[0])
+    .map((o: any) => { return { id: o.mRID, data: o.Period[0].Point.map((p: any) => p['out_Quantity.quantity']) } })
 
   // const points: any[] = data.result[0].MyEnergyData_MarketDocument.TimeSeries[0].Period[0].Point
   // const dataPoints = points.map(o => o['out_Quantity.quantity'])

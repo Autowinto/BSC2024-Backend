@@ -1,8 +1,6 @@
-import type { Measurement } from '@prisma/client'
-import { prisma } from '@/prisma/client'
+import { prisma } from '@/prisma/dbClient'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetHourlyMeasurementsSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
-import type { CreateMeasurementSchema } from '@/routes/measurements/schemas'
 
 interface QueryParams {
   start: string
@@ -152,7 +150,7 @@ export default {
   },
 
   getMeasurements: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
-    const data: Array<Measurement> = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
+    const data: any[] = await prisma.measurement.findMany({ where: { deviceId: request.params.deviceId } })
     reply.status(200).send({ totalItems: data.length, items: data })
   },
 
@@ -162,7 +160,7 @@ export default {
     const startDate = new Date(start)
     const endDate = new Date(end)
 
-    const data: Array<Measurement> = await prisma.measurement.findMany({
+    const data: any[] = await prisma.measurement.findMany({
       where: {
         deviceId,
         timeMeasured: {
@@ -195,7 +193,7 @@ export default {
         return
       }
 
-      const measurementsWattageSum = measurements.reduce((sum, measurement) => sum + measurement.wattage, 0)
+      const measurementsWattageSum = measurements.reduce((sum: number, measurement: { wattage: number }) => sum + measurement.wattage, 0)
       const measurementsCount = measurements.length
       const averageWattage = measurementsCount > 0 ? measurementsWattageSum / measurementsCount : 0
 

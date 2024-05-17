@@ -1,10 +1,10 @@
-import { prisma } from '@/prisma/client'
+import { prisma } from '@/prisma/dbClient'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
 import type { CreateMeasurementSchema, GetMeasurementsSchema } from '@/routes/measurements/schemas'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {
-    const { dateFrom, dateTo } = request.query
+    // const { dateFrom, dateTo } = request.query
 
     const data = await prisma.measurement.findMany({ orderBy: { timeMeasured: 'asc' } })
     const count = await prisma.measurement.count()
@@ -50,7 +50,7 @@ export default {
         return
       }
 
-      const measurementsWattageSum = measurements.reduce((sum, measurement) => sum + measurement.wattage, 0)
+      const measurementsWattageSum = measurements.reduce((sum: number, measurement: { wattage: number }) => sum + measurement.wattage, 0)
       const measurementsCount = measurements.length
       const averageWattage = measurementsCount > 0 ? measurementsWattageSum / measurementsCount : 0
 

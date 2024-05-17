@@ -29,10 +29,12 @@
     "removeComments": true,
     "sourceMap": true,
     "sourceRoot": "/",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
-    "./**/*.ts",
+    "./src/**/*.ts",
+    "./tests/**/*.ts",
     "./documentation/**/*"
   ],
   "exclude": [
