@@ -11,8 +11,8 @@ import devicesRoutes from './routes/devices'
 import measurementsRoutes from './routes/measurements'
 import smartPlugsRoutes from './routes/smartPlugs'
 import powerUsageRoutes from './routes/powerUsage'
-import powerReadingAreasRoutes from '@/routes/powerReadingArea'
-import deviceCategoriesRoutes from '@/routes/deviceCategories'
+import powerReadingAreasRoutes from './routes/powerReadingArea'
+import deviceCategoriesRoutes from './routes/deviceCategories'
 
 export function createServer() {
   const fastify = Fastify({

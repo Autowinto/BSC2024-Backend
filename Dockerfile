@@ -1,5 +1,5 @@
 # Use the official Node.js 14 image as the base image
-FROM node:20
+FROM node:18
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,6 +15,10 @@ RUN pnpm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+ENV ENERGINET_REFRESH_TOKEN=
+ENV DATABASE_URL="postgresql://postgres:password@db:5432/ordbogenpower?"
+
+
 # Build the Nuxt.js application
 RUN pnpm run build
 
@@ -22,4 +26,4 @@ RUN pnpm run build
 EXPOSE 3000
 
 # Start the application
-CMD [ "pnpm", "start" ]
+CMD [ "pnpm", "run", "start" ]

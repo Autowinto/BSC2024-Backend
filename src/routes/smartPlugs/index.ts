@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
+import smartPlugsController from '../../controllers/smartPlug'
 import { AssignDeviceToSmartPlugSchema, CreateSmartPlugSchema, GetSmartPlugByIdSchema, GetSmartPlugsSchema, UpdateSmartPlugSchema } from './schemas'
-import smartPlugsController from '@/controllers/smartPlug'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()

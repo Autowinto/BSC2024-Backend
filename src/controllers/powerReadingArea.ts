@@ -1,7 +1,20 @@
-import { prisma } from '@/prisma/dbClient'
-import type { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from '@/routes/powerReadingArea/schemas'
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import meteringPointsController from '@/wrappers/energinet/routes/meteringPoints'
+import { prisma } from '../prisma/dbClient'
+import type {
+  AddDeviceToAreaSchema,
+  DeletePowerReadingAreaSchema,
+  GetDevicesInAreaSchema,
+  GetPowerReadingAreaByIdSchema,
+  GetPowerReadingAreaSchema,
+  LoadPowerReadingAreasSchema,
+  RemoveDeviceFromAreaSchema,
+  UpdateDeviceOnAreaSchema,
+  UpdatePowerReadingAreaSchema,
+} from '../routes/powerReadingArea/schemas'
+import type {
+  FastifyTypeBoxReply,
+  FastifyTypeBoxRequest,
+} from '../routes/types'
+import meteringPointsController from '../wrappers/energinet/routes/meteringPoints'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetPowerReadingAreaSchema>, reply: FastifyTypeBoxReply<typeof GetPowerReadingAreaSchema>) => {

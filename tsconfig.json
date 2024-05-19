@@ -6,12 +6,7 @@
     ],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
+    "moduleResolution": "Node",
     "types": [
       "node",
       "vitest/globals",
@@ -30,6 +25,7 @@
     "sourceMap": true,
     "sourceRoot": "/",
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
   "include": [
@@ -38,6 +34,7 @@
     "./documentation/**/*"
   ],
   "exclude": [
-    "node_modules/**/*"
+    "node_modules/**/*",
+    "build/**/*"
   ]
 }

@@ -1,6 +1,12 @@
-import { prisma } from '@/prisma/dbClient'
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateMeasurementSchema, GetMeasurementsSchema } from '@/routes/measurements/schemas'
+import { prisma } from '../prisma/dbClient'
+import type {
+  FastifyTypeBoxReply,
+  FastifyTypeBoxRequest,
+} from '../routes/types'
+import type {
+  CreateMeasurementSchema,
+  GetMeasurementsSchema,
+} from '../routes/measurements/schemas'
 
 export default {
   get: async (request: FastifyTypeBoxRequest<typeof GetMeasurementsSchema>, reply: FastifyTypeBoxReply<typeof GetMeasurementsSchema>) => {

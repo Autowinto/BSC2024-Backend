@@ -1,11 +1,11 @@
-import { prisma } from '@/prisma/dbClient'
+import { prisma } from '../prisma/dbClient'
 import type {
   CreateDeviceCategoriesSchema,
   DeleteDeviceCategoriesSchema,
   GetDeviceCategoriesSchema,
   UpdateDeviceCategoriesSchema,
-} from '@/routes/deviceCategories/schemas'
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
+} from '../routes/deviceCategories/schemas'
+import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '../routes/types'
 
 export default {
   get: async (

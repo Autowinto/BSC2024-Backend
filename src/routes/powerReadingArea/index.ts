@@ -1,8 +1,8 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 
+import powerReadingAreaController from '../../controllers/powerReadingArea'
 import { AddDeviceToAreaSchema, DeletePowerReadingAreaSchema, GetDevicesInAreaSchema, GetPowerReadingAreaByIdSchema, GetPowerReadingAreaSchema, LoadPowerReadingAreasSchema, RemoveDeviceFromAreaSchema, UpdateDeviceOnAreaSchema, UpdatePowerReadingAreaSchema } from './schemas'
-import powerReadingAreaController from '@/controllers/powerReadingArea'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()

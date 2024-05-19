@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
+import deviceController from '../../controllers/device'
 import { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from './schemas'
-import deviceController from '@/controllers/device'
 
 export default async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>()

@@ -1,6 +1,17 @@
-import { prisma } from '@/prisma/dbClient'
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
-import type { CreateDeviceSchema, DeleteDeviceSchema, GetDeviceByIdSchema, GetDevicesInCategorySchema, GetDevicesSchema, GetHourlyMeasurementsSchema, GetMeasurementsInIntervalSchema, GetMeasurementsSchema, UpdateDeviceSchema, UpdateMeasuredWattageSchema } from '@/routes/devices/schemas'
+import { prisma } from '../prisma/dbClient'
+import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '../routes/types'
+import type {
+  CreateDeviceSchema,
+  DeleteDeviceSchema,
+  GetDeviceByIdSchema,
+  GetDevicesInCategorySchema,
+  GetDevicesSchema,
+  GetHourlyMeasurementsSchema,
+  GetMeasurementsInIntervalSchema,
+  GetMeasurementsSchema,
+  UpdateDeviceSchema,
+  UpdateMeasuredWattageSchema,
+} from '../routes/devices/schemas'
 
 interface QueryParams {
   start: string

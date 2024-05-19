@@ -1,7 +1,7 @@
-import { prisma } from '@/prisma/dbClient'
-import meterData from '@/wrappers/energinet/routes/meterData'
-import type { GetPowerUsageSchema } from '@/routes/powerUsage/schemas'
-import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '@/routes/types'
+import { prisma } from '../prisma/dbClient'
+import meterData from '../wrappers/energinet/routes/meterData'
+import type { GetPowerUsageSchema } from '../routes/powerUsage/schemas'
+import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '../routes/types'
 
 export default {
   get: async (
