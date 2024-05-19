@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   dashboard:
+    platform: linux/x86_64
     image: ghcr.io/autowinto/bsc2024-dashboard:latest
     container_name: bsc2024-dashboard
     ports:
       - "8080:8080"
 
   backend:
+    platform: linux/x86_64
     image: ghcr.io/autowinto/bsc2024-backend:latest
     container_name: bsc2024-backend
     ports:
@@ -18,6 +20,7 @@ services:
       - db
 
   db:
+    platform: linux/x86_64
     image: postgres:13
     container_name: postgres-db
     ports:
