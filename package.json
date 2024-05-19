@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsc && resolve-tspaths",
-    "start": "node --experimental-specifier-resolution=node ./build/server.js",
+    "start": "node --experimental-specifier-resolution=node ./build/src/server.js",
     "db:reset": "dotenv -e .env.prisma -- prisma migrate reset --force && prisma generate",
     "db:deploy": "prisma migrate deploy && prisma generate",
     "db:migrate": "dotenv -e .env.prisma -- prisma migrate dev",
