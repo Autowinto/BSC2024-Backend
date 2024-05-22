@@ -1,7 +1,7 @@
 import { prisma } from '../prisma/dbClient'
-import meterData from '../wrappers/energinet/routes/meterData'
 import type { GetPowerUsageSchema } from '../routes/powerUsage/schemas'
 import type { FastifyTypeBoxReply, FastifyTypeBoxRequest } from '../routes/types'
+import meterData from '../wrappers/energinet/routes/meterData'
 
 export default {
   get: async (
@@ -19,6 +19,7 @@ export default {
     }, {
       meteringPoints: areas.map((area: any) => area.externalId),
     })
+    console.log(JSON.stringify(external.data.result))
 
     const internal: { areas: any[] } = { areas: [] }
 
@@ -27,37 +28,36 @@ export default {
       const areaDeviceIds = deviceOnAreas.map((deviceOnArea: any) => deviceOnArea.deviceId)
       const devices = await prisma.device.findMany({ where: { id: { in: areaDeviceIds } } })
       const deviceIds = devices.map((device: any) => device.id)
+      let totalPowerUsage: number[] = []
+      for (const deviceId of deviceIds) {
 
-      const deviceHourlyAverages = await prisma.deviceHourlyAverage.findMany({
-        where: {
-          deviceId: {
-            in: deviceIds,
+        const deviceHourlyAverages: any = await prisma.deviceHourlyAverage.findMany({
+          where: {
+            deviceId,
           },
-        },
-      })
+          orderBy: {
+            hour: 'asc',
+          }
+        })
 
-      const totalPowerUsage = deviceHourlyAverages.map((o: any) => o.wattage / 1000)
+        if (totalPowerUsage.length === 0) {
+          totalPowerUsage = deviceHourlyAverages.map((o: any) => o.wattage / 1000)
+          continue
+        }
+
+        totalPowerUsage = totalPowerUsage.map((value, index) => value + (deviceHourlyAverages[index]?.wattage / 1000 || 0));
+
+      }
+
+      if (totalPowerUsage.length === 0) {
+        totalPowerUsage = new Array(24).fill(0)
+      }
 
       internal.areas.push({
         id: area.id,
         data: totalPowerUsage,
       })
     }
-
-    // Get all powerreadingareas
-    // Get all devices in powerreadingareas
-    // Get all deviceHourlyAverages for each device
-    // Add these together to get the total power usage for the internal areas
-    // add area to the internal object
-
-    // const data: Array<any> = await prisma.deviceHourlyAverage.findMany({ where: { deviceId: request.params.deviceId } })
-    // if (data === undefined || data.length === 0) {
-    //   reply.status(404).send('Measurements not found')
-    //   return
-    // }
-    // const wattages = []
-    // for (let i = 0; i < data.length; i++)
-    //   wattages.push(data[i].wattage)
 
     const transformedData: any[] = transformTimeseriesData(external.data)
     reply.status(200).send(
@@ -72,9 +72,12 @@ export default {
 function transformTimeseriesData(data: any) {
   const returnObject = data.result
     .map((o: any) => o.MyEnergyData_MarketDocument.TimeSeries[0])
-    .map((o: any) => { return { id: o.mRID, data: o.Period[0].Point.map((p: any) => p['out_Quantity.quantity']) } })
+    .map((o: any) => {
+      return {
+        id: o.mRID,
+        data: o.Period.flatMap((p: any) => p.Point.map((pt: any) => pt['out_Quantity.quantity']))
+      };
+    });
 
-  // const points: any[] = data.result[0].MyEnergyData_MarketDocument.TimeSeries[0].Period[0].Point
-  // const dataPoints = points.map(o => o['out_Quantity.quantity'])
   return returnObject
 }
