@@ -19,7 +19,6 @@ export default {
     }, {
       meteringPoints: areas.map((area: any) => area.externalId),
     })
-    console.log(JSON.stringify(external.data.result))
 
     const internal: { areas: any[] } = { areas: [] }
 
@@ -30,28 +29,27 @@ export default {
       const deviceIds = devices.map((device: any) => device.id)
       let totalPowerUsage: number[] = []
       for (const deviceId of deviceIds) {
-
         const deviceHourlyAverages: any = await prisma.deviceHourlyAverage.findMany({
           where: {
             deviceId,
           },
           orderBy: {
             hour: 'asc',
-          }
+          },
         })
 
+        const devicesCount = deviceOnAreas.find((o: any) => o.deviceId === deviceId)?.count || 1
+
         if (totalPowerUsage.length === 0) {
-          totalPowerUsage = deviceHourlyAverages.map((o: any) => o.wattage / 1000)
+          totalPowerUsage = deviceHourlyAverages.map((o: any) => (o.wattage / 1000) * devicesCount)
           continue
         }
 
-        totalPowerUsage = totalPowerUsage.map((value, index) => value + (deviceHourlyAverages[index]?.wattage / 1000 || 0));
-
+        totalPowerUsage = totalPowerUsage.map((value, index) => value + (deviceHourlyAverages[index]?.wattage / 1000 || 0))
       }
 
-      if (totalPowerUsage.length === 0) {
-        totalPowerUsage = new Array(24).fill(0)
-      }
+      if (totalPowerUsage.length === 0)
+        totalPowerUsage = Array.from({ length: 24 }).fill(0) as number[]
 
       internal.areas.push({
         id: area.id,
@@ -75,9 +73,9 @@ function transformTimeseriesData(data: any) {
     .map((o: any) => {
       return {
         id: o.mRID,
-        data: o.Period.flatMap((p: any) => p.Point.map((pt: any) => pt['out_Quantity.quantity']))
-      };
-    });
+        data: o.Period.flatMap((p: any) => p.Point.map((pt: any) => pt['out_Quantity.quantity'])),
+      }
+    })
 
   return returnObject
 }
